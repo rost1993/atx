@@ -1,0 +1,23 @@
+{
+    "name": "ic/ticket",
+    "description": "OPAZ ticket",
+    "authors": [
+        {
+            "name": "rost1993",
+            "email": "rgashin@mvd.ru"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "^8.0",
+        "mpdf/qrcode": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.14",
+        "picqer/php-barcode-generator": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IcKomiApp\\": "application/",
+            "IcKomiApp\\controllers\\": "controllers/",
+            "IcKomiApp\\models\\": "models/"
+        }
+    }
+}
