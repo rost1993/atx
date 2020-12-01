@@ -26,6 +26,10 @@
 	$list_adm = (empty($list_adm)) ? '' : $list_adm;
 	$list_permission_spec = (empty($list_permission_spec)) ? '' : $list_permission_spec;
 
+	$number_dopog = (empty($number_dopog)) ? '' : $number_dopog;
+	$date_start_dopog = (empty($date_start_dopog)) ? '' : $date_start_dopog;
+	$date_end_dopog = (empty($date_end_dopog)) ? '' : $date_end_dopog;
+
 	// Обработка категорий ВУ
 	$strKategVU = $strKategVUTractor = $strKategVUBoat = '';
 			
@@ -297,71 +301,57 @@
 
 						<div class="form-row">
 							<div class="col col-sm-5 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFour" aria-controls="collapseFour" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>4. УДОСТОВЕРЕНИЕ НА ПРАВО УПРАВЛЕНИЯ МАЛОМЕРНЫМИ СУДАМИ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFour" aria-controls="collapseFour" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>4. УДОСТОВЕРЕНИЕ МАШИНИСТА КРАНА ИЛИ КРАНА МАНИПУЛЯТОРА</a></h5></p>
 							</div>
 							<div class="col col-sm-6 mb-1 text-left" id='groupButtonVUBoat'>
-								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='1' data-class="boat" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='boat' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='14' data-class="boat" title="Показать список удостоверений"><span class="fa fa-search">&nbsp;</span>Список</button>
+								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='14' data-class='boat' title='Добавить удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 							</div>
 						</div>
 
 						<div class="collapse show" id="collapseFour" aria-labelledby="headingTwo">
-							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="doc_s_boat" class="text-muted" style="font-size: 13px;"><strong>Удостоверение</strong></label>
-								</div>
-								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="doc_s_boat" maxlength="4" placeholder="Серия" value="<?= $doc_s_boat; ?>" disabled>
-								</div>
-								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="doc_n_boat" maxlength="6" placeholder="Номер" value="<?= $doc_n_boat; ?>" disabled>
-								</div>
-							</div>
 
-							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="doc_date_boat" class="text-muted" style="font-size: 13px;"><strong>Срок действия</strong></label>
-								</div>
-								<div class="col col-sm-3 mb-1">
-									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='doc_date_boat'>с</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="doc_date_boat" maxlength="10" placeholder="Дата выдачи" value="<?= $doc_date_boat; ?>" disabled>
-									</div>
-								</div>
-								<div class="col col-sm-3 mb-1">
-									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='doc_end_date_boat'>по</label></div>
-										<input type="text" class="form-control form-control-sm black-text" maxlength="10" id="doc_end_date_boat" placeholder="Дата окончания" value="<?= $doc_end_date_boat; ?>" disabled>
-									</div>
-								</div>
-							</div>
-						
-
-							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="doc_s" class="text-muted" style="font-size: 13px;"><strong>Категории</strong></label>
-								</div>
-								<div class="col col-sm-8 text-left" id='kategVUBoat'><?= $strKategVUBoat; ?></div>
-							</div>
 						</div>
 					</div>
-					
-					
-				
-					<div class='col-sm-12 atx-cars-block' id='PermissionSpecSignals'>
-						<div class='form-row'>
-							<div class='col col-sm-5 mb-1 text-left'>
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFive" aria-controls="collapseFive" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. РАЗРЕШЕНИЕ НА УПРАВЛЕНИЕ ТС, ОБОРУДОВАННОМ СПЕЦСИГНАЛАМИ</a></h5></p>
+
+					<div class="col-sm-12 atx-cars-block" id="SECTION4-VU">
+
+						<div class="form-row">
+							<div class="col col-sm-4 mb-1 text-left">
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThree" aria-controls="collapseThree" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. СВИДЕТЕЛЬСТВО ДОПОГ</a></h5></p>
 							</div>
-							<div class='col col-sm-6 mb-1 text-left' id='groupButtonPermissionSpecSignals'>
-								<button type='button' class='btn btn-sm btn-outline-success btnShowList' data-item='10' title='Открыть список всех разрешений'><span class='fa fa-search'>&nbsp;</span>Список разрешений</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='10' title='Добавить разрешение к водителю'><span class='fa fa-plus'>&nbsp;</span>Добавить разрешение</button>" : ""; ?>
+							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='15' title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
+								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='15' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 							</div>
 						</div>
-						
-						<div class="collapse show" id="collapseFive" aria-labelledby="headingThree">
-							<div class='form-row'>
-								<div class="col col-sm-12 mb-1" id="list-car-permission-spec-signals"><?= $list_permission_spec; ?></div>
+
+						<div class="collapse show" id="collapseThree" aria-labelledby="headingTwo">
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
+									<label for="number_dopog" class="text-muted" style="font-size: 13px;"><strong>Свидетельство</strong></label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" id="number_dopog" maxlength="4" placeholder="Номер" value="<?= $number_dopog; ?>" disabled>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
+									<label for="date_start_dopog" class="text-muted" style="font-size: 13px;"><strong>Срок действия</strong></label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text' for='date_start_dopog'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" id="date_start_dopog" maxlength="10" placeholder="Дата выдачи" value="<?= $date_start_dopog; ?>" disabled>
+									</div>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text' for='date_end_dopog'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" maxlength="10" id="date_end_dopog" placeholder="Дата окончания" value="<?= $date_end_dopog; ?>" disabled>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -369,7 +359,7 @@
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSix" aria-controls="collapseSix" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>6. ЗАКРЕПЛЕНИЕ ЗА ТС</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSix" aria-controls="collapseSix" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. ЗАКРЕПЛЕНИЕ ЗА ТС</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="1" title="Открыть историю закреплений"><span class="fa fa-search">&nbsp;</span>История закреплений</button>
@@ -386,7 +376,7 @@
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeven" aria-controls="collapseSeven" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>7. ДТП</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeven" aria-controls="collapseSeven" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>6. ДТП</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='2' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
@@ -404,7 +394,7 @@
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEight" aria-controls="collapseEight" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>8. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEight" aria-controls="collapseEight" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>7. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="11" data-type='2' title="Открыть список всех адм. правонарушений"><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>

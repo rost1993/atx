@@ -144,4 +144,19 @@ return [
 		'controller' => 'carDocument',
 		'action' => 'carDocument'
 	],
+
+	'cranvu' => [
+		'controller' => 'cranVu',
+		'action' => 'cranVu'
+	],
+
+	'drivers_dopog' => [
+		'controller' => 'driversDopog',
+		'action' => 'driversDopog'
+	],
+
+	'cars_dopog' => [
+		'controller' => 'carsDopog',
+		'action' => 'carsDopog'
+	],
 ];

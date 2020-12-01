@@ -35,7 +35,6 @@ $(document).ready(function() {
 		query.append('option', 'save');
 		showDownloader(true);
 		AjaxQuery('POST', 'driver', query, function(result) {
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сохранено!', 'method' : 'show' });
 				$('.btn-save').data('id', res[1]);
@@ -157,12 +156,23 @@ $(document).ready(function() {
 			scripts = 'wheel';
 			titleForm = 'Список шин';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 14) {
+			scripts = 'cranvu';
+			titleForm = 'Список удостоверений';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 15) {
+			scripts = 'drivers_dopog';
+			titleForm = 'Список свидетельство ДОПОГ';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 16) {
+			scripts = 'cars_dopog';
+			titleForm = 'Список свидетельство ДОПОГ';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		}
 
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -179,7 +189,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'car_for_driver', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Сведения о закреплении водителей за ТС', 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -250,12 +259,26 @@ $(document).ready(function() {
 			scripts = 'wheel';
 			action = 13;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 14) {
+			titleForm = 'Удостоверение';
+			scripts = 'cranvu';
+			action = 14;
+			query = 'option=get_window&nsyst=-1';
+		} else if(item == 15) {
+			titleForm = 'Свидетельство ДОПОГ';
+			scripts = 'drivers_dopog';
+			action = 15;
+			query = 'option=get_window&nsyst=-1';
+		} else if(item == 16) {
+			titleForm = 'Свидетельство ДОПОГ';
+			scripts = 'cars_dopog';
+			action = 16;
+			query = 'option=get_window&nsyst=-1';
 		}
 
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-service-interface').ModalViewServiceInterfaceIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 				$('#saveModalWindowButton').data('action', action);
@@ -271,40 +294,6 @@ $(document).ready(function() {
 					clearButton: true
 				}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
 			});
-
-
-			/*var res = eval(result);
-			if(res[0] == -1) {
-				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
-			} else if(res[0] == 1) {
-				if($('*').is('#ModalWindowServiceInterfaces')) {
-					var modal = $('#ModalWindowServiceInterfaces');
-					$(modal).find('#textModal').empty();
-					$(modal).find('#textModal').html(titleForm);
-					$(modal).find('#bodyModal').empty();
-					$(modal).find('#bodyModal').html(res[1]);
-					$('#saveModalWindowButton').data('action', action);
-					$('#saveModalWindowButton').data('nsyst', 0);
-					$('#saveModalWindowButton').data('id', ($('#nsyst').html().trim().length == 0) ? 0 : $('#nsyst').html().trim());
-
-					if(item == 1)
-						$('#saveModalWindowButton').data('object', object);
-
-					if(item == 12)
-						$('#saveModalWindowButton').data('object', object);
-					
-					$(modal).modal('toggle');
-				
-					$("[data-datatype='date']").datepicker({
-						autoClose: true,
-						clearButton: true
-					}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
-				} else {
-					showModal('ModalWindow', 'Не найден шаблон модального окна! Презагрузите страницу или обратитесь к администратору!');
-				}
-			} else {
-				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-			}*/
 		});
 	});
 
@@ -356,12 +345,19 @@ $(document).ready(function() {
 			scripts = 'wheel';
 			titleForm = 'Учет шин';
 			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 15) {
+			scripts = 'drivers_dopog';
+			titleForm = 'Свидетельство ДОПОГ';
+			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 16) {
+			scripts = 'cars_dopog';
+			titleForm = 'Свидетельство ДОПОГ';
+			query = 'option=get_window&nsyst=' + id;
 		}
 		
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-service-interface').ModalViewServiceInterfaceIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 				$('#saveModalWindowButton').data('action', item);
@@ -378,39 +374,6 @@ $(document).ready(function() {
 					clearButton: true
 				}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
 			});
-
-			/*var res = eval(result);
-			if(res[0] == -1) {
-				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
-			} else if(res[0] == 1) {
-				if($('*').is('#ModalWindowServiceInterfaces')) {
-					var modal = $('#ModalWindowServiceInterfaces');
-					$(modal).find('#textModal').empty();
-					$(modal).find('#textModal').html(titleForm);
-					$(modal).find('#bodyModal').empty();
-					$(modal).find('#bodyModal').html(res[1]);
-					$('#saveModalWindowButton').data('action', item);
-					$('#saveModalWindowButton').data('nsyst', id);
-					$('#saveModalWindowButton').data('id', ($('#nsyst').html().trim().length == 0) ? 0 : $('#nsyst').html().trim());
-					
-					if(item == 1)
-						$('#saveModalWindowButton').data('object', object);
-					
-					if(item == 12)
-						$('#saveModalWindowButton').data('object', object);
-					
-					$(modal).modal('toggle');
-				
-					$("[data-datatype='date']").datepicker({
-						autoClose: true,
-						clearButton: true
-					});
-				} else {
-					showModal('ModalWindow', 'Не найден шаблон модального окна! Презагрузите страницу или обратитесь к администратору!');
-				}
-			} else {
-				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-			}*/
 		});
 	});
 
@@ -587,6 +550,48 @@ $(document).ready(function() {
 			query.append('option', 'save');
 			script = 'wheel';
 		}
+
+		if($(this).data('action') == 14) {
+			var resultCollectionsItems = getArrayItemsForms('#formCranVu input, #formCranVu select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'cranvu';
+		}
+
+		if($(this).data('action') == 15) {
+			var resultCollectionsItems = getArrayItemsForms('#formDriversDopog input, #formDriversDopog select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'drivers_dopog';
+		}
+
+		if($(this).data('action') == 16) {
+			var resultCollectionsItems = getArrayItemsForms('#formCarsDopog input, #formCarsDopog select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'cars_dopog';
+		}
 		
 		/*$.each(filesList, function(key, value) {
 			query.append(key, value);
@@ -604,7 +609,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', script, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			try {
 				var res = eval(result);
 				if(res[0] == 1) {
@@ -656,6 +660,12 @@ $(document).ready(function() {
 		} else if(item == 13) {
 			scripts = 'wheel';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst');
+		} else if(item == 15) {
+			scripts = 'drivers_dopog';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 16) {
+			scripts = 'cars_dopog';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		}
 		
 		AjaxQuery('POST', scripts, query, function(result) {

@@ -79,6 +79,11 @@
 	$list_old_gos_znak = (empty($list_old_gos_znak)) ? '' : $list_old_gos_znak;
 	$list_wheels = (empty($list_wheels)) ? '' : $list_wheels;
 
+	$number_dopog = (empty($number_dopog)) ? '' : $number_dopog;
+	$date_start_dopog = (empty($date_start_dopog)) ? '' : $date_start_dopog;
+	$date_end_dopog = (empty($date_end_dopog)) ? '' : $date_end_dopog;
+	$firma_dopog_text = (empty($firma_dopog_text)) ? '' : $firma_dopog_text;
+
 	$role = 9;
 ?>
 
@@ -624,11 +629,56 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="col-sm-12 atx-cars-block">	
+						<div class="form-row">
+							<div class="col col-sm-3 mb-1 text-left">
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwelve" aria-controls="collapseTwelve" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>12. СВИДЕТЕЛЬСТВО ДОПОГ</a></h5></p>
+							</div>
+							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='16' title="Список всех ДОПОГ"><span class="fa fa-search"></span>&nbsp;История</button>
+								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='16' title='Добавить свидетельство ДОПОГ'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+							</div>
+						</div>
+						<div class="collapse show" id="collapseTwelve" aria-labelledby="headingOne">
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted" style="font-size: 13px;" for="number_dopog"><strong>Номер свидетельства</strong></label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" id="number_dopog" value="<?= $number_dopog; ?>" disabled>
+								</div>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted" style="font-size: 13px;" for="date_start_dopog"><strong>Срок действия</strong></label>
+								</div>
+								<div class="col col-sm-2 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text' for='date_start_dopog'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" id="date_start_dopog" value="<?= $date_start_dopog; ?>" disabled>
+									</div>
+								</div>
+								<div class="col col-sm-2 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text' for='date_end_dopog'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" id="date_end_dopog" value="<?= $date_end_dopog; ?>" disabled>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted" style="font-size: 13px;" for="firma_dopog_text"><strong>Организация</strong></label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" id="firma_dopog_text" value="<?= $firma_dopog_text; ?>" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
 					
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwelve" aria-controls="collapseTwelve" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>12. ПРОБЕГ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThirteen" aria-controls="collapseThirteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>13. ПРОБЕГ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='4' title="Развернуть список всех показаний спидометра"><span class="fa fa-search">&nbsp;</span>История спидометра</button>
@@ -652,7 +702,7 @@
 									?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseTwelve" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseThirteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
 									<label class="text-muted" style="font-size: 13px;" for="mileage"><strong>Пробег, км</strong></label>
@@ -667,14 +717,14 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThirteen" aria-controls="collapseThirteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>13. ВОДИТЕЛИ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFourteen" aria-controls="collapseFourteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>14. ВОДИТЕЛИ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="2" title="Открыть историю закреплений"><span class="fa fa-search"></span>&nbspИстория закреплений</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='2' data-operation='1' title='Закрепить нового водителя за транспортным средством'><span class='fa fa-plus'></span>&nbspДобавить водителя</button>" : "";?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseThirteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseFourteen" aria-labelledby="headingOne">
 							<div class="form-row" id="listDrivers">
 								<div class="col col-sm-12 mb-1" id="list-drivers-for-car"><?= $list_driver; ?></div>
 							</div>
@@ -684,14 +734,14 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFourteen" aria-controls="collapseFourteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>14. РЕМОНТ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>15. РЕМОНТ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='7' title="Открыть список всех ремонтов"><span class="fa fa-search">&nbsp</span>Список ремонтов</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='repairs' title='Добавить ремонт к транспортному средству'><span class='fa fa-plus'>&nbsp</span>Добавить ремонт</button>" : "";?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseFourteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-repairs-for-car"><?= $list_repair; ?></div>
 							</div>
@@ -701,14 +751,14 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>15. ДТП</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>16. ДТП</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='1' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp</span>Список ДТП</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='dtp' title='Добавить ДТП к транспортному средству'><span class='fa fa-plus'>&nbsp</span>Добавить ДТП</button>" : "";?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-dtp-for-car"><?= $list_dtp; ?></div>
 							</div>
@@ -718,14 +768,14 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>16. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeventeen" aria-controls="collapseSeventeen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>17. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='11' data-type='1' title=""><span class="fa fa-search">&nbsp</span>Список адм. правонарушений</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='adm-offense' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp</span>Добавить адм. правонарушение</button>" : "";?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-adm"><?= $list_adm; ?></div>
 							</div>
@@ -735,12 +785,12 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeventeen" aria-controls="collapseSeventeen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>17. ТОВАРНО-МАТЕРИАЛЬНЫЕ ЦЕННОСТИ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEighteen" aria-controls="collapseEighteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>18. ТОВАРНО-МАТЕРИАЛЬНЫЕ ЦЕННОСТИ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 							</div>
 						</div>
-						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseEighteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 text-right">
 									<label class="blockquote" style="font-size: 15px;" for="issued_date_fire_extinguisher"><strong>Огнетушитель</strong></label>
@@ -876,7 +926,7 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEighteen" aria-controls="collapseEighteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>18. УЧЕТ ШИН</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseNineteen" aria-controls="collapseNineteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>19. УЧЕТ ШИН</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='13' title="Развернуть список всех шин"><span class="fa fa-search"></span>&nbsp;Список шин</button>
@@ -886,7 +936,7 @@
 								?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseEighteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseNineteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-wheels"><?= $list_wheels; ?></div>
 							</div>

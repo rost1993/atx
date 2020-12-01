@@ -64,7 +64,7 @@ abstract class Model {
 	*/
 	private function call_trigger($array_data, $id_object = -1) {
 		$id = "";	// ID объекта для передачи в хранимую процедуру
-		
+
 		if($id_object == -1) {
 			if(!$array_data_decode = json_decode($array_data))
 				return false;
