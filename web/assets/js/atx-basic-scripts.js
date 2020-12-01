@@ -593,12 +593,12 @@ $(document).ready(function() {
 			script = 'cars_dopog';
 		}
 		
-		/*$.each(filesList, function(key, value) {
+		$.each(filesList, function(key, value) {
 			query.append(key, value);
-		});*/
+		});
 
 		query.append('idobject', $(this).data('id'));
-		//filesList = [];
+		filesList = [];
 
 		query.append('JSON', JSON.stringify(arrayData));
 		if($(this).data('nsyst') == 0)
@@ -609,6 +609,7 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', script, query, function(result) {
 			showDownloader(false);
+			alert(result);
 			try {
 				var res = eval(result);
 				if(res[0] == 1) {

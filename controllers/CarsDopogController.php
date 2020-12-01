@@ -23,10 +23,19 @@ class CarsDopogController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new CarsDopog())->save($_POST) === false)
+				if(($id = (new CarsDopog())->save($_POST)) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
+
+				if(!empty($_FILES)) {
+
+					if((new CarsDopog())->save_file($_FILES, $id, $_POST['id_car']) === false)
+						echo json_encode([-1]);
+					else
+						echo json_encode([1]);
+				}
+
 			} else if($_POST['option'] == 'remove') {
 				if((new CarsDopog())->remove($_POST) === false)
 					echo json_encode([-1]);

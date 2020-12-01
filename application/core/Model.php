@@ -6,6 +6,7 @@ use IcKomiApp\lib\Database\DB;
 use IcKomiApp\core\User;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
+use IcKomiApp\core\FileUpload;
 
 abstract class Model {
 
@@ -132,6 +133,36 @@ abstract class Model {
 			if(!$this->remove_directory($id_object, $id))
 				return false;*/
 		
+		return true;
+	}
+
+	// Функция загрузки файла на сервер
+	public function save_file($array_data_file, $id_object, $id_main_object = -1) {
+		if(empty($array_data_file))
+			return false;
+	
+		$class_name = get_class($this);
+		
+		$fileUploadClass = new FileUpload();
+		if(($uploaddir = $fileUploadClass->generate_uploaddir($class_name, $id_main_object, $id_object)) === false)
+			return false;
+
+		$file_name = $msg_error = '';
+		foreach($array_data_file as $file) {
+			
+			// Проверка расширения файла, можно ли загрузить файл с таким расширением
+			if(!ServiceFunction::check_extension_files(basename($file['name']), $this->array_file_extension))
+				continue;
+
+			if(!$fileUploadClass->downdloadFileToServer($file, $uploaddir, $file_name, 1, $msg_error))
+				return false;
+			
+			if(!$fileUploadClass->save_path_to_file_database($file_name, $class_name, $id_object)) {
+				$msg_error = 'Ошибка при сохранении информации в базу данных!';
+				return false;
+			}
+		}
+	
 		return true;
 	}
 
