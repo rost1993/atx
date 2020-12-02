@@ -225,4 +225,40 @@ class Functions {
 		return $sqlQuery;
 	}
 
+	/*
+		Функция поиска заданного параметра в массиве в формате JSON
+		$array_data - JSON массив, в котором необходимо искать параметр
+		$param - название ключа в массиве, который будем искать
+		Возвращаемое значение: null - в случае ошибки, значение - в случае успеха
+	*/
+	public static function get_id_from_json($array_data, $param) {
+		if(!$array_data_decode = json_decode($array_data))
+			return null;
+
+		$value = '';
+
+		foreach($array_data_decode as $field => $array_value) {
+			$array_value_decode = (array)$array_value;
+			if($field == $param)
+				$value = $array_value_decode['value'];
+		}
+
+		return $value;
+	}
+
+	// Функция, которая проверяет входит ли расширение файла (которое вычисляется из названия файла) в массив допустимых расширений
+	// Возвращает TRUE - если файл с таким расширением входит в список в массиве, FALSE - в любом другом случае
+	public static function check_extension_files($file_name, $array_file_extension) {		
+		// Вычисляем расширение файла по его названию
+		$file_extension = '';
+		$file_name_explode = explode('.', $file_name);
+		if(count($file_name_explode) != 0)
+			$file_extension = mb_strtolower($file_name_explode[count($file_name_explode) - 1]);
+		else
+			return false;
+
+		//$array_file_extension_lower = array_map('mb_strtolower', $array);
+		return in_array($file_extension, array_map('mb_strtolower', $array_file_extension));
+	}
+
 }

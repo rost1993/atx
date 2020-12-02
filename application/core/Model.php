@@ -142,7 +142,7 @@ abstract class Model {
 			return false;
 	
 		$class_name = get_class($this);
-		
+
 		$fileUploadClass = new FileUpload();
 		if(($uploaddir = $fileUploadClass->generate_uploaddir($class_name, $id_main_object, $id_object)) === false)
 			return false;
@@ -151,12 +151,12 @@ abstract class Model {
 		foreach($array_data_file as $file) {
 			
 			// Проверка расширения файла, можно ли загрузить файл с таким расширением
-			if(!ServiceFunction::check_extension_files(basename($file['name']), $this->array_file_extension))
+			if(!Functions::check_extension_files(basename($file['name']), $this->array_file_extension))
 				continue;
 
 			if(!$fileUploadClass->downdloadFileToServer($file, $uploaddir, $file_name, 1, $msg_error))
 				return false;
-			
+
 			if(!$fileUploadClass->save_path_to_file_database($file_name, $class_name, $id_object)) {
 				$msg_error = 'Ошибка при сохранении информации в базу данных!';
 				return false;
@@ -164,6 +164,18 @@ abstract class Model {
 		}
 	
 		return true;
+	}
+
+	// Функция удаления файла с сервера
+	public function remove_file($post) {
+		if(empty($post['nsyst']))
+			return false;
+
+		$id_object = $post['nsyst'];
+
+		$class_name = get_class($this);
+		$fileUploadClass = new FileUpload();
+		return $fileUploadClass->remove_file($class_name, $id_object);
 	}
 
 	/*

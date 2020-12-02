@@ -25,6 +25,8 @@ class DB {
 
 		if($mode == DatabaseBasic::DB_SELECT)
 			return $db->resultQuery;
+		else
+			$result = $db->id;
 		return $result;
 	}
 

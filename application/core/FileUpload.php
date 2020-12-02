@@ -30,7 +30,7 @@ class FileUpload {
 	const CLASS_CARS = 'Cars';
 	const CLASS_SPEC_SIGNALS = 'PermissionSpecSignals';
 	const CLASS_ADM_OFFENSE = 'AdmOffense';
-	const CLASS_CARS_DOPOG = 'CarsDopog';
+	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
 	
 	// Функция очистки содержимого директорий от файлов
 	private function clearPath($path) {
@@ -86,10 +86,7 @@ class FileUpload {
 	
 	// Функция получения папки куда необходимо сохранить файл
 	public function generate_uploaddir($class_name, $id_main_object, $id_object) {
-		if((mb_strlen($class_name) == 0) || (!ServiceFunction::check_number($id_object)))
-			return false;
-
-		$path_to_file = '/uploads-files/';
+		$path_to_file = 'upload-files/';
 
 		switch($class_name) {
 			case self::CLASS_CAR_DOCUMENT:
@@ -153,14 +150,14 @@ class FileUpload {
 				break;
 
 			case self::CLASS_CARS_DOPOG:
-				$path_to_file .= 'cars/' . $id_main_object . '/pts/' . $id_object . '/';
+				$path_to_file .= 'cars/' . $id_main_object . '/dopog/' . $id_object . '/';
 				break;
 			
 			default:
 				$path_to_file = false;
 				break;
 		}
-		
+
 		return $path_to_file;
 	}
 	
@@ -194,7 +191,7 @@ class FileUpload {
 		
 		// Проверяем что путь к файлу обязатлно оканчивался слэшэм
 		$temp_uploaddir = $uploaddir;
-		if($temp_uploaddir[mb_strlen($temp_uploaddir - 1)] != '/')
+		if(preg_match('/\/$/ui', $temp_uploaddir) == -1)
 			$temp_uploaddir .= '/';
 		
 		if(!$this->createDirectory($temp_uploaddir)) {
@@ -333,9 +330,6 @@ class FileUpload {
 	}
 	
 	public function save_path_to_file_database($file_name, $class_name, $id_object) {
-		if(!ServiceFunction::check_number($id_object))
-			return false;
-		
 		if(mb_strlen($file_name) == 0)
 			return false;
 		
@@ -353,8 +347,7 @@ class FileUpload {
 			$sqlQuery = "INSERT INTO " . $table . " (id_object, category_file, path_to_file, file_extension, sh_polz) VALUES (" . $id_object . "," . $cathegory . ",'" . $file_name . "', '" . $file_extension . "'," . $sh_polz . ")";
 		}
 
-		$mysql = new mysqlRun();
-		if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_INSERT_OR_UPDATE))
+		if(DB::query($sqlQuery, DB::INSERT_OR_UPDATE) === false)
 			return false;
 		return true;
 	}
@@ -393,29 +386,25 @@ class FileUpload {
 	}
 	
 	public function remove_file($class_name, $id_object) {
-		if(!ServiceFunction::check_number($id_object))
-			return false;
-		
 		$table = $this->get_table_for_object($class_name);
 		$sqlQuery = "SELECT path_to_file, file_extension FROM " . $table . " WHERE id=" . $id_object;
 
-		$mysql = new mysqlRun();
-		if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_SELECT))
+		if(($data = DB::query($sqlQuery, DB::SELECT)) === false)
 			return false;
 
-		if(count($mysql->resultQuery) == 0)
+		if(count($data) == 0)
 			return true;
 		
-		if($this->removeFileToServer('../../' . $mysql->resultQuery[0]['path_to_file']) === false)
+		if($this->removeFileToServer($data[0]['path_to_file']) === false)
 			return false;
 
 		if($class_name == self::CLASS_EXAM_DOCUMENT || $class_name == self::CLASS_REPAIR_DOCUMENT || $class_name == self::CLASS_DTP || $class_name == self::CLASS_CARS || $class_name == self::CLASS_ADM_OFFENSE) {
 			$sqlQuery = "DELETE FROM " . $table . " WHERE id=" . $id_object;
-			if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_OTHER))
+			if(DB::query($sqlQuery, DB::OTHER) === false)
 				return false;
 		} else {
 			$sqlQuery = "UPDATE " . $table . " SET path_to_file='', file_extension='' WHERE id=" . $id_object;
-			if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_INSERT_OR_UPDATE))
+			if(DB::query($sqlQuery, DB::INSERT_OR_UPDATE) === false)
 				return false;
 		}
 

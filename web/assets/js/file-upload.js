@@ -127,7 +127,7 @@ $(function () {
 
 	// Обработчик удаления файла
 	// Либо удаляет саму иконку файла, либо делает запрос в базу и удаляет файл
-	$('.form-row, #ModalWindowServiceInterfaces, #ContextOutputInterface, #ModalWindowView').on('click', '#btnDeleteFile', function() {
+	$('.modal-ic-komi-service-interface').on('click', '#btnDeleteFile', function() {
 		var item = $(this);
 		if($(this).data('save') == -1) {
 			$(item).closest('.badge').remove();
@@ -186,16 +186,32 @@ $(function () {
 					script = 'permission-spec-signals-events.php';
 					options = 5;
 					break;
-				
 				case 15:
 					script = 'adm-offense-events.php';
 					options = 6;
 					break;
+				case 16:
+					script = 'cars_dopog';
+					options = 'remove_file';
+					break;
 			}
-			
+
 			showDownloader(true);
-			AjaxQuery('POST', PATH_TO_SCRIPT + script, 'option=' + options + '&nsyst=' + $(this).data('save') + add_option, function(result) {
+			AjaxQuery('POST', script, 'option=remove_file' + '&nsyst=' + $(this).data('save') + add_option, function(result) {
 				showDownloader(false);
+				alert(result);
+				handlerAjaxResult(result, null, function(res) {
+					$(item).closest('span').remove();
+				});
+			});
+
+			/*AjaxQuery('POST', script, 'option=remove_file' + '&nsyst=' + $(this).data('save') + add_option, function(result) {
+				showDownloader(false);
+				alert(result);
+				handlerAjaxResult(result, null, function(res) {
+					$(item).closest('span').remove();
+				});
+				alert(result);
 				var res = eval(result);
 				if(res[0] == -1)
 					showModal('ModalWindow', 'При обработке заспроса произошла ошибка! Повторите запрос!');
@@ -203,7 +219,7 @@ $(function () {
 					$(item).closest('span').remove();
 				else
 					showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-			});
+			});*/
 		}
 		filesList = [];
 	});
