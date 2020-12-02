@@ -24,7 +24,8 @@ class Car extends Model {
 					 DATE_FORMAT(i.start_date, '%d.%m.%Y') as start_date_fire_extinguisher, DATE_FORMAT(i.end_date, '%d.%m.%Y') as end_date_fire_extinguisher, DATE_FORMAT(i.issued_date, '%d.%m.%Y') as issued_date_fire_extinguisher,
 					 DATE_FORMAT(j.start_date, '%d.%m.%Y') as start_date_first_aid_kid, DATE_FORMAT(j.end_date, '%d.%m.%Y') as end_date_first_aid_kid, DATE_FORMAT(j.issued_date, '%d.%m.%Y') as issued_date_first_aid_kid,
 					 DATE_FORMAT(k.issued_date, '%d.%m.%Y') as issued_date_warning_triangle, DATE_FORMAT(l.start_date, '%d.%m.%Y') as start_date_car_battery, l.type_battery, l.firma_battery,
-					 m.number_dopog, DATE_FORMAT(m.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(m.date_end_dopog, '%d.%m.%Y') as date_end_dopog, x6.text as firma_dopog_text
+					 m.number_dopog, DATE_FORMAT(m.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(m.date_end_dopog, '%d.%m.%Y') as date_end_dopog, x6.text as firma_dopog_text,
+					 m.path_to_file as file_dopog, m.file_extension as ext_file_dopog
 					 FROM {table} 
 					 LEFT JOIN osago b ON b.id_car=cars.id AND b.ibd_arx=1 
 					 LEFT JOIN technical_inspection c ON c.id_car=cars.id AND c.ibd_arx=1 

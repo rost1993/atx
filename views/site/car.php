@@ -84,6 +84,12 @@
 	$date_end_dopog = (empty($date_end_dopog)) ? '' : $date_end_dopog;
 	$firma_dopog_text = (empty($firma_dopog_text)) ? '' : $firma_dopog_text;
 
+	$file_pts = (empty($file_pts)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_pts, $ext_file_pts);
+	$file_osago = (empty($file_osago)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_osago, $ext_file_osago);
+	$file_cert_reg = (empty($file_cert_reg)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_cert_reg, $ext_file_cert_reg);
+	$file_tech_inspection = (empty($file_tech_inspection)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_tech_inspection, $ext_file_tech_inspection);
+	$file_dopog = (empty($file_dopog)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_dopog, $ext_file_dopog);
+
 	$role = 9;
 ?>
 
@@ -442,6 +448,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonSix'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='6' title="Развернуть список всех свидетельств о регистрации"><span class="fa fa-search">&nbsp;</span>История регистрации</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='6' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Добавить свидетельство</button>" : ""; ?>
+								<?= $file_cert_reg; ?>
 							</div>
 						</div>
 						
@@ -494,6 +501,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonSeven'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='5' title="Развернуть список всех ПТС"><span class="fa fa-search">&nbsp</span>История ПТС</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='5' title='Добавить полис ПТС'><span class='fa fa-plus'>&nbsp</span>Добавить ПТС</button>" : ""; ?>
+								<?= $file_pts; ?>
 							</div>
 						</div>
 						
@@ -545,6 +553,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonEight'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='2' title="Развернуть список всех полисов ОСАГО"><span class="fa fa-search"></span>&nbspИстория ОСАГО</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='2' title='Добавить полис ОСАГО'><span class='fa fa-plus'></span>&nbspДобавить ОСАГО</button>" : ""; ?>
+								<?= $file_osago; ?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseTen" aria-labelledby="headingOne">
@@ -587,6 +596,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='3' title="Развернуть список всех технических осмотров"><span class="fa fa-search"></span>&nbspИстория Техосмотров</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='3' title='Добавить полис технический осмотр'><span class='fa fa-plus'></span>&nbspДобавить Техосмотр</button>" : "";?>
+								<?= $file_tech_inspection; ?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseEleven" aria-labelledby="headingOne">
@@ -638,6 +648,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='16' title="Список всех ДОПОГ"><span class="fa fa-search"></span>&nbsp;История</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='16' title='Добавить свидетельство ДОПОГ'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+								<?= $file_dopog; ?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseTwelve" aria-labelledby="headingOne">

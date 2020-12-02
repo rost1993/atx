@@ -30,6 +30,10 @@
 	$date_start_dopog = (empty($date_start_dopog)) ? '' : $date_start_dopog;
 	$date_end_dopog = (empty($date_end_dopog)) ? '' : $date_end_dopog;
 
+	$file_vu = (empty($file_vu)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_vu, $ext_file_vu);
+	$file_vu_tractor = (empty($file_vu_tractor)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_vu_tractor, $ext_file_vu_tractor);
+	$file_dopog = (empty($file_dopog)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_dopog, $ext_file_dopog);
+
 	// Обработка категорий ВУ
 	$strKategVU = $strKategVUTractor = $strKategVUBoat = '';
 			
@@ -198,6 +202,7 @@
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonVU'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='1' data-class="car" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='car' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?= $file_vu; ?>
 							</div>
 						</div>
 
@@ -251,6 +256,7 @@
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='1' data-class="tractor" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='tractor' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?= $file_vu_tractor; ?>
 							</div>
 						</div>
 
@@ -323,6 +329,7 @@
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='15' title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
 								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='15' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?= $file_dopog; ?>
 							</div>
 						</div>
 

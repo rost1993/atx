@@ -236,7 +236,7 @@
 				return $();
 			
 			var body = $("<div class='modal-body' style='height: 100%; position: relative;'></div>");
-			var iframe = $("<iframe class='file-frame' src='data:application/pdf;base64," + this.opts.textBody + "' style='width: 100%;'></iframe>");
+			var iframe = $("<iframe class='file-frame' src='" + this.opts.textBody + "' style='width: 100%;'></iframe>");
 			body.append(iframe);
 			return body;
 		},

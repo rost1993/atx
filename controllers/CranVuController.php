@@ -23,12 +23,25 @@ class CranVuController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new CranVu())->save($_POST) === false)
+				if(($id = (new CranVu())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new CranVu())->save_file($_FILES, $id, Functions::get_id_from_json($_POST['JSON'], 'id_driver')) === false)
+							echo json_encode([-1]);
+						else
+							echo json_encode([1]);
+					} else {
+						echo json_encode([1]);
+					}
+				}
+			} else if($_POST['option'] == 'remove') {
+				if((new CranVu())->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['option'] == 'remove') {
-				if((new CranVu())->remove($_POST) === false)
+			} else if($_POST['option'] == 'remove_file') {
+				if((new CranVu())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);

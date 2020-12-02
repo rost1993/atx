@@ -23,12 +23,25 @@ class VuController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new Vu($_POST['class']))->save($_POST) === false)
+				if(($id = (new Vu())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new Vu())->save_file($_FILES, $id, Functions::get_id_from_json($_POST['JSON'], 'id_driver')) === false)
+							echo json_encode([-1]);
+						else
+							echo json_encode([1]);
+					} else {
+						echo json_encode([1]);
+					}
+				}
+			} else if($_POST['option'] == 'remove') {
+				if((new Vu($_POST['class']))->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['option'] == 'remove') {
-				if((new Vu($_POST['class']))->remove($_POST) === false)
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Vu())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);

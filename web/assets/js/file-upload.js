@@ -134,65 +134,53 @@ $(function () {
 		} else {
 			// Определяем скрипт, который необходимо запустить
 			var script = '';
-			var options = '';
 			var add_option = '';
 			switch($(this).data('item')) {
 				case 1:
-					script = 'vu-events.php';
-					options = 5;
+					script = 'vu';
 					add_option = '&class=' + $(this).data('class');
 					break;
 				case 2:
-					script = 'osago-events.php';
-					options = 5;
+					script = 'osago';
 					break;
 				case 3:
-					script = 'technical-inspection-events.php';
-					options = 5;
+					script = 'technical_inspection';
 					break;
 				case 5:
-					script = 'pts-events.php';
-					options = 5;
+					script = 'pts';
 					break;
 				case 6:
-					script = 'certificate-registration-events.php';
-					options = 5;
+					script = 'certificate_registration';
 					break;
 				case 8:
-					script = 'car-documents-events.php';
-					options = 8;
+					script = 'car_documents';
 					break;
 				case 9:
 					script = 'car-for-driver-events.php';
-					options = 8;
 					break;
-				case 10:
+				/*case 10:
 					script = 'exam-events.php';
-					options = 10;
-					break;
+					break;*/
 				case 11:
-					script = 'repair-events.php';
-					options = 8;
+					script = 'repair';
 					break;
 				case 12:
-					script = 'dtp-events.php';
-					options = 5;
+					script = 'dtp';
 					break;
 				case 13:
-					script = 'engine-atx.php';
-					options = 7;
+					script = 'car';
 					break;
-				case 14:
+				/*case 14:
 					script = 'permission-spec-signals-events.php';
-					options = 5;
-					break;
+					break;*/
 				case 15:
-					script = 'adm-offense-events.php';
-					options = 6;
+					script = 'adm';
 					break;
 				case 16:
 					script = 'cars_dopog';
-					options = 'remove_file';
+					break;
+				case 17:
+					script = 'drivers_dopog';
 					break;
 			}
 
@@ -204,53 +192,55 @@ $(function () {
 					$(item).closest('span').remove();
 				});
 			});
-
-			/*AjaxQuery('POST', script, 'option=remove_file' + '&nsyst=' + $(this).data('save') + add_option, function(result) {
-				showDownloader(false);
-				alert(result);
-				handlerAjaxResult(result, null, function(res) {
-					$(item).closest('span').remove();
-				});
-				alert(result);
-				var res = eval(result);
-				if(res[0] == -1)
-					showModal('ModalWindow', 'При обработке заспроса произошла ошибка! Повторите запрос!');
-				else if(res[0] == 1)
-					$(item).closest('span').remove();
-				else
-					showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-			});*/
 		}
 		filesList = [];
 	});
 
 	// Функция возвращает тип файла (PDF, excel, image) в зависимости от расширения файла
-// Данный тип необходим для корректного отображения содержимого файла
-function getTypeFileForExtension(fileExtension) {
-	var fileType;
-	switch(fileExtension.toLowerCase().replace(/\./g, '').trim()) {
-		case 'pdf':
-			fileType = 'pdf';
-			break;
+	// Данный тип необходим для корректного отображения содержимого файла
+	function getTypeFileForExtension(fileExtension) {
+		var fileType;
+		switch(fileExtension.toLowerCase().replace(/\./g, '').trim()) {
+			case 'pdf':
+				fileType = 'pdf';
+				break;
 		
-		case 'jpeg':
-		case 'jpg':
-		case 'png':
-		case 'tif':
-		case 'gif':
-			fileType = 'image';
-			break;
+			case 'jpeg':
+			case 'jpg':
+			case 'png':
+			case 'tif':
+			case 'gif':
+				fileType = 'image';
+				break;
 		
-		case 'xlsx':
-		case 'xls':
-			fileType = 'excel';
-			break;
+			case 'xlsx':
+			case 'xls':
+				fileType = 'excel';
+				break;
 		
-		default:
-			fileType = 'pdf';
-			break;
+			default:
+				fileType = 'pdf';
+				break;
+		}
+		return fileType;
 	}
-	
-	return fileType;
-}
+
+	// Обработчик открытия файла при нажатии на него
+	$('.starter-template,.modal-ic-komi-view,.modal-ic-komi-service-interface').on('click', '#openModalFile', function() {
+		var item = $(this).data('href');	
+
+		$('.modal-ic-komi-document-view').ModalDocumentViewIcKomi({ 'textBody' : item, 'method' : 'show' });
+
+		/*var modal = $('#ModalWindowViewDocument');
+		$(modal).find('#textModal').empty();
+		$(modal).find('#textModal').html('Просмотр документа');
+		$(modal).find('#bodyModal').empty();
+
+		if($(this).data('fileFormat').trim() == 'pdf')
+			$(modal).find('#bodyModal').html("<iframe class='file-frame' src='" + item + "' style='width: 100%;'></iframe>");
+		else
+			$(modal).find('#bodyModal').html("<img src='" + item + "' alt='Фотография' class='img-fluid rounded' style='height: 75vh;'>");
+
+		$(modal).modal('toggle');*/
+	});
 });

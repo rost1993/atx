@@ -16,21 +16,22 @@ class FileUpload {
 	public $LAST_COPY_FILE = '';
 	
 	const CLASS_CAR_DOCUMENT = 'CarDocument';
-	const CLASS_TECHNICAL_INSPECTION_DOCUMENT = 'TechnicalInspection';
-	const CLASS_OSAGO_DOCUMENT = 'Osago';
-	const CLASS_PTS_DOCUMENT = 'Pts';
-	const CLASS_VU_DOCUMENT = 'VU';
+	const CLASS_TECHNICAL_INSPECTION_DOCUMENT = 'IcKomiApp\models\TechnicalInspection';
+	const CLASS_OSAGO_DOCUMENT = 'IcKomiApp\models\Osago';
+	const CLASS_PTS_DOCUMENT = 'IcKomiApp\models\Pts';
+	const CLASS_VU_DOCUMENT = 'IcKomiApp\models\Vu';
 	const CLASS_VU_DOCUMENT_TRACTOR = 'VU_tractor';
-	const CLASS_VU_DOCUMENT_BOAT = 'VU_boat';
-	const CLASS_CERTIFICATE_REGISTRATION_DOCUMENT = 'CertificateRegistration';
-	const CLASS_CAR_FOR_DRIVER_DOCUMENT = 'CarForDriver';
-	const CLASS_EXAM_DOCUMENT = 'Exam';
-	const CLASS_REPAIR_DOCUMENT = 'Repair';
-	const CLASS_DTP = 'Dtp';
-	const CLASS_CARS = 'Cars';
-	const CLASS_SPEC_SIGNALS = 'PermissionSpecSignals';
+	//const CLASS_VU_DOCUMENT_BOAT = 'VU_boat';
+	const CLASS_CERTIFICATE_REGISTRATION_DOCUMENT = 'IcKomiApp\models\CertificateRegistration';
+	const CLASS_CAR_FOR_DRIVER_DOCUMENT = 'IcKomiApp\models\CarForDriver';
+	//const CLASS_EXAM_DOCUMENT = 'Exam';
+	const CLASS_REPAIR_DOCUMENT = 'IcKomiApp\models\Repair';
+	const CLASS_DTP = 'IcKomiApp\models\Dtp';
+	const CLASS_CARS = 'IcKomiApp\models\Car';
+	//const CLASS_SPEC_SIGNALS = 'PermissionSpecSignals';
 	const CLASS_ADM_OFFENSE = 'AdmOffense';
 	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
+	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
 	
 	// Функция очистки содержимого директорий от файлов
 	private function clearPath($path) {
@@ -113,21 +114,21 @@ class FileUpload {
 				$path_to_file .= 'drivers/' . $id_main_object . '/vu/' . $id_object . '/';
 				break;
 			
-			case self::CLASS_VU_DOCUMENT_TRACTOR:
+		/*	case self::CLASS_VU_DOCUMENT_TRACTOR:
 				$path_to_file .= 'drivers/' . $id_main_object . '/vu_tractor/' . $id_object . '/';
 				break;
 			
 			case self::CLASS_VU_DOCUMENT_BOAT:
 				$path_to_file .= 'drivers/' . $id_main_object . '/vu_boat/' . $id_object . '/';
-				break;
+				break;*/
 			
 			case self::CLASS_CAR_FOR_DRIVER_DOCUMENT:
 				$path_to_file .= 'car_for_driver/' . $id_object . '/';
 				break;
 			
-			case self::CLASS_EXAM_DOCUMENT:
+		/*	case self::CLASS_EXAM_DOCUMENT:
 				$path_to_file .= 'exams/' . $id_object . '/';
-				break;
+				break;*/
 			
 			case self::CLASS_REPAIR_DOCUMENT:
 				$path_to_file .= 'repair/' . $id_object . '/';
@@ -141,9 +142,9 @@ class FileUpload {
 				$path_to_file .= 'cars/' . $id_object . '/';
 				break;
 			
-			case self::CLASS_SPEC_SIGNALS:
+			/*case self::CLASS_SPEC_SIGNALS:
 				$path_to_file .= 'drivers/' . $id_main_object . '/permission_spec_signals/' . $id_object . '/';
-				break;
+				break;*/
 			
 			case self::CLASS_ADM_OFFENSE:
 				$path_to_file .= 'adm_offense/' . $id_object . '/';
@@ -151,6 +152,10 @@ class FileUpload {
 
 			case self::CLASS_CARS_DOPOG:
 				$path_to_file .= 'cars/' . $id_main_object . '/dopog/' . $id_object . '/';
+				break;
+
+			case self::CLASS_DRIVERS_DOPOG:
+				$path_to_file .= 'drivers/' . $id_main_object . '/dopog/' . $id_object . '/';
 				break;
 			
 			default:
@@ -271,7 +276,7 @@ class FileUpload {
 				$table = 'drivers_document';
 				break;
 			
-			case self::CLASS_VU_DOCUMENT_TRACTOR:
+			/*case self::CLASS_VU_DOCUMENT_TRACTOR:
 				$table = 'drivers_document_tractor';
 				break;
 			
@@ -281,13 +286,13 @@ class FileUpload {
 			
 			case self::CLASS_SPEC_SIGNALS:
 				$table = 'drivers_permission_spec_signals';
-				break;
+				break;*/
 			
 			case self::CLASS_CAR_FOR_DRIVER_DOCUMENT:
 				$table = 'car_for_driver';
 				break;
 			
-			case self::CLASS_EXAM_DOCUMENT:
+			//case self::CLASS_EXAM_DOCUMENT:
 			case self::CLASS_REPAIR_DOCUMENT:
 			case self::CLASS_DTP:
 			case self::CLASS_CARS:
@@ -297,6 +302,10 @@ class FileUpload {
 
 			case self::CLASS_CARS_DOPOG:
 				$table = 'cars_dopog';
+				break;
+
+			case self::CLASS_DRIVERS_DOPOG:
+				$table = 'drivers_dopog';
 				break;
 
 			default:
@@ -310,9 +319,9 @@ class FileUpload {
 	private function get_number_cathegory_files($class_name) {
 		$cathegory = 0;
 		switch($class_name) {
-			case self::CLASS_EXAM_DOCUMENT:
+			/*case self::CLASS_EXAM_DOCUMENT:
 				$cathegory = 10;
-				break;
+				break;*/
 			case self::CLASS_REPAIR_DOCUMENT:
 				$cathegory = 11;
 				break;
@@ -360,9 +369,8 @@ class FileUpload {
 		В случае успешного удаления функция возвращает TRUE, в случае возникновения ошибки возвращается FALSE.
 	*/
 	public function removeFileToServer($path_to_file) {
-		
 		if(!file_exists($path_to_file))
-			return false;
+			return true;
 		
 		if(unlink($path_to_file))
 			return true;
@@ -398,7 +406,7 @@ class FileUpload {
 		if($this->removeFileToServer($data[0]['path_to_file']) === false)
 			return false;
 
-		if($class_name == self::CLASS_EXAM_DOCUMENT || $class_name == self::CLASS_REPAIR_DOCUMENT || $class_name == self::CLASS_DTP || $class_name == self::CLASS_CARS || $class_name == self::CLASS_ADM_OFFENSE) {
+		if($class_name == self::CLASS_REPAIR_DOCUMENT || $class_name == self::CLASS_DTP || $class_name == self::CLASS_CARS || $class_name == self::CLASS_ADM_OFFENSE) {
 			$sqlQuery = "DELETE FROM " . $table . " WHERE id=" . $id_object;
 			if(DB::query($sqlQuery, DB::OTHER) === false)
 				return false;

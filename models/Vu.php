@@ -29,12 +29,6 @@ class Vu extends Model {
 	const TRIGGER_VU = 12;
 	const TRIGGER_VU_TRACTOR = 122;
 	const TRIGGER_VU_BOAT = 1222;
-	
-	// CONST tittle form
-	const TITLE_FORM_CAR_FIRST_AID_KID = 'Аптечка';
-	const TITLE_FORM_TRIGGER_CAR_EXTINGUISHER = 'Огнетушитель';
-	const TITLE_FORM_WARNING_TRIANGLE = 'Знак аварийной остановки';
-	const TITLE_FORM_CAR_BATTERY = 'Аккумуляторная батарея';
 
 	public function __construct($object = '') {
 		if(mb_strlen($object) == 0)
@@ -43,19 +37,15 @@ class Vu extends Model {
 		if($object == self::VU) {
 			$this->table = self::VU_TABLE;
 			$this->trigger_operation = self::TRIGGER_VU;
-			//$this->title_form = self::TITLE_FORM_CAR_FIRST_AID_KID;
 		} else if($object == self::VU_TRACTOR) {
 			$this->table = self::VU_TRACTOR_TABLE;
 			$this->trigger_operation = self::TRIGGER_VU_TRACTOR;
-			//$this->title_form = self::TITLE_FORM_TRIGGER_CAR_EXTINGUISHER;
 		} else if($object == self::VU_BOAT) {
 			$this->table = self::VU_BOAT_TABLE;
 			$this->trigger_operation = self::TRIGGER_VU_BOAT;
-			//$this->title_form = self::TITLE_FORM_WARNING_TRIANGLE;
 		} else {
 			$this->table = '';
 			$this->trigger_operation = 0;
-			//$this->title_form = '';
 		}
 	}
 

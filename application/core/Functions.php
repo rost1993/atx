@@ -96,8 +96,11 @@ class Functions {
 			$html_file = "<span class='badge badge-pill badge-secondary image-preview-block' style='font-size: 15px;'>"
 				. "<span class='" . $icon_file_extension . " file-badge' id='openModalFile' data-href='" . $link_file . "' data-file-format='" . $type_file . "'></span>" . $btn_remove . "</span>";
 		} else {
-			$base64_str = base64_encode(file_get_contents('../../' . $path_to_file));
-			$mime_type = mime_content_type('../../' . $path_to_file);
+			if(!file_exists($path_to_file))
+				return '';
+
+			$base64_str = base64_encode(file_get_contents($path_to_file));
+			$mime_type = mime_content_type($path_to_file);
 			$html_file = "<span class='badge badge-pill badge-secondary image-preview-block' style='font-size: 15px;'>"
 					// . "<img class='image-preview1 rounded' id='openModalFile' data-href='" . $link_file . "' src='" . $link_file . "' data-file-format='" . $type_file . "'>" . $btn_remove . "</span>";
 					 . "<img class='image-preview1 rounded' id='openModalFile' data-href='" . $link_file . "' src='data:" . $mime_type . ";base64," .  $base64_str . "' data-file-format='" . $type_file . "'>" . $btn_remove . "</span>";

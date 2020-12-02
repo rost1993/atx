@@ -23,12 +23,25 @@ class OsagoController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new Osago())->save($_POST) === false)
+				if(($id = (new Osago())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new Osago())->save_file($_FILES, $id, Functions::get_id_from_json($_POST['JSON'], 'id_car')) === false)
+							echo json_encode([-1]);
+						else
+							echo json_encode([1]);
+					} else {
+						echo json_encode([1]);
+					}
+				}
+			} else if($_POST['option'] == 'remove') {
+				if((new Osago())->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['option'] == 'remove') {
-				if((new Osago())->remove($_POST) === false)
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Osago())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);

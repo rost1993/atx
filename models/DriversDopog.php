@@ -173,7 +173,7 @@ class DriversDopog extends Model {
 					. "</div>"
 					
 					. "<div class='col-4 mb-1 text-left'>"
-						. "<div id='uploadFileContainer'>" . Functions::rendering_icon_file($path_to_file, $file_extension, $id, 5, true) . "</div>"
+						. "<div id='uploadFileContainer'>" . Functions::rendering_icon_file($path_to_file, $file_extension, $id, 17, true) . "</div>"
 					. "</div>"
 					
 					. "<div class='col-2 mb-1 text-right'>"

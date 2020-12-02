@@ -23,12 +23,25 @@ class DriversDopogController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new DriversDopog())->save($_POST) === false)
+				if(($id = (new DriversDopog())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new DriversDopog())->save_file($_FILES, $id, Functions::get_id_from_json($_POST['JSON'], 'id_driver')) === false)
+							echo json_encode([-1]);
+						else
+							echo json_encode([1]);
+					} else {
+						echo json_encode([1]);
+					}
+				}
+			} else if($_POST['option'] == 'remove') {
+				if((new DriversDopog())->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['option'] == 'remove') {
-				if((new DriversDopog())->remove($_POST) === false)
+			} else if($_POST['option'] == 'remove_file') {
+				if((new DriversDopog())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);

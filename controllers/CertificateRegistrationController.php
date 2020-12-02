@@ -23,12 +23,25 @@ class CertificateRegistrationController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new CertificateRegistration())->save($_POST) === false)
+				if(($id = (new CertificateRegistration())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new CertificateRegistration())->save_file($_FILES, $id, Functions::get_id_from_json($_POST['JSON'], 'id_car')) === false)
+							echo json_encode([-1]);
+						else
+							echo json_encode([1]);
+					} else {
+						echo json_encode([1]);
+					}
+				}
+			} else if($_POST['option'] == 'remove') {
+				if((new CertificateRegistration())->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['option'] == 'remove') {
-				if((new CertificateRegistration())->remove($_POST) === false)
+			} else if($_POST['option'] == 'remove_file') {
+				if((new CertificateRegistration())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
