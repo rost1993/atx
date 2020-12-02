@@ -13,6 +13,7 @@ class CranVu extends Model {
 	protected $table = 'drivers_document_cran';
 	protected $trigger_operation = 0;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
+	protected $remove_directory = 1;
 
 	protected $sql_get_list = "SELECT a.id, a.id_driver, a.date_document, a.number_document, a.ibd_arx, x1.text as qualification_text, x2.text as education_text, a.path_to_file, a.file_extension FROM {table} a "
 			. " LEFT JOIN s2i_klass x1 ON x1.kod=a.qualification AND x1.nomer=32 "
@@ -32,7 +33,7 @@ class CranVu extends Model {
 		$role = Session::get('role');
 		Session::commit();*/
 		
-		$role =9;
+		$role = 9;
 
 		$html = "";
 		if(count($data) == 0) {
@@ -67,11 +68,11 @@ class CranVu extends Model {
 							
 							if(($role > 1) && ($role != 4)) {
 								$html .= "<td " . $style_border . ">"
-								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
+								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='14'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"
 								. "<button type='button' class='btn btn-sm btn-danger dropdown-toggle' id='btnDropdownRemove' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить полис ОСАГО'><span class='fa fa-close'>&nbsp</span>Удалить</button>"
 								. "<div class='dropdown-menu' aria-labelledby='btnDropdownRemove'>"
-									. "<button type='button' class='dropdown-item' id='btnRemoveItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5' data-object='" . $data[$i]['id_car'] . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div></div>"
+									. "<button type='button' class='dropdown-item' id='btnRemoveItem' data-nsyst='" . $data[$i]['id'] . "' data-item='14' data-object='" . $data[$i]['id_driver'] . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div></div>"
 							. "</td>";
 							} else {
 								$html .= "<td " . $style_border . "></td><td " . $style_border . "></td>";
@@ -89,11 +90,11 @@ class CranVu extends Model {
 
 							if(($role > 1) && ($role != 4)) {
 								$list_archive .= "<td " . $style_border . ">"
-								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
+								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='14'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"
 								. "<button type='button' class='btn btn-sm btn-danger dropdown-toggle' id='btnDropdownRemove' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить полис ОСАГО'><span class='fa fa-close'>&nbsp</span>Удалить</button>"
 								. "<div class='dropdown-menu' aria-labelledby='btnDropdownRemove'>"
-									. "<button type='button' class='dropdown-item' id='btnRemoveItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5' data-object='" . $data[$i]['id_car'] . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div></div>"
+									. "<button type='button' class='dropdown-item' id='btnRemoveItem' data-nsyst='" . $data[$i]['id'] . "' data-item='14' data-object='" . $data[$i]['id_driver'] . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div></div>"
 							. "</td>";
 							} else {
 								$list_archive .= "<td " . $style_border . "></td><td " . $style_border . "></td>";
@@ -197,7 +198,7 @@ class CranVu extends Model {
 					. "</div>"
 					
 					. "<div class='col-4 mb-1 text-left'>"
-						. "<div id='uploadFileContainer'>" . Functions::rendering_icon_file($path_to_file, $file_extension, $id, 5, true) . "</div>"
+						. "<div id='uploadFileContainer'>" . Functions::rendering_icon_file($path_to_file, $file_extension, $id, 14, true) . "</div>"
 					. "</div>"
 					
 					. "<div class='col-2 mb-1 text-right'>"

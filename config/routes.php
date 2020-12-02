@@ -140,6 +140,11 @@ return [
 		'action' => 'vu'
 	],
 
+	'tractor_vu' => [
+		'controller' => 'tractorVu',
+		'action' => 'tractorVu'
+	],
+
 	'car_document' => [
 		'controller' => 'carDocument',
 		'action' => 'carDocument'

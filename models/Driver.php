@@ -278,10 +278,10 @@ class Driver extends Model {
 		$sql = "SELECT	1 as ID_MODULE, "
 			. " a.id as ID1, "
 			. " 0 as ID2, "
-			. " DATE_FORMAT(a.start_date_permission, '%d.%m.%Y') as AA, "
-			. " DATE_FORMAT(a.end_date_permission, '%d.%m.%Y') as BB, "
+			. " a.number_document as AA, "
+			. " DATE_FORMAT(a.date_document, '%d.%m.%Y') as BB, "
 			. " x1.text as CC, "
-			. " NULL as DD, "
+			. " x2.text as DD, "
 			. " NULL as EE, "
 			. " NULL as FF, "
 			. " NULL as GG, "
@@ -292,8 +292,9 @@ class Driver extends Model {
 			. " NULL as LL, "
 			. " a.path_to_file as PATH_TO_FILE, "
 			. " a.file_extension as FILE_EXTENSION "
-		. " FROM drivers_permission_spec_signals a"
-		. " LEFT JOIN s2i_klass x1 ON x1.kod=a.category AND x1.nomer=25 "
+		. " FROM drivers_document_cran a"
+		. " LEFT JOIN s2i_klass x1 ON x1.kod=a.qualification AND x1.nomer=32 "
+		. " LEFT JOIN s2i_klass x2 ON x2.kod=a.education_institute AND x2.nomer=33 "
 		. " WHERE a.id_driver=" . $id . " AND a.ibd_arx=1 "
 		
 		. " UNION ALL "
@@ -382,7 +383,7 @@ class Driver extends Model {
 			$data[0]['list_car_for_driver'] = $array_additional[0];
 			$data[0]['list_dtp'] = $array_additional[1];
 			$data[0]['list_adm'] = $array_additional[2];
-			$data[0]['list_permission_spec'] = $array_additional[3];
+			$data[0]['list_tractor_vu'] = $array_additional[3];
 		}
 
 		return $data;
@@ -395,10 +396,10 @@ class Driver extends Model {
 			return false;
 
 		$style_border = "style='vertical-align: middle; border: 1px solid gray;'"; // Стиль для ячейки
-		$list_permission_spec = $list_car_for_driver = $list_dtp = $list_adm = '';
+		$list_tractor_vu = $list_car_for_driver = $list_dtp = $list_adm = '';
 		for($i = 0, $j = 0, $k = 0, $l = 0, $m = 0, $x = 0; $i < count($data_add); $i++) {
 			if($data_add[$i]['ID_MODULE'] == 1) {
-				$list_permission_spec .= "<tr><td " . $style_border . ">" . ++$j . "</td>"
+				$list_tractor_vu .= "<tr><td " . $style_border . ">" . ++$j . "</td>"
 							. "<td " . $style_border . ">" . $data_add[$i]['AA'] . "</td>"
 							. "<td " . $style_border . ">" . $data_add[$i]['BB'] . "</td>"
 							. "<td " . $style_border . ">" . $data_add[$i]['CC'] . "</td>"
@@ -484,18 +485,18 @@ class Driver extends Model {
 		}
 		
 		// Формируем готовый HTML код для списка закрепленных водителей
-		if(mb_strlen($list_permission_spec) > 0) {
-			$list_permission_spec = "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px;'>"
+		if(mb_strlen($list_tractor_vu) > 0) {
+			$list_tractor_vu = "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px;'>"
 						. "<tr class='table-info'>"
 							. "<th " . $style_border . " scope='col'>№ п/п</th>"
 							. "<th " . $style_border . " scope='col'>Начало действия разрешения</th>"
 							. "<th " . $style_border . " scope='col'>Окончание действия разрешения</th>"
 							. "<th " . $style_border . " scope='col'>Категория ТС</th>"
 							. "<th " . $style_border . " scope='col'>Эл. образ</th>"
-						. "</tr>" . $list_permission_spec . "</table>";
+						. "</tr>" . $list_tractor_vu . "</table>";
 		}
 
-		return array($list_car_for_driver, $list_dtp, $list_adm, $list_permission_spec);
+		return array($list_car_for_driver, $list_dtp, $list_adm, $list_tractor_vu);
 	}
 
 	

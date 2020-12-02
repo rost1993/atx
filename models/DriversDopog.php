@@ -13,6 +13,7 @@ class DriversDopog extends Model {
 	protected $table = 'drivers_dopog';
 	protected $trigger_operation = 15;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
+	protected $remove_directory = 1;
 
 	protected $sql_get_list = "SELECT a.id, a.id_driver, a.number_dopog, a.date_start_dopog, a.date_end_dopog, a.ibd_arx, a.path_to_file, a.file_extension FROM {table} a "
 			. " WHERE a.id_driver={id} "

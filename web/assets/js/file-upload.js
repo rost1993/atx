@@ -138,7 +138,6 @@ $(function () {
 			switch($(this).data('item')) {
 				case 1:
 					script = 'vu';
-					add_option = '&class=' + $(this).data('class');
 					break;
 				case 2:
 					script = 'osago';
@@ -158,9 +157,9 @@ $(function () {
 				case 9:
 					script = 'car-for-driver-events.php';
 					break;
-				/*case 10:
-					script = 'exam-events.php';
-					break;*/
+				case 10:
+					script = 'tractor_vu';
+					break;
 				case 11:
 					script = 'repair';
 					break;
@@ -170,9 +169,9 @@ $(function () {
 				case 13:
 					script = 'car';
 					break;
-				/*case 14:
-					script = 'permission-spec-signals-events.php';
-					break;*/
+				case 14:
+					script = 'cranvu';
+					break;
 				case 15:
 					script = 'adm';
 					break;

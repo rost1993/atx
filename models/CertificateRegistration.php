@@ -12,6 +12,7 @@ class CertificateRegistration extends Model {
 	protected $table = 'certificate_registration';
 	protected $trigger_operation = 6;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
+	protected $remove_directory = 1;
 
 	protected $sql_get_list = "SELECT a.id, a.id_car, a.s_certificate_reg, a.n_certificate_reg, a.date_certificate_reg, a.comment_certificate_reg, a.ibd_arx, x1.text as text_org, a.path_to_file, a.file_extension FROM {table} a "
 			. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_certificate_reg AND x1.nomer=22 "

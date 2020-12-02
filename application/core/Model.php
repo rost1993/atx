@@ -129,9 +129,9 @@ abstract class Model {
 			$this->call_trigger($post, $id_object);
 		
 		// Удаляем директорию с файлами
-		/*if($this->remove_directory != 0)
+		if($this->remove_directory != 0)
 			if(!$this->remove_directory($id_object, $id))
-				return false;*/
+				return false;
 		
 		return true;
 	}
@@ -176,6 +176,19 @@ abstract class Model {
 		$class_name = get_class($this);
 		$fileUploadClass = new FileUpload();
 		return $fileUploadClass->remove_file($class_name, $id_object);
+	}
+
+	// id_object - ID объекта относительного которого хотим удалить
+	// id - ID объекта, который необходимо удалить
+	// Example: /cars/10/car_documents/55 ---> remove_directory(10, 55)
+	public function remove_directory($id_main_object, $id_object) {
+		$class_name = get_class($this);
+		$fileUploadClass = new FileUpload();
+		if(($uploaddir = $fileUploadClass->generate_uploaddir($class_name, $id_main_object, $id_object)) === false)
+			return false;
+
+		$fileUploadClass->removeDirectoryToServer($uploaddir);
+		return true;
 	}
 
 	/*

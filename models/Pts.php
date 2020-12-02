@@ -13,6 +13,7 @@ class Pts extends Model {
 	protected $table = 'pts';
 	protected $trigger_operation = 5;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
+	protected $remove_directory = 1;
 
 	protected $sql_get_list = "SELECT a.id, a.id_car, a.s_pts, a.n_pts, a.date_pts, a.ibd_arx, x1.text as text_type, x2.text as text_firma, a.path_to_file, a.file_extension FROM {table} a "
 			. " LEFT JOIN s2i_klass x1 ON x1.kod=a.type_ts_pts AND x1.nomer=6 "

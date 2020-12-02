@@ -24,7 +24,7 @@
 	$list_car_for_driver = (empty($list_car_for_driver)) ? '' : $list_car_for_driver;
 	$list_dtp = (empty($list_dtp)) ? '' : $list_dtp;
 	$list_adm = (empty($list_adm)) ? '' : $list_adm;
-	$list_permission_spec = (empty($list_permission_spec)) ? '' : $list_permission_spec;
+	$list_tractor_vu = (empty($list_tractor_vu)) ? '' : $list_tractor_vu;
 
 	$number_dopog = (empty($number_dopog)) ? '' : $number_dopog;
 	$date_start_dopog = (empty($date_start_dopog)) ? '' : $date_start_dopog;
@@ -254,8 +254,8 @@
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThree" aria-controls="collapseThree" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>3. УДОСТОВЕРЕНИЕ ТРАКТОРИСТА-МАШИНИСТА</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
-								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='1' data-class="tractor" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='tractor' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='10' data-class="tractor" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
+								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='10' data-class='tractor' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 								<?= $file_vu_tractor; ?>
 							</div>
 						</div>
@@ -316,7 +316,7 @@
 						</div>
 
 						<div class="collapse show" id="collapseFour" aria-labelledby="headingTwo">
-
+							<?= $list_tractor_vu; ?>
 						</div>
 					</div>
 

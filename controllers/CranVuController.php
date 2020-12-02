@@ -2,9 +2,9 @@
 
 namespace IcKomiApp\controllers;
  
-use IcKomiApp\core\Controller;
-use IcKomiApp\core\Functions;
 use IcKomiApp\models\CranVu;
+use IcKomiApp\core\Functions;
+use IcKomiApp\core\Controller;
 
 class CranVuController extends Controller {
 

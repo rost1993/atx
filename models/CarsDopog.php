@@ -13,6 +13,7 @@ class CarsDopog extends Model {
 	protected $table = 'cars_dopog';
 	protected $trigger_operation = 16;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
+	protected $remove_directory = 1;
 
 	protected $sql_get_list = "SELECT a.id, a.id_car, a.number_dopog, a.date_start_dopog, a.date_end_dopog, x1.text as firma_dopog_text, a.ibd_arx, a.path_to_file, a.file_extension FROM {table} a "
 			. " LEFT JOIN s2i_klass x1 ON x1.kod=a.firma_dopog AND x1.nomer=34 "

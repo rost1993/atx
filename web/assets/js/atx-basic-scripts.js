@@ -141,9 +141,9 @@ $(document).ready(function() {
 			titleForm = 'Информационная карточка со списком ДТП';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim() + '&type=' + $(this).data('type');
 		} else if(item == 10) {
-			scripts = 'permission-spec-signals-events.php';
-			titleForm = 'Информационная карточка со списком разрешений на управление ТС, оборудованном спецсигналами';
-			query = 'option=3&nsyst=' + $('#nsyst').html().trim();
+			scripts = 'tractor_vu';
+			titleForm = 'Информационная карточка со списком удостоверений тракториста-машиниста';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		} else if(item == 11) {
 			scripts = 'adm';
 			titleForm = 'Информационная карточка со списком административных правонарушений';
@@ -173,6 +173,7 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
+			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -211,7 +212,7 @@ $(document).ready(function() {
 			scripts = 'vu';
 			titleForm = 'Водительское удостоверение';
 			action = 1;
-			object = $(this).data('class');
+			//object = $(this).data('class');
 			query = 'option=get_window&nsyst=-1&class=' + object;
 		} else if(item == 2) {
 			scripts = 'osago';
@@ -244,10 +245,10 @@ $(document).ready(function() {
 			action = 8;
 			query = 'option=1&nsyst=-1';
 		} else if(item == 10) {
-			scripts = 'permission-spec-signals-events.php';
-			titleForm = 'Разрешение на управление ТС, оборудованном спецсигналами';
+			scripts = 'tractor_vu';
+			titleForm = 'Удостоверение тракториста-машиниста';
 			action = 10;
-			query = 'option=1&nsyst=-1';
+			query = 'option=get_window&nsyst=-1';
 		} else if(item == 12) {
 			scripts = 'accessories';
 			titleForm = $(this).data('titleForm');
@@ -279,6 +280,7 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
+			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-service-interface').ModalViewServiceInterfaceIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 				$('#saveModalWindowButton').data('action', action);
@@ -305,7 +307,7 @@ $(document).ready(function() {
 		scripts = titleForm = query = '';
 		if(item == 1) {
 			scripts = 'vu';
-			titleForm = 'Информационная карточка со списком водительских удостоверений';
+			titleForm = 'Водительское удостоверение';
 			object = $(this).data('class');
 			query = 'option=get_window&nsyst=' + id + "&class=" + object;
 		} else if(item == 2) {
@@ -333,9 +335,9 @@ $(document).ready(function() {
 			titleForm = 'Документ на ТС';
 			query = 'option=1&nsyst=' + id;
 		} else if(item == 10) {
-			scripts = 'permission-spec-signals-events.php';
-			titleForm = 'Разрешение на управление ТС, оборудованном спесигналами';
-			query = 'option=1&nsyst=' + id;
+			scripts = 'tractor_vu';
+			titleForm = 'Удостоверение тракториста-машиниста';
+			query = 'option=get_window&nsyst=' + id;
 		} else if(item == 12) {
 			scripts = 'accessories';
 			titleForm = $(this).data('titleForm');
@@ -344,6 +346,10 @@ $(document).ready(function() {
 		} else if(item == 13) {
 			scripts = 'wheel';
 			titleForm = 'Учет шин';
+			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 14) {
+			scripts = 'cranvu';
+			titleForm = 'Удостоверение';
 			query = 'option=get_window&nsyst=' + id;
 		} else if(item == 15) {
 			scripts = 'drivers_dopog';
@@ -505,7 +511,7 @@ $(document).ready(function() {
 		}
 		
 		if($(this).data('action') == 10) {
-			var resultCollectionsItems = getArrayItemsForms('#formPermissionSpecSignals input, #formPermissionSpecSignals select');
+			var resultCollectionsItems = getArrayItemsForms('#TractorVU input, #TractorVU select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
 			} else {
@@ -515,9 +521,8 @@ $(document).ready(function() {
 			}
 			
 			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
-
-			query.append('option', 2);
-			script = PATH_TO_SCRIPT + 'permission-spec-signals-events.php';
+			query.append('option', 'save');
+			script = 'tractor_vu';
 		}
 		
 		if($(this).data('action') == 12) {
@@ -633,7 +638,7 @@ $(document).ready(function() {
 		var scripts = '', query = '';
 		if(item == 1) {
 			scripts = 'vu';
-			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object') + '&class=' + $(this).data('class');
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 2) {
 			scripts = 'osago';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
@@ -653,14 +658,17 @@ $(document).ready(function() {
 			scripts = 'car-documents-events.php';
 			query = 'option=4&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 10) {
-			scripts = 'permission-spec-signals-events.php';
-			query = 'option=4&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+			scripts = 'tractor_vu';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 12) {
 			scripts = 'accessories';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object') + '&id=' + $(this).data('idObject');
 		} else if(item == 13) {
 			scripts = 'wheel';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst');
+		} else if(item == 14) {
+			scripts = 'cranvu';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 15) {
 			scripts = 'drivers_dopog';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
