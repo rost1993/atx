@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Session;
@@ -13,6 +14,7 @@ class CarDocument extends Model {
 
 	protected $table = 'car_documents';
 	protected $trigger_operation = 5;
+	protected $remove_directory = 1;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
 
 	protected $sql_get_list = "";
@@ -25,6 +27,7 @@ class CarDocument extends Model {
 
 		if(count($data) != 0) {
 			$data[0]['list_add_car'] = $array_additional[0];
+			$data[0]['list_files_doc'] = Functions::rendering_icon_file($data[0]['path_to_file'], $data[0]['file_extension'], $data[0]['id'], 8, true);
 		}
 
 		return $data;
@@ -56,14 +59,6 @@ class CarDocument extends Model {
 						. "<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>Комментарий</th>"
 					. "</tr>" . $html . "</table>";
 		}
-
-		/*if(count($data) == 0) {
-			echo json_encode(array(0));
-		} else {
-			$file = ServiceFunction::rendering_icon_file($data[0]['path_to_file'], $data[0]['file_extension'], $id, 8, true);
-			echo json_encode(array(1, $data[0], $file, $html));
-		}*/
-
 
 		return [$html];
 	}
@@ -500,6 +495,44 @@ class CarDocument extends Model {
 		return [$html];
 	}
 
+	public function save_link($post) {
+		if(empty($post))
+			return false;
+
+		if(empty($post['nsyst']) || empty($post['JSON']) || empty($post['save']) || empty($post['action']))
+			return false;
+
+		if(!$array_data_decode = json_decode($post['JSON']))
+			return false;
+
+		$id_user = User::get('id');
+
+		$sqlQueryInsert = $sqlQueryUpdate = '';
+		
+		foreach($array_data_decode as $field => $array_value) {
+			if($post['action'] == 'insert') 
+				$sqlQueryInsert .= (mb_strlen($sqlQueryInsert) == 0) ? "(" . $post['nsyst'] . "," . $field . ",'" . $array_value[0] . "'," . $array_value[1] . "," . $id_user . ")" : ",(" . $post['nsyst'] . "," . $field . ",'" . $array_value . "'," . $id_user . ")";
+			else 
+				$sqlQueryUpdate = "UPDATE car_link_document SET comment='" . $array_value[0] . "', title_document=" . $array_value[1] . " WHERE id=" . $field;
+		}
+
+		if(mb_strlen($sqlQueryInsert) != 0) {
+			if($post['save'] == 'car')
+				$sqlQueryInsert = "INSERT INTO car_link_document (id_car, id_document, comment, title_document, sh_polz) VALUES " . $sqlQueryInsert;
+			else
+				$sqlQueryInsert = "INSERT INTO car_link_document (id_document, id_car, comment, title_document, sh_polz) VALUES " . $sqlQueryInsert;
+
+			if(DB::query($sqlQueryInsert, DB::INSERT_OR_UPDATE) === false)
+				return false;
+		}
+		
+		if(mb_strlen($sqlQueryUpdate) != 0) {
+			if(DB::query($sqlQueryUpdate, DB::INSERT_OR_UPDATE) === false)
+				return false;
+		}
+
+		return true;
+	}
 
 	
 }

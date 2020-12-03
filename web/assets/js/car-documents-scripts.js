@@ -11,7 +11,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'car_document', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Список', 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -29,7 +28,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'car_document', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Информационная карточка со списком связей', 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -78,6 +76,92 @@ $(document).ready(function() {
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Информационная карточка со списком связей', 'textBody' : res[1], 'method' : 'none' });
 			});
+		});
+	});
+
+	$('#btnSaveCarDocument').click(function() {
+		var arrayData = [];
+		var resultCollectionsItems = getArrayItemsForms('#mainInformationCarDocument input,#mainInformationCarDocument select,#mainInformationCarDocument textarea');
+		if(resultCollectionsItems[0]) {
+			arrayData = resultCollectionsItems[1];
+		} else {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : resultCollectionsItems[1], 'method' : 'show' });
+			return;
+		}
+
+		var query = new FormData();
+		query.append('option', 'save');
+		query.append('JSON', JSON.stringify(arrayData));
+		if($('#nsyst').html().trim().length == 0)
+			query.append('nsyst', -1);
+		else
+			query.append('nsyst', $('#nsyst').html().trim());
+
+		$.each(filesList, function(key, value) {
+			query.append(key, value);
+		});
+		filesList = [];
+
+		AjaxQuery('POST', 'car_document', query, function(result) {
+			showDownloader(false);
+			try {
+				var res = eval(result);
+				if(res[0] == -1) {
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'При обработке запроса произошла ошибка!', 'method' : 'show' });
+				} else if(res[0] == -2) {
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сведния сохранены, но при сохранении файла произошла ошибка!', 'method' : 'show' });
+					$('#nsyst').html(res[1]);
+				} else if(res[0] == 1) {
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сохранено!', 'method' : 'show' });
+					$('#nsyst').html(res[1]);
+				} else {
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'При обработке запроса произошла непредвиденная ошибка!', 'method' : 'show' });
+				}
+			} catch(error) {
+
+			}
+		}, true);
+	});
+
+	$('#btnRemoveCarDocument').click(function() {
+		var query = 'option=remove&nsyst=' + $('#nsyst').html();
+		showDownloader(true);
+		AjaxQuery('POST', 'car_document', query, function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				document.location.href = 'car_document';
+			});
+		});
+	});
+
+	$('.modal-ic-komi-view').on('click', '#btnSaveLinkCarDocument', function() {
+		var comment_doc = $(this).closest('.modal-ic-komi-view').find('.card-deck').find('#comment').val();
+		var title_doc = $(this).closest('.modal-ic-komi-view').find('.card-deck').find('#title_document').val();
+		var arrSaveItem = {};
+		$('#list-object tr').each(function() {
+			if($(this).data('save') == 1) {
+				var arr = [comment_doc, title_doc];
+				arrSaveItem[$(this).prop('id')] = arr;
+			}
+		});
+		var query = 'option=save_link&JSON=' + JSON.stringify(arrSaveItem) + '&nsyst=' + $(this).data('id') + '&save=' + $(this).data('typeSave');
+		query += ($(this).data('nsyst') == -1) ? '&action=insert' : '&action=update';
+		showDownloader(true);
+		AjaxQuery('POST', 'car_document', query, function(result) {
+			showDownloader(false);
+			try {
+				var res = eval(result);
+				if(res[0] == -1)
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'При обработке запроса произошла ошибка!', 'method' : 'show' });
+				else if(res[0] == 1)
+					$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
+				else
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'При обработке запроса произошла непредвиденная ошибка!', 'method' : 'show' });
+			} catch(error) {
+
+			}
+
+			
 		});
 	});
 });

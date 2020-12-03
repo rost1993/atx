@@ -28,12 +28,31 @@ class CarDocumentController extends Controller {
 				else
 					echo json_encode(array(1, $data));
 			} else if($_POST['option'] == 'save') {
-				if((new CarDocument())->save($_POST) === false)
+				$id = '';
+				if(($id = (new CarDocument())->save($_POST)) === false) {
+					echo json_encode([-1]);
+				} else {
+					if(!empty($_FILES)) {
+						if((new CarDocument())->save_file($_FILES, $id) === false)
+							echo json_encode([-2, $id]);
+						else
+							echo json_encode([1, $id]);
+					} else {
+						echo json_encode([1, $id]);
+					}
+				}
+			} else if($_POST['option'] == 'save_link') {
+				if((new CarDocument())->save_link($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
 			} else if($_POST['option'] == 'remove') {
 				if((new CarDocument())->remove($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
+			} else if($_POST['option'] == 'remove_file') {
+				if((new CarDocument())->remove_file($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);

@@ -63,7 +63,7 @@ $(function () {
 	});
 	
 	// Обработчик выбора файла для модальных окон
-	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair').on('change', '#btnAddFileModalWindow', function() {
+	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument').on('change', '#btnAddFileModalWindow', function() {
 		// Запрещаем/разрешаем прикрепление более одного документа
 		if(!$(this).prop('multiple')) {
 			if($(this).closest('.form-row').find('#uploadFileContainer').find('.badge').length > 0) {
@@ -151,7 +151,7 @@ $(function () {
 					script = 'certificate_registration';
 					break;
 				case 8:
-					script = 'car_documents';
+					script = 'car_document';
 					break;
 				case 9:
 					script = 'car-for-driver-events.php';

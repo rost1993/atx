@@ -5,6 +5,7 @@
 	$type_car_document = (empty($type_car_document)) ? '' : $type_car_document;
 	$type_car_document_select = IcKomiApp\widgets\Directory::get_directory(23, $type_car_document);
 	$list_add_car = (empty($list_add_car)) ? '' : $list_add_car;
+	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
 
 	$role = 9;
 ?>
@@ -18,10 +19,10 @@
 					<div id="nsyst" style="display: none;"><?= $id; ?></div>
 					<div id="cardHeaderServiceBadge"></div>
 				</div>
-				<div class="card-body" id="card">
+				<div class="card-body" id="cardDocument">
 
 					<div class="col-sm-12 atx-cars-block">
-						<div id="mainInformation">
+						<div id="mainInformationCarDocument">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1 text-left">
 									<p style="margin: 0px;"><h5>1. Сведения о документе прикрепляемом к транспортному средству</h5></p>
@@ -59,7 +60,7 @@
 							</div>
 							
 							<div class='col-6 mb-1 text-left'>
-								<div id='uploadFileContainer'></div>
+								<div id='uploadFileContainer'><?= $list_files_doc; ?></div>
 							</div>
 							<div class='col-3 mb-1 text-right'>
 								<span class='btn btn-sm btn-primary fileinput-button'>

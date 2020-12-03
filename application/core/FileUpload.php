@@ -15,7 +15,7 @@ class FileUpload {
 	public $MAX_FILE_SIZE = 41943040; 		// Максимально допустимый размер файла для загрузки на сервер 40 MB (данный параметр может установить пользователь)
 	public $LAST_COPY_FILE = '';
 	
-	const CLASS_CAR_DOCUMENT = 'CarDocument';
+	const CLASS_CAR_DOCUMENT = 'IcKomiApp\models\CarDocument';
 	const CLASS_TECHNICAL_INSPECTION_DOCUMENT = 'IcKomiApp\models\TechnicalInspection';
 	const CLASS_OSAGO_DOCUMENT = 'IcKomiApp\models\Osago';
 	const CLASS_PTS_DOCUMENT = 'IcKomiApp\models\Pts';
@@ -92,7 +92,7 @@ class FileUpload {
 
 		switch($class_name) {
 			case self::CLASS_CAR_DOCUMENT:
-				$path_to_file .= '/car_documents/' . $id_object . '/';
+				$path_to_file .= 'car_documents/' . $id_object . '/';
 				break;
 			
 			case self::CLASS_TECHNICAL_INSPECTION_DOCUMENT:
