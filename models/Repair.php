@@ -8,6 +8,7 @@ use IcKomiApp\lib\Database\DB;
 
 class Repair extends Model {
 	protected $table = 'car_repair';
+	protected $remove_directory = 1;
 
 	protected $sql_get_record = "SELECT a.id, a.id_car, b.id_goods, a.car_mileage, a.org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, a.change_oil, "
 			. " b.cost_repair, x1.text as operation, b.operation as kod_operation, b.comment, c.name_goods, c.article_goods, d.kodrai as kodrai_ts "
@@ -17,6 +18,23 @@ class Repair extends Model {
 			. " LEFT JOIN goods c ON c.id=b.id_goods "
 			. " LEFT JOIN cars d ON d.id=a.id_car "
 			. " WHERE a.id={id}";
+
+	// Получение всех полей таблицы по ее ID (без раскрытия справочников)
+	public function get($get) {
+		$data = parent::get($get);
+
+		if(($data_files = $this->get_files(addslashes($_GET['id']))) === false)
+			return false;
+			
+		$list_files_doc = '';
+
+		for($i = 0; $i < count($data_files); $i++) {
+			if($data_files[$i]['file_extension'] == 'pdf')
+				$list_files_doc .= Functions::rendering_icon_file($data_files[$i]['path_to_file'], $data_files[$i]['file_extension'], $data_files[$i]['id'], 11, true);
+		}
+		$data[0]['list_files_doc'] = $list_files_doc;
+		return $data;
+	}
 
 	public function get_list($post = []) {
 		/*Session::start();
@@ -285,7 +303,7 @@ class Repair extends Model {
 							. "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;' onclick=" . $page_repair . ">" . Functions::convertToDate($data[$i]['date_start_repair']) . " - " . Functions::convertToDate($data[$i]['date_end_repair']) . "</td>"
 							. "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;' onclick=" . $page_repair . ">" . $data[$i]['price_repair'] . "</td>"
 							. "<td class='text-left' style='vertical-align: middle; border: 1px solid gray; font-size: 11px;' onclick=" . $page_repair . ">" . $data[$i]['prim_repair'] . "</td>"
-							. "<td " . $style_border . ">" . /*get_list_files_for_repair($data, $i, $data[$i]['id'])*/ "</td>"
+							. "<td " . $style_border . ">" . $this->get_list_files_for_repair($data, $i, $data[$i]['id']) . "</td>"
 							. "</tr>";
 					}
 				}
@@ -386,5 +404,25 @@ class Repair extends Model {
 		
 		return [$html];
 	}
+
+	// Функция, которая получает список файлов, прикрепленных к данному ремонту
+	public function get_files($id) {
+		$sql = "SELECT * FROM files WHERE id_object=" . $id . " AND category_file=11";
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
 	
+	// Функция получения списка всех файлов, которые привязаны к данному ремонту.
+	// Мы получаем общий список со всеми файлами и должны для каждого конкретного ремонта сформировать список файлов.
+	// Идея заключается в том что мы бежим по массиву начиная с первого найденного элемента и до тех пор пока не закончится интересующий нас ремонты
+	function get_list_files_for_repair($data, $index, $search_item) {
+		$list_files = '';
+		for($i = $index; $i < count($data); $i++) {
+			if($data[$i]['id'] != $search_item)
+				break;
+			$list_files .= Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']);
+		}
+		return $list_files;
+	}
 }

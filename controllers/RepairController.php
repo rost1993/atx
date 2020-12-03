@@ -2,9 +2,9 @@
 
 namespace IcKomiApp\controllers;
  
-use IcKomiApp\core\Controller;
-use IcKomiApp\core\Functions;
 use IcKomiApp\models\Repair;
+use IcKomiApp\core\Functions;
+use IcKomiApp\core\Controller;
 
 class RepairController extends Controller {
 
@@ -16,13 +16,16 @@ class RepairController extends Controller {
 				$this->saveCard();
 			else if($_POST['option'] == 'remove')
 				$this->removeCard();
-			else if($_POST['option'] == 'archive')
-				$this->moveArchiveCard();
 			else if($_POST['option'] == 'get_list') {
 				if(($data = (new Repair())->rendering_list($_POST)) === false)
 					echo json_encode(array(-1));
 				else
 					echo json_encode(array(1, $data));
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Repair())->remove_file($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
 			}
 		} else {
 			$this->view->render();
@@ -54,7 +57,6 @@ class RepairController extends Controller {
 	*/
 	public function getCard() {
 		$data = (new Repair())->get($_GET);
-
 		if(($data === false) || (count($data) == 0))
 			$this->view->render();
 		else
@@ -65,11 +67,18 @@ class RepairController extends Controller {
 		Save card
 	*/
 	public function saveCard() {
-		$id = $message_error = '';
-		if(!(new TicketCard())->save($_POST, $id, $message_error)) {
-			echo json_encode(array(-2, $message_error));
+		$id = '';
+		if(($id = (new Repair())->save($_POST)) === false) {
+			echo json_encode([-1]);
 		} else {
-			echo json_encode(array(1, $id));
+			if(!empty($_FILES)) {
+				if((new Repair())->save_file($_FILES, $id) === false)
+					echo json_encode([-2, $id]);
+				else
+					echo json_encode([1, $id]);
+			} else {
+					echo json_encode([1, $id]);
+			}
 		}
 	}
 
@@ -77,13 +86,9 @@ class RepairController extends Controller {
 		Remove card
 	*/
 	public function removeCard() {
-		echo json_encode(array((new TicketCard())->delete($_POST)));
-	}
-
-	/*
-		Move archive card
-	*/
-	public function moveArchiveCard() {
-		return true;
+		if((new Repair())->remove($_POST) === false)
+			echo json_encode([-1]);
+		else
+			echo json_encode([1]);
 	}
 }

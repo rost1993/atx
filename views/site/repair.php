@@ -1,6 +1,7 @@
 <?php
 	use IcKomiApp\widgets\Directory;
 
+	$id = (empty($id)) ? '' : $id;
 	$id_car = (empty($id_car)) ? '' : $id_car;
 	$car_mileage = (empty($car_mileage)) ? '' : $car_mileage;
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
@@ -19,6 +20,8 @@
 	$org_repair_select = Directory::get_directory(18, $org_repair);
 	$car_select = Directory::get_directory_car($id_car);
 
+	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
+
 	$role = 9;
 ?>
 
@@ -28,7 +31,7 @@
 			<div class='card text-center border-dark' style='margin-top: 80px; background: #E6E6E6; min-width: 620px;'>
 				<div class='card-header' id="cardRepairHeader">
 					<h4>Информация о ремонте</h4>
-					<div id="nsyst" style="display: none;"></div>
+					<div id="nsyst" style="display: none;"><?= $id; ?></div>
 					<div id="cardRepairHeaderServiceBadge"></div>
 				</div>
 				<div class="card-body" id="cardRepair">
@@ -93,7 +96,7 @@
 									<label for="price_repair" class="text-muted" style="font-size: 13px;"><strong>Стоимость ремонта</strong></label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="price_repair" data-datatype="number" placeholder="Стоимость ремонта" value="<?= $price_repair; ?>">
+									<input type="text" class="form-control form-control-sm black-text" id="price_repair" data-mandatory="true" data-message-error="Заполните обязательное поле: Стоимость ремонта" data-datatype="number" placeholder="Стоимость ремонта" value="<?= $price_repair; ?>">
 								</div>
 								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
 									<label for="change_oil" class="text-muted" style="font-size: 13px;"><strong>Замена масла в ДВС</strong></label>
@@ -109,11 +112,11 @@
 							</div>
 							
 							<div class='col-6 mb-1 text-left'>
-								<div id='uploadFileContainer'></div>
+								<div id='uploadFileContainer'><?= $list_files_doc; ?></div>
 							</div>
 							<div class='col-3 mb-1 text-right'>
 								<span class='btn btn-sm btn-primary fileinput-button'>
-									<span class='fa fa-folder-open'>&nbsp</span>Выберите файл
+									<span class='fa fa-folder-open'>&nbsp;</span>Выберите файл
 										<input type='file' id='btnAddFileModalWindow' data-show-error='window' accept='.pdf' multiple>
 								</span>
 							</div>
