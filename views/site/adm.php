@@ -1,5 +1,7 @@
 <?php
 	use IcKomiApp\widgets\Directory;
+
+	$id = (empty($id)) ? '' : $id;
 	$date_adm = (empty($date_adm)) ? '' : IcKomiApp\core\Functions::convertToDate($date_adm);
 	$time_adm = (empty($time_adm)) ? '' : $time_adm;
 	$place_adm = (empty($place_adm)) ? '' : $place_adm;
@@ -18,6 +20,8 @@
 	$st_chast_koap = (empty($st_chast_koap)) ? '' : $st_chast_koap;
 	$st_chast_koap_select = Directory::get_directory(26, $st_chast_koap);
 
+	$list_files_doc = empty($list_files_doc) ? '' : $list_files_doc;
+
 	$role = 9;
 ?>
 
@@ -27,7 +31,7 @@
 			<div class='card text-center border-dark' style='margin-top: 80px; background: #E6E6E6; min-width: 620px;'>
 				<div class='card-header' id="cardAdmHeader">
 					<h4>Информация об административном правонарушении по линии КоАП РФ</h4>
-					<div id="nsyst" style="display: none;"></div>
+					<div id="nsyst" style="display: none;"><?= $id; ?></div>
 					<div id="cardAdmHeaderServiceBadge"></div>
 				</div>
 				<div class="card-body" id="cardAdm">
@@ -52,7 +56,7 @@
 									<label for="id_driver" class="text-muted" style="font-size: 13px;"><strong>Водитель</strong></label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Транспортное средство" data-datatype="number">
+									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Водитель" data-datatype="number">
 									<?= $id_driver_select; ?>
 									</select>
 								</div>
@@ -106,7 +110,7 @@
 									<label for="sum_adm" class="text-muted" style="font-size: 13px;"><strong>Сумма штрафа, руб</strong></label>
 								</div>
 								<div class="col col-sm-2 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="sum_adm" data-message-error="Заполните обязательное поле: Сумма штрафа" data-datatype="number" placeholder="Сумма штрафа" value="<?= $sum_adm; ?>">
+									<input type="text" class="form-control form-control-sm black-text" id="sum_adm" data-mandatory='true' data-message-error="Заполните обязательное поле: Сумма штрафа" data-datatype="number" placeholder="Сумма штрафа" value="<?= $sum_adm; ?>">
 								</div>
 								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
 									<label class='form-check-label text-muted' for='oplat_adm' style="font-size: 13px;"><strong>Оплата штрафа</strong></label>&nbsp
@@ -123,7 +127,7 @@
 							</div>
 							
 							<div class='col-5 mb-1 text-left'>
-								<div id='uploadFileContainer'></div>
+								<div id='uploadFileContainer'><?= $list_files_doc; ?></div>
 							</div>
 							<div class='col-3 mb-1 text-right'>
 								<span class='btn btn-sm btn-primary fileinput-button'>

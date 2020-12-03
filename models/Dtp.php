@@ -35,7 +35,6 @@ class Dtp extends Model {
 		$data[0]['list_files_doc'] = $list_files_doc;
 		$data[0]['list_files_image'] = $list_files_image;
 		return $data;
-		//echo json_encode(array(1, $data[0], $list_files_doc, $list_files_image));
 	}
 
 	public function get_list($post = []) {

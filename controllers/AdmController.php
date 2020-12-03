@@ -16,13 +16,16 @@ class AdmController extends Controller {
 				$this->saveCard();
 			else if($_POST['option'] == 'remove')
 				$this->removeCard();
-			else if($_POST['option'] == 'archive')
-				$this->moveArchiveCard();
 			else if($_POST['option'] == 'get_list') {
 				if(($data = (new Adm())->rendering_list($_POST)) === false)
-					echo json_encode(array(-1));
+					echo json_encode([-1]);
 				else
-					echo json_encode(array(1, $data));
+					echo json_encode([1, $data]);
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Adm())->remove_file($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
 			}
 		} else {
 			$this->view->render();
@@ -65,11 +68,18 @@ class AdmController extends Controller {
 		Save card
 	*/
 	public function saveCard() {
-		$id = $message_error = '';
-		if(!(new TicketCard())->save($_POST, $id, $message_error)) {
-			echo json_encode(array(-2, $message_error));
+		$id = '';
+		if(($id = (new Adm())->save($_POST)) === false) {
+			echo json_encode([-1]);
 		} else {
-			echo json_encode(array(1, $id));
+			if(!empty($_FILES)) {
+				if((new Adm())->save_file($_FILES, $id) === false)
+					echo json_encode([-2, $id]);
+				else
+					echo json_encode([1, $id]);
+			} else {
+					echo json_encode([1, $id]);
+			}
 		}
 	}
 
@@ -77,13 +87,9 @@ class AdmController extends Controller {
 		Remove card
 	*/
 	public function removeCard() {
-		echo json_encode(array((new TicketCard())->delete($_POST)));
-	}
-
-	/*
-		Move archive card
-	*/
-	public function moveArchiveCard() {
-		return true;
+		if((new Adm())->remove($_POST) === false)
+			echo json_encode([-1]);
+		else
+			echo json_encode([1]);
 	}
 }

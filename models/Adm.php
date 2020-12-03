@@ -3,24 +3,35 @@
 namespace IcKomiApp\models;
 
 use IcKomiApp\core\Model;
-use IcKomiApp\lib\Database\DB;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
+use IcKomiApp\lib\Database\DB;
 
 class Adm extends Model {
 	protected $table = 'adm_offense';
+	protected $remove_directory = 1;
 
 	protected $sql_get_record = "SELECT {table}.*, b.kodrai as kodrai_ts, c.kodrai kodrai_driver FROM {table} 
 									INNER JOIN cars b ON b.id={table}.id_car
 									LEFT JOIN drivers c ON c.id={table}.id_driver
 									WHERE {table}.id={id}";
 
-	protected $field = ['fam' => ['type' => 'char', 'maxlength' => '150'],
-						'imj' =>  ['type' => 'char', 'maxlength' => '150'],
-						'otch' =>  ['type' => 'char', 'maxlength' => '150'],
-						'dt_rojd' =>  ['type' => 'date'],
-						'mob_phone' =>  ['type' => 'char', 'maxlength' => '20']
-					];
+	// Получение всех полей таблицы по ее ID (без раскрытия справочников)
+	public function get($get) {
+		$data = parent::get($get);
+
+		if(($data_files = $this->get_files(addslashes($_GET['id']))) === false)
+			return false;
+			
+		$list_files_doc = '';
+
+		for($i = 0; $i < count($data_files); $i++) {
+			if($data_files[$i]['file_extension'] == 'pdf')
+				$list_files_doc .= Functions::rendering_icon_file($data_files[$i]['path_to_file'], $data_files[$i]['file_extension'], $data_files[$i]['id'], 15, true);
+		}
+		$data[0]['list_files_doc'] = $list_files_doc;
+		return $data;
+	}
 
 	public function get_list($post = []) {
 		/*if(!ServiceFunction::check_number($id))
@@ -487,4 +498,11 @@ class Adm extends Model {
 		return [$html];
 	}
 	
+	// Функция, которая получает список файлов, прикрепленных к данному ремонту
+	public function get_files($id) {
+		$sql = "SELECT * FROM files WHERE id_object=" . $id . " AND category_file=15";
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
 }

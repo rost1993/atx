@@ -46,6 +46,8 @@ abstract class Model {
 
 		$sql = Functions::generate_sql_query($flg_insert, $array_json, $id, $this->table);
 
+	//	Functions::debug($sql);
+
 		if(($data = DB::query($sql, DB::INSERT_OR_UPDATE)) === false)
 			return false;
 

@@ -30,7 +30,7 @@ class FileUpload {
 	const CLASS_DTP = 'IcKomiApp\models\Dtp';
 	const CLASS_CARS = 'IcKomiApp\models\Car';
 	//const CLASS_SPEC_SIGNALS = 'PermissionSpecSignals';
-	const CLASS_ADM_OFFENSE = 'AdmOffense';
+	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
 	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
 	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
 	

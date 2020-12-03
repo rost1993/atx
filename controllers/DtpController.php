@@ -16,8 +16,6 @@ class DtpController extends Controller {
 				$this->saveCard();
 			else if($_POST['option'] == 'remove')
 				$this->removeCard();
-			else if($_POST['option'] == 'archive')
-				$this->moveArchiveCard();
 			else if($_POST['option'] == 'get_list') {
 				if(($data = (new Dtp())->rendering_list($_POST)) === false)
 					echo json_encode(array(-1));
@@ -70,7 +68,7 @@ class DtpController extends Controller {
 		Save card
 	*/
 	public function saveCard() {
-		$id = $message_error = '';
+		$id = '';
 		if(($id = (new Dtp())->save($_POST)) === false) {
 			echo json_encode([-1]);
 		} else {
@@ -93,12 +91,5 @@ class DtpController extends Controller {
 			echo json_encode([-1]);
 		else
 			echo json_encode([1]);
-	}
-
-	/*
-		Move archive card
-	*/
-	public function moveArchiveCard() {
-		return true;
 	}
 }
