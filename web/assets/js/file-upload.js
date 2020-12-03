@@ -63,8 +63,7 @@ $(function () {
 	});
 	
 	// Обработчик выбора файла для модальных окон
-	$('.modal-ic-komi-service-interface').on('change', '#btnAddFileModalWindow', function() {
-		alert();
+	$('.modal-ic-komi-service-interface,#cardDtp').on('change', '#btnAddFileModalWindow', function() {
 		// Запрещаем/разрешаем прикрепление более одного документа
 		if(!$(this).prop('multiple')) {
 			if($(this).closest('.form-row').find('#uploadFileContainer').find('.badge').length > 0) {
@@ -127,7 +126,7 @@ $(function () {
 
 	// Обработчик удаления файла
 	// Либо удаляет саму иконку файла, либо делает запрос в базу и удаляет файл
-	$('.modal-ic-komi-service-interface').on('click', '#btnDeleteFile', function() {
+	$('.modal-ic-komi-service-interface,.form-row').on('click', '#btnDeleteFile', function() {
 		var item = $(this);
 		if($(this).data('save') == -1) {
 			$(item).closest('.badge').remove();
@@ -186,7 +185,6 @@ $(function () {
 			showDownloader(true);
 			AjaxQuery('POST', script, 'option=remove_file' + '&nsyst=' + $(this).data('save') + add_option, function(result) {
 				showDownloader(false);
-				alert(result);
 				handlerAjaxResult(result, null, function(res) {
 					$(item).closest('span').remove();
 				});

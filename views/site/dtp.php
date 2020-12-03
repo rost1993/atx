@@ -1,6 +1,7 @@
 <?php
 	use IcKomiApp\widgets\Directory;
 
+	$id = (empty($id)) ? '' : $id;
 	$date_committing = (empty($date_committing)) ? '' : IcKomiApp\core\Functions::convertToDate($date_committing);
 	$time_committing = (empty($time_committing)) ? '' : $time_committing;
 	$place_committing = (empty($place_committing)) ? '' : $place_committing;
@@ -19,6 +20,9 @@
 	$offender = (empty($offender)) ? '' : $offender;
 	$offender_checkbox = (empty($offender)) ? '' : ' checked ';
 
+	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
+	$list_files_image = (empty($list_files_image)) ? '' : $list_files_image;
+
 	$role = 9;
 ?>
 
@@ -28,7 +32,7 @@
 			<div class='card text-center border-dark' style='margin-top: 80px; background: #E6E6E6; min-width: 620px;'>
 				<div class='card-header' id="cardDtpHeader">
 					<h4>Информация о дорожно-транспортном происшествии</h4>
-					<div id="nsyst" style="display: none;"></div>
+					<div id="nsyst" style="display: none;"><?= $id; ?></div>
 					<div id="cardDtpHeaderServiceBadge"></div>
 				</div>
 				<div class="card-body" id="cardDtp">
@@ -53,7 +57,7 @@
 									<label for="id_driver" class="text-muted" style="font-size: 13px;"><strong>Водитель</strong></label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Транспортное средство" data-datatype="number">
+									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Водитель" data-datatype="number">
 									<?= $id_driver_select; ?>
 									</select>
 								</div>
@@ -64,7 +68,7 @@
 									<label for="date_committing" class="text-muted" style="font-size: 13px;"><strong>Дата совершения</strong></label>
 								</div>
 								<div class="col col-sm-2 mb-1">
-									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_committing" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата начала ремонта" data-datatype="date" maxlength="10" placeholder="Дата совершения" value="<?= $date_committing; ?>">
+									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_committing" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата совершения" data-datatype="date" maxlength="10" placeholder="Дата совершения" value="<?= $date_committing; ?>">
 								</div>
 								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
 									<label for="time_committing" class="text-muted" style="font-size: 13px;"><strong>Время совершения</strong></label>
@@ -131,11 +135,11 @@
 							</div>
 							
 							<div class='col-5 mb-1 text-left'>
-								<div id='uploadFileContainer'></div>
+								<div id='uploadFileContainer'><?= $list_files_doc; ?></div>
 							</div>
 							<div class='col-3 mb-1 text-right'>
 								<span class='btn btn-sm btn-primary fileinput-button'>
-									<span class='fa fa-folder-open'>&nbsp</span>Выберите файл
+									<span class='fa fa-folder-open'>&nbsp;</span>Выберите файл
 										<input type='file' id='btnAddFileModalWindow' data-show-error='window' accept='.pdf' multiple>
 								</span>
 							</div>
@@ -150,7 +154,7 @@
 							</div>
 							<div class="col col-sm-8 mb-1 text-left">
 								<span class='btn btn-sm btn-outline-primary fileinput-button'>
-									<span class='fa fa-folder-open'>&nbsp</span>Загрузить фотографии
+									<span class='fa fa-folder-open'>&nbsp;</span>Загрузить фотографии
 										<input type='file' id='btnAddFileModalWindow' data-show-error='window' accept='.jpeg,.png,.jpg' data-upload-container='uploadFileContainerImage' multiple>
 								</span>
 							</div>
@@ -158,7 +162,7 @@
 						<div class='form-row'>
 							<div class="col col-sm-2 mb-1 text-right"></div>
 							<div class='col-8 mb-1 text-left'>
-								<div id='uploadFileContainerImage'></div>
+								<div id='uploadFileContainerImage'><?= $list_files_image; ?></div>
 							</div>
 						</div>
 					</div>

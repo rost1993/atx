@@ -9,11 +9,34 @@ use IcKomiApp\core\Functions;
 
 class Dtp extends Model {
 	protected $table = 'dtp';
+	protected $array_file_extension = ['pdf', 'jpeg', 'jpg', 'png'];
+	protected $remove_directory = 1;
 
 	protected $sql_get_record = "SELECT {table}.*, b.kodrai as kodrai_ts, c.kodrai kodrai_driver FROM {table} 
 									INNER JOIN cars b ON b.id={table}.id_car
 									LEFT JOIN drivers c ON c.id={table}.id_driver
 									WHERE {table}.id={id}";
+
+	// Получение всех полей таблицы по ее ID (без раскрытия справочников)
+	public function get($get) {
+		$data = parent::get($get);
+
+		if(($data_files = $this->get_files(addslashes($_GET['id']))) === false)
+			return false;
+			
+		$list_files_doc = $list_files_image = '';
+
+		for($i = 0; $i < count($data_files); $i++) {
+			if($data_files[$i]['file_extension'] == 'pdf')
+				$list_files_doc .= Functions::rendering_icon_file($data_files[$i]['path_to_file'], $data_files[$i]['file_extension'], $data_files[$i]['id'], 12, true);
+			else
+				$list_files_image .= Functions::rendering_icon_file($data_files[$i]['path_to_file'], $data_files[$i]['file_extension'], $data_files[$i]['id'], 12, true);
+		}
+		$data[0]['list_files_doc'] = $list_files_doc;
+		$data[0]['list_files_image'] = $list_files_image;
+		return $data;
+		//echo json_encode(array(1, $data[0], $list_files_doc, $list_files_image));
+	}
 
 	public function get_list($post = []) {
 		/*if(!ServiceFunction::check_number($id))
@@ -426,6 +449,14 @@ class Dtp extends Model {
 		}
 		
 		return [$html];
+	}
+
+	// Функция, которая получает список файлов, прикрепленных к данному ремонту
+	public function get_files($id) {
+		$sql = "SELECT * FROM files WHERE id_object=" . $id . " AND category_file=12";
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
 	}
 	
 }

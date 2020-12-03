@@ -1,10 +1,10 @@
 <?php
 
 namespace IcKomiApp\controllers;
- 
-use IcKomiApp\core\Controller;
+
+use IcKomiApp\models\Dtp; 
 use IcKomiApp\core\Functions;
-use IcKomiApp\models\Dtp;
+use IcKomiApp\core\Controller;
 
 class DtpController extends Controller {
 
@@ -23,6 +23,11 @@ class DtpController extends Controller {
 					echo json_encode(array(-1));
 				else
 					echo json_encode(array(1, $data));
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Dtp())->remove_file($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
 			}
 		} else {
 			$this->view->render();
@@ -66,10 +71,17 @@ class DtpController extends Controller {
 	*/
 	public function saveCard() {
 		$id = $message_error = '';
-		if(!(new TicketCard())->save($_POST, $id, $message_error)) {
-			echo json_encode(array(-2, $message_error));
+		if(($id = (new Dtp())->save($_POST)) === false) {
+			echo json_encode([-1]);
 		} else {
-			echo json_encode(array(1, $id));
+			if(!empty($_FILES)) {
+				if((new Dtp())->save_file($_FILES, $id) === false)
+					echo json_encode([-2, $id]);
+				else
+					echo json_encode([1, $id]);
+			} else {
+					echo json_encode([1, $id]);
+			}
 		}
 	}
 
@@ -77,7 +89,10 @@ class DtpController extends Controller {
 		Remove card
 	*/
 	public function removeCard() {
-		echo json_encode(array((new TicketCard())->delete($_POST)));
+		if((new Dtp())->remove($_POST) === false)
+			echo json_encode([-1]);
+		else
+			echo json_encode([1]);
 	}
 
 	/*

@@ -96,8 +96,8 @@ abstract class Model {
 			$temp_array[$field] = $array_field_item;
 		
 		// Получаем шифр пользователя из сессионных переменных
-		//$id_user = User::get_user_id();
-		$id_user = 100;
+		$id_user = User::get('id');
+		//$id_user = 100;
 		
 		// Вставляем во временный массив шифр пользователя
 		$temp_array['sh_polz'] = array("value" => $id_user, "type" => "number");
@@ -188,6 +188,7 @@ abstract class Model {
 			return false;
 
 		$fileUploadClass->removeDirectoryToServer($uploaddir);
+		$fileUploadClass->remove_all_files_from_database($class_name, $id_object);
 		return true;
 	}
 

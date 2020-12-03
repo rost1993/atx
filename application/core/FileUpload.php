@@ -352,7 +352,8 @@ class FileUpload {
 		$sqlQuery = "UPDATE " . $table . " SET path_to_file='" . $file_name . "', file_extension='" . $file_extension . "' WHERE id=" . $id_object;
 
 		if($table == 'files') {
-			$sh_polz = User::get_user_id();
+			//$sh_polz = User::get_user_id();
+			$sh_polz = User::get('id');
 			$cathegory = $this->get_number_cathegory_files($class_name);
 			$sqlQuery = "INSERT INTO " . $table . " (id_object, category_file, path_to_file, file_extension, sh_polz) VALUES (" . $id_object . "," . $cathegory . ",'" . $file_name . "', '" . $file_extension . "'," . $sh_polz . ")";
 		}
@@ -417,6 +418,23 @@ class FileUpload {
 				return false;
 		}
 
+		return true;
+	}
+
+	/*
+		Функция удаления всех файлов из удаляемой подсистемы
+		$class_name - название класса подсистемы
+		$id_object - ID объекта отностиельно которого производится удаление
+	*/
+	public function remove_all_files_from_database($class_name, $id_object) {
+		$table = $this->get_table_for_object($class_name);
+		$category_file = $this->get_number_cathegory_files($class_name);
+		if($category_file == 0)
+			return true;
+
+		$sql = "DELETE FROM " . $table . " WHERE id_object=" . $id_object . " AND category_file=" . $category_file;
+		if(DB::query($sql, DB::OTHER) === false)
+			return false;
 		return true;
 	}
 	

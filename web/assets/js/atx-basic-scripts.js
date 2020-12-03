@@ -173,7 +173,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 			});
@@ -280,7 +279,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', scripts, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-service-interface').ModalViewServiceInterfaceIcKomi({ 'textHeader' : titleForm, 'textBody' : res[1], 'method' : 'show' });
 				$('#saveModalWindowButton').data('action', action);
@@ -614,7 +612,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', script, query, function(result) {
 			showDownloader(false);
-			alert(result);
 			try {
 				var res = eval(result);
 				if(res[0] == 1) {
