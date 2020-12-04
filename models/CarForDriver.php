@@ -6,11 +6,12 @@ use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\widgets\Directory;
 
 class CarForDriver extends Model {
 	protected $table = 'car_for_driver';
 
-	protected $sql_get_record = "";
+	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
 
 	protected $sql_get_list = "";
 
@@ -256,5 +257,245 @@ class CarForDriver extends Model {
 		return [$html];
 	}
 
+	// Отрисовка окна закрепления ТС за водителем
+	public function rendering_window_drivers_for_car($post) {
+		if(empty($post['nsyst']))
+			return false;
+		
+		$nsyst = addslashes($post['nsyst']);		// ID ТС
+		$operation = addslashes($post['operation']);
+		$array_data = array();
+		$id_fix = -1;
+		
+		if($operation == 1) {
+			if(($array_data = $this->get_list_drvers_no_fixed($nsyst)) === false)
+				return false;
+		} else {
+			if(empty($post['fix']))
+				return false;
+			$id_fix = addslashes($post['fix']);
+			
+			if(($array_data = $this->get_information_fixed_driver($id_fix, $nsyst)) === false)
+				return false;
+		}
+
+		// Формируем список
+		$list_driver = "<table class='table table-bordered table-sm table-hover' id='ListFixedItem'>";
+		for($i = 0; $i < count($array_data); $i++) {
+			if($operation == 1)
+				$list_driver .= "<tr style='font-size: 15px;' data-check='0' id='" . $array_data[$i]['id'] . "'>"
+					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList'></td>"
+					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong> (" . $array_data[$i]['kodrai'] . ", " . $array_data[$i]['slugba'] . ")". "</td></tr>";
+			else
+				$list_driver .= "<tr style='font-size: 15px;' class='table-success' data-check='1' id='" . $array_data[$i]['id'] . "'>"
+					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList' checked disabled></td>"
+					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong> (" . $array_data[$i]['kodrai'] . ", " . $array_data[$i]['slugba'] . ")". "</td></tr>";
+		}
+		
+		$list_driver .= "</table>";
+
+		if(($html = $this->rendering_window_fix($list_driver, $nsyst, 1, $id_fix)) === false)
+			return false;
+		
+		/*$result = array();
+		array_push($result, 1);
+		array_push($result, $html);
+		
+		echo json_encode($result);*/
+		return [$html];
+	}
+
+
+	// Функция формирования списка водителей, которые не закреплены за данным ТС
+	public function get_list_drvers_no_fixed($id_car) {
+		if(empty($id_car))
+			return false;
+
+		/*Session::start();
+		$role = Session::get('role');
+		$kodrai = Session::get('slugba');
+		Session::commit();*/
+
+		$role = 9;
+		
+		$sql = "SELECT a.id, a.fam, a.imj, a.otch, x1.text as slugba, x2.text as kodrai FROM drivers a "
+					. " LEFT JOIN " . $this->table . " x ON x.id_driver=a.id AND x.car_id=" . $id_car
+					. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
+					. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
+					. " WHERE x.id IS NULL ";
+
+		if($role == 1)
+			$sql .= " AND a.dostup=1 AND a.kodrai=" . $kodrai;
+		
+		if($role == 2)
+			$sql .= " AND a.dostup=1 ";
+
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
+
+	// Функция подгрузки информации водителя, который закреплен за ТС
+	public function get_information_fixed_driver($id_fix, $id_driver) {
+		if(empty($id_fix) || empty($id_driver))
+			return false;
+		
+		/*Session::start();
+		$role = Session::get('role');
+		$kodrai = Session::get('slugba');
+		Session::commit();*/
+
+		$role = 9;
+
+		$sql = "SELECT a.id as id_fix, x1.text as slugba, x2.text as kodrai, b.fam, b.imj, b.otch, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
+				. " a.number_doc_fix, a.date_doc_fix, a.type_doc_fix "
+				. " FROM " . $this->table . " a "
+				. " LEFT JOIN drivers b ON b.id=a.id_driver "
+				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.slugba AND x1.nomer=1 "
+				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.kodrai AND x2.nomer=11 "
+				. " WHERE a.id=" . $id_fix . " AND a.id_driver=" . $id_driver;
+		
+		if($role == 1)
+			$sql .= " AND b.dostup=1 AND b.kodrai=" . $kodrai;
+		if($role == 2)
+			$sql .= " AND b.dostup=1 ";
+
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
 	
+	// Функция отрисовки окна с интерфейсом закрепления водителей за транспортным средством
+	// nsyst - системный номер объекта относительно которого происходит закрепление: ID ТС или водителя
+	// type: 1 - закрепление водителей за ТС, 2 - закрепление ТС за водителем
+	public function rendering_window_fix($list_fix_item, $nsyst, $type, $id_fix) {
+		$num_doc_fix = $date_doc_fix = $type_doc_fix = $path_to_file = $file_extension = '';
+		$ibd_arx = 1;
+		$nsyst_temp = $nsyst;
+		
+		// Название формы для закрепления
+		$name_form_fix = '';
+		if($type == 1)
+			$name_form_fix = 'Список водителей не закрепленных за данным ТС';
+		else
+			$name_form_fix = 'Список ТС не закрепленных за данным водителем';
+		
+		if($id_fix != -1) {
+			if(($array_data = $this->get($id_fix)) === false)
+				return false;
+
+			$type_doc_fix = $array_data[0]['type_doc_fix'];
+			$num_doc_fix = $array_data[0]['number_doc_fix'];
+			$date_doc_fix = Functions::convertToDate($array_data[0]['date_doc_fix']);
+			$ibd_arx = $array_data[0]['ibd_arx'];
+			$path_to_file = $array_data[0]['path_to_file'];
+			$file_extension = $array_data[0]['file_extension'];
+
+			if($type == 1) {
+				$nsyst_temp = $array_data[0]['car_id'];
+				$name_form_fix = 'Водитель закрепленный за данным ТС';
+			} else {
+				$nsyst_temp = $array_data[0]['id_driver'];
+				$name_form_fix = 'ТС закрепленный за данным водителем';
+			}
+		}
+		
+		/*if(($array_data = $car_for_driver->get_spr(14)) === false)
+			return false;
+		
+		// Формируем список оснований для закрепления
+		$list_type_fix_doc = "<option value='0'></option>";
+		for($i = 0; $i < count($array_data); $i++) {
+			if($type_doc_fix == $array_data[$i]['kod'])
+				$list_type_fix_doc .= "<option value='" . $array_data[$i]['kod'] . "' selected>" . $array_data[$i]['text'] . "</option>";
+			else
+				$ .= "<option value='" . $array_data[$i]['kod'] . "'>" . $array_data[$i]['text'] . "</option>";
+		}*/
+
+		$list_type_fix_doc = Directory::get_directory(14, $type_doc_fix);
+
+		$html = 	"<div class='col-sm-12'>"
+						. "<div class='card-deck' style='margin: 10px;'>"
+						
+							. "<div class='col-sm-6'>"
+								. "<div class='card border-dark'>"
+									. "<div class='card-header text-center'><strong>" . $name_form_fix . "</strong>"
+										. "<div class='input-group'>"
+											. "<input type='text' class='form-control form-control-sm black-text' id='searchFieldTextCarForDrivers' placeholder='Введите критерий поиска ...'>"
+											. "<div class='input-group-append'>"
+												. "<button type='button' class='btn btn-sm btn-outline-secondary' id='btnSearchListCarForDrivers' title='Поиск'><span class='fa fa-search'></span>&nbspПоиск</button>"
+											. "</div>"
+										. "</div>"
+									. "</div>"
+								
+									. "<div class='card-body card-block-list-drivers'>"
+										. $list_fix_item
+									. "</div>"
+								. "</div>"
+							. "</div>"
+							
+							. "<div class='col-sm-6'>"
+								. "<div class='card border-dark'>"
+									. "<div class='card-header text-center'><strong>Заполните необходимые поля</strong></div>"
+									. "<div class='card-body'>"
+									
+									. "<div id='cardItemsFixDocument'>"
+										. "<div class='form-row'>"
+											. "<div class='col col-sm-3 mb-1 text-right'>"
+												. "<label for='type_doc_fix' class='text-muted' style='font-size: 13px;'><strong>Основание</strong></label>"
+											. "</div>"
+											. "<div class='col col-sm-9 mb-1'>"
+												. "<select class='custom-select custom-select-sm black-text' id='type_doc_fix' data-mandatory='true' data-datatype='number' data-message-error='Заполните обязательное поле: Основание'>" . $list_type_fix_doc . "</select>"
+											. "</div>"
+										. "</div>"
+										
+										. "<div class='form-row'>"
+											. "<div class='col col-sm-3 mb-1 text-right'>"
+												. "<label for='number_doc_fix' class='text-muted' style='font-size: 13px;'><strong>Номер</strong></label>"
+											. "</div>"
+											. "<div class='col col-sm-5 mb-1'>"
+												. "<input type='text' class='form-control form-control-sm black-text' id='number_doc_fix' maxlength='20' placeholder='Номер документа' data-mandatory='true' 	data-datatype='char' data-message-error='Заполните обязательное поле: Номер' value='" . $num_doc_fix . "'>"
+											. "</div>"
+										. "</div>"
+										
+										. "<div class='form-row'>"
+											. "<div class='col col-sm-3 mb-1 text-right'>"
+												. "<label for='date_doc_fix' class='text-muted' style='font-size: 13px;'><strong>Дата</strong></label>"
+											. "</div>"
+											. "<div class='col col-sm-5 mb-1'>"
+												. "<input type='text' class='form-control form-control-sm black-text datepicker-here' id='date_doc_fix' maxlength='10' placeholder='Дата документа' data-mandatory='true' data-datatype='date' data-message-error='Заполните обязательное поле: Дата документа' value='" . $date_doc_fix . "'>"
+											. "</div>"
+										. "</div>"
+									. "</div>"
+
+										. "<div class='form-row'>"
+				
+											. "<div class='col-3 mb-1 text-right' style='vertical-align: center;'>"
+												. "<label for='comment_certificate_reg' class='text-muted' style='font-size: 13px;'><strong>Эл. образ</strong></label>"
+											. "</div>"
+											
+											. "<div class='col-5 mb-1 text-left'>"
+												. "<div id='uploadFileContainer'>" . Functions::rendering_icon_file($path_to_file, $file_extension, $id_fix, 9, true) . "</div>"
+											. "</div>"
+											
+											. "<div class='col-4 mb-1 text-right'>"
+												. "<span class='btn btn-sm btn-primary fileinput-button' title='Выберите файл'>"
+													. "<span class='fa fa-folder-open'>&nbsp</span>Выберите файл"
+														. "<input id='btnAddFileModalWindow' type='file' name='files' accept='.pdf'>"
+												. "</span>"
+											. "</div>"
+											
+										. "</div>"
+
+									. "<div>"
+								. "</div>"
+							. "</div>"
+							
+						. "</div>";
+		$html .= "</div>";
+
+		$html .= "<div class='col-sm-12 text-center'><button class='btn btn-success' id='saveFixCarForDriver' style='margin: 10px;' data-nsyst='" . $nsyst_temp . "' data-fix='" . $id_fix . "' data-type-save='" . $type . "' data-ibd-arx='" . $ibd_arx . "'><span class='fa fa-check'></span>&nbsp;Сохранить изменения</button></div>";
+
+		return [$html];
+	}
 }

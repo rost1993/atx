@@ -760,13 +760,38 @@ $(document).ready(function() {
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
 			});
+		});
+	});
+
+	// Открытие окошка закрепление водителя за ТС
+	$('#btnFixDriverForCar').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала необходимо сохранить транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		
+		var query = '';
+		if($(this).data('modeShow') == 1)
+			query = 'option=driver_fix' + '&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
+		else
+			query = 'option=car_fix' +  '&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
+
+		showDownloader(true);
+		AjaxQuery('POST', 'car_for_driver', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Закрепление водителей за транспортными средствами', 'textBody' : res[1], 'method' : 'show' });
+			});
 			/*var res = eval(result);
-			if(res[0] == -1)
-				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
-			else if(res[0] == 1)
-				$('#ModalWindowView').modal('hide');
-			else
-				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');*/
+			if(res[0] == -1) {
+				showModal('ModalWindow', 'При обработке запроса произошла ошибка!');
+			} else if(res[0] == 1) {
+				//showInterface('Закрепление водителей за транспортными средствами', res[1]);
+				showModalView('ModalWindowView', 'Закрепление водителей за транспортными средствами', res[1]);
+			} else {
+				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
+			}*/
 		});
 	});
 });
