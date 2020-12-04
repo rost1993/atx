@@ -170,6 +170,18 @@ function getDate(str) {
 	return new Date(temp[2], (Number(temp[1]) - 1), temp[0]);
 }
 
+
+// Преобразователь из строки в дату со временем
+// По умолчанию если ставится дата 01.01.2000 и переданное время
+function getDateTime(str) {
+	// Пытаемся определить delemiter даты
+	var temp = String(str).split(':');
+	if(temp.length != 2)
+		return null;
+
+	return new Date(2000, 0, 1, temp[0], temp[1]);
+}
+
 /*
 	Function show or hide indicator downloader
 	mode - true or false

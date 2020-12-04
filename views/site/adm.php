@@ -73,7 +73,7 @@
 									<label for="time_adm" class="text-muted" style="font-size: 13px;"><strong>Время совершения</strong></label>
 								</div>
 								<div class="col col-sm-2 mb-1">
-									<input type="text" class="form-control form-control-sm black-text timepicker-here" id="time_adm" data-datatype="char" maxlength="5" placeholder="Время совершения" value="<?= $time_adm; ?>">
+									<input type="text" class="form-control form-control-sm black-text datepicker-here" data-timepicker="true" data-only-timepicker='true' id="time_adm" data-datatype="char" maxlength="5" placeholder="Время совершения" value="<?= $time_adm; ?>">
 								</div>
 							</div>
 							

@@ -16,14 +16,29 @@ $(document).ready(function() {
 			});
 		} else {
 			var dd = $(this).val();
-			dd = ( (String(dd)).length == 4 ) ? '01.01.' + dd : dd;
-			$(this).datepicker().data('datepicker').selectDate(getDate(dd));
+			var date;
+			if($(this).data('timepicker')) {
+				date = getDateTime(dd);
+			} else {
+				dd = ( (String(dd)).length == 4 ) ? '01.01.' + dd : dd;	
+				date = getDate(dd);
+			}
+			//$(this).datepicker().data('datepicker').selectDate(getDate(dd));
+			$(this).datepicker().data('datepicker').selectDate(date);
 			$(this).datepicker().data('datepicker').update({
 				autoClose: true,
 				clearButton: true,
 			});
 		}
 	});
+
+	/*$('.timepicker-here').datepicker({
+		dateFormat: '',
+		timepicker: true,
+		onlyTimepicker: true,
+		autoClose: true,
+		clearButton: true
+	});*/
 
 	$('.btn-cars-old-gos-znak').popover({
 		trigger: 'focus'
@@ -224,10 +239,10 @@ $(document).ready(function() {
 			action = 3;
 			query = 'option=get_window&nsyst=-1';
 		} else if(item == 4) {
-			scripts = 'speedometer-events.php';
+			scripts = 'speedometer';
 			titleForm = 'Показания спидометра';
 			action = 4;
-			query = 'option=1&nsyst=-1&car=' + $('#nsyst').html();
+			query = 'option=get_window&nsyst=-1&car=' + $('#nsyst').html();
 		} else if(item == 5){
 			scripts = 'pts';
 			titleForm = 'Паспорт технического средства';
@@ -317,9 +332,9 @@ $(document).ready(function() {
 			titleForm = 'Технический осмотр транспортного средства';
 			query = 'option=get_window&nsyst=' + id;
 		} else if(item == 4) {
-			scripts = 'speedometer-events.php';
+			scripts = 'speedometer';
 			titleForm = 'Показания спидометра';
-			query = 'option=1&nsyst=' + id + '&car=' + $(this).data('car');
+			query = 'option=get_window&nsyst=' + id + '&car=' + $(this).data('car');
 		} else if(item == 5){
 			scripts = 'pts';
 			titleForm = 'Паспорт технического средства';
@@ -457,9 +472,8 @@ $(document).ready(function() {
 			}
 			
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
-
-			query.append('option', 2);
-			script = PATH_TO_SCRIPT + 'speedometer-events.php';
+			query.append('option', 'save');
+			script = 'speedometer';
 		}
 
 		if($(this).data('action') == 5) {
@@ -643,8 +657,8 @@ $(document).ready(function() {
 			scripts = 'technical_inspection';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 4) {
-			scripts = 'speedometer-events.php';
-			query = 'option=4&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+			scripts = 'speedometer';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 5){
 			scripts = 'pts';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
@@ -690,5 +704,69 @@ $(document).ready(function() {
 		var dd = new Date(Number(item.substr(6, 4)) + Number($(this).val()), item.substr(3, 2) - 1, item.substr(0, 2));
 		var datepicker = $(this).closest('.modal-ic-komi-service-interface').find('#end_date').datepicker().data('datepicker');
 		datepicker.selectDate(dd);
+	});
+
+	// Добавление спидометра
+	$('#btnChangeSpeedometer').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала необходимо сохранить транспортное средство!', 'method' : 'show' });
+			return;
+		}
+			
+		showDownloader(true);
+		AjaxQuery('POST', 'speedometer', 'option=add&nsyst=' + $('#nsyst').html(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, 'Спидометр успешно добавлен!');
+		});
+	});
+
+	// Удаление спилометра
+	$('#btnRemoveSpeedometer').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала необходимо сохранить транспортное средство!', 'method' : 'show' });
+			return;
+		}
+			
+		showDownloader(true);
+		AjaxQuery('POST', 'speedometer', 'option=del&nsyst=' + $('#nsyst').html(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, 'Спидометр успешно удален!');
+		});
+	});
+
+	// Настройки
+	$('#btnSpeedometers').click(function() {
+		if($('#nsyst').html().trim().length == 0 || $('#nsyst').html() == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала необходимо сохранить транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'speedometer', 'option=settings_speedometer&nsyst=' + $('#nsyst').html().trim(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Начальные показания спидометров', 'textBody' : res[1], 'method' : 'show' });
+			});
+		});
+	});
+
+	$('.modal-ic-komi-view').on('click', '#btnSaveFirstTestimonySpeedometers', function() {
+		var query = 'option=save_first_testimony&nsyst=' + $(this).data('nsyst') + '&car=' + $(this).data('idCar') + '&speedometer=' + $(this).data('idSpeedometer');
+		query += '&value=' + $(this).closest('tr').find('.inputValueFirstTestimonySpeedometer').val();
+		alert(query);
+		showDownloader(true);
+		AjaxQuery('POST', 'speedometer', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
+			});
+			/*var res = eval(result);
+			if(res[0] == -1)
+				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
+			else if(res[0] == 1)
+				$('#ModalWindowView').modal('hide');
+			else
+				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');*/
+		});
 	});
 });
