@@ -32,6 +32,21 @@ class CarForDriverController extends Controller {
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
+			} else if($_POST['option'] == 'remove_file') {
+				if((new CarForDriver())->remove_file($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
+			} else if($_POST['remove']) {
+				if((new CarForDriver())->remove($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
+			} else if($_POST['move_archive']) {
+				if((new CarForDriver())->move_to_archive($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
 			}
 		} else {
 			$this->view->render();

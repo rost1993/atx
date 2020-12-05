@@ -63,7 +63,7 @@ $(function () {
 	});
 	
 	// Обработчик выбора файла для модальных окон
-	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument').on('change', '#btnAddFileModalWindow', function() {
+	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view').on('change', '#btnAddFileModalWindow', function() {
 		// Запрещаем/разрешаем прикрепление более одного документа
 		if(!$(this).prop('multiple')) {
 			if($(this).closest('.form-row').find('#uploadFileContainer').find('.badge').length > 0) {
@@ -126,7 +126,7 @@ $(function () {
 
 	// Обработчик удаления файла
 	// Либо удаляет саму иконку файла, либо делает запрос в базу и удаляет файл
-	$('.modal-ic-komi-service-interface,.form-row').on('click', '#btnDeleteFile', function() {
+	$('.modal-ic-komi-service-interface,.form-row,.modal-ic-komi-view').on('click', '#btnDeleteFile', function() {
 		var item = $(this);
 		if($(this).data('save') == -1) {
 			$(item).closest('.badge').remove();
@@ -154,7 +154,7 @@ $(function () {
 					script = 'car_document';
 					break;
 				case 9:
-					script = 'car-for-driver-events.php';
+					script = 'car_for_driver';
 					break;
 				case 10:
 					script = 'tractor_vu';

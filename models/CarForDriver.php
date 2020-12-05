@@ -10,7 +10,7 @@ use IcKomiApp\widgets\Directory;
 
 class CarForDriver extends Model {
 	protected $table = 'car_for_driver';
-
+	protected $remove_directory = 1;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
 
 	protected $sql_get_list = "";
@@ -608,6 +608,25 @@ class CarForDriver extends Model {
 					return false;
 			}
 		}
+		
+		return true;
+	}
+
+	// Функция перевода в архив сведений о закреплении
+	public function move_to_archive($id_fix, $operation) {
+		if(!ServiceFunction::check_number($id_fix) || !ServiceFunction::check_number($operation))
+			return false;
+		
+		$archive = 1;	// Значение архива
+		if($operation == 1)
+			$archive = 1;
+		else
+			$archive = 2;
+		
+		$sqlQuery = "UPDATE " . $this->table . " SET ibd_arx=" . $archive . " WHERE id=" . $id_fix;
+		$mysql = new mysqlRun();		   
+		if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_INSERT_OR_UPDATE))
+			return false;
 		
 		return true;
 	}

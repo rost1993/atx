@@ -779,7 +779,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'car_for_driver', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Закрепление водителей за транспортными средствами', 'textBody' : res[1], 'method' : 'show' });
 				$("[data-datatype='date']").datepicker({
@@ -836,7 +835,6 @@ $(document).ready(function() {
 		showDownloader(true)
 		AjaxQuery('POST', 'car_for_driver', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
 			});
@@ -889,7 +887,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'car_for_driver', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Закрепление водителей за транспортными средствами', 'textBody' : res[1] });
 				$("[data-datatype='date']").datepicker({
@@ -897,13 +894,33 @@ $(document).ready(function() {
 					clearButton: true
 				}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
 			});
+		});
+	});
 
+	// Обработчик нажатия на кнопку переместить/восстановить из архива сведений о закреплении
+	$('#ModalWindowView').on('click', '#btnMoveCarForDriversArchive', function() {
+		var item = $(this).closest('tr');
+		var operation = $(this).data('operation');
+		$(this).data('operation', (operation == 1) ? 2 : 1);
+		showDownloader(true);
+		AjaxQuery('POST', 'car_for_driver', 'option=move_archive&nsyst=' + $(this).data('nsyst') + '&operation=' + operation, function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				if(operation == 1) {
+					$('#ActualCarForDriver').append($(item));
+				} else {
+					$('#ArchiveCarForDriver').append($(item));
+				}
+			});
 			/*var res = eval(result);
 			if(res[0] == -1) {
 				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
 			} else if(res[0] == 1) {
-				//showInterface('Закрепление водителей за транспортными средствами', res[1]);
-				showModalView('ModalWindowView', 'Закрепление водителей за транспортными средствами', res[1]);
+				if(operation == 1) {
+					$('#ActualCarForDriver').append($(item));
+				} else {
+					$('#ArchiveCarForDriver').append($(item));
+				}
 			} else {
 				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
 			}*/
