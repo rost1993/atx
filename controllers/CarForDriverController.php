@@ -23,10 +23,15 @@ class CarForDriverController extends Controller {
 				else
 					echo json_encode([1, $data]);
 			} else if($_POST['option'] == 'driver_fix') {
-				if(($data = (new CarForDriver())->rendering_list($_POST)) === false)
+				if(($data = (new CarForDriver())->rendering_window_cars_for_driver($_POST)) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1, $data]);
+			} else if($_POST['option'] == 'save') {
+				if((new CarForDriver())->save_car_for_driver($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
 			}
 		} else {
 			$this->view->render();

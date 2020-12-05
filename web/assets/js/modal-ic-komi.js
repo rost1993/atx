@@ -375,7 +375,8 @@
 
 		show: function() {
 			$('.btn').blur();
-			$(this.$el).modal('toggle');
+			//$(this.$el).modal('toggle');
+			$(this.$el).modal('show');
 		},
 
 		hide: function(event) {

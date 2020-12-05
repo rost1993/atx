@@ -772,9 +772,9 @@ $(document).ready(function() {
 		
 		var query = '';
 		if($(this).data('modeShow') == 1)
-			query = 'option=driver_fix' + '&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
+			query = 'option=driver_fix&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
 		else
-			query = 'option=car_fix' +  '&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
+			query = 'option=car_fix&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation');
 
 		showDownloader(true);
 		AjaxQuery('POST', 'car_for_driver', query, function(result) {
@@ -782,10 +782,125 @@ $(document).ready(function() {
 			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Закрепление водителей за транспортными средствами', 'textBody' : res[1], 'method' : 'show' });
+				$("[data-datatype='date']").datepicker({
+					autoClose: true,
+					clearButton: true
+				}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
 			});
+		});
+	});
+
+	$('.modal-ic-komi-view').on('click', '#saveFixCarForDriver', function() {
+		var arrSaveItem = {};	// Массив со значениями обязательных параметров
+		var itemsArray = [];	// Массив со списком водителей, которых необходимо закрепить
+		
+		var resultCollectionsItems = getArrayItemsForms('#cardItemsFixDocument select, #cardItemsFixDocument input');
+		if(resultCollectionsItems[0]) {
+			arrSaveItem = resultCollectionsItems[1];
+		} else {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : resultCollectionsItems[1], 'method' : 'show' });
+			return;
+		}
+
+		if($(this).data('typeSave') == 1)
+			arrSaveItem['car_id'] = { 'value' : $(this).data('nsyst'), 'type' : 'number' };
+		else
+			arrSaveItem['id_driver'] = { 'value' : $(this).data('nsyst'), 'type' : 'number' };
+
+		// Бежим по таблице и собираем что надо закрепить
+		$('#ListFixedItem tr').each(function() {
+			if($(this).data('check') == '1')
+				itemsArray.push($(this).prop('id'));
+		});
+		
+		if(itemsArray.length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Вам необходимо выбрать транспортное средство или водителя для закрепления!', 'method' : 'show' });
+			return;
+		}
+		
+		arrSaveItem['dostup'] = { 'value' : 1, 'type' : 'number' };
+		arrSaveItem['ibd_arx'] = { 'value' : $(this).data('ibdArx'), 'type' : 'number' };
+
+		var query = new FormData();
+		query.append('option', 'save');
+		query.append('JSON', JSON.stringify(arrSaveItem));
+		query.append('nsyst', $(this).data('fix'));
+		query.append('arrayItemFix', JSON.stringify(itemsArray));
+		query.append('typeSave', $(this).data('typeSave'));
+		
+		// Добавляем файл
+		$.each(filesList, function(key, value) {
+			query.append(key, value);
+		});
+		
+		showDownloader(true)
+		AjaxQuery('POST', 'car_for_driver', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
+			});
+		}, true);
+		
+	});
+
+	// Обработчик выбора строки с водителем для интерфейса добавления водителей закрепленных за ТС
+	$('.modal-ic-komi-view').on('click', '#checkboxTextList', function() {
+		if($(this).prop('checked') == true) {
+			$(this).parent().parent().addClass('table-success');
+			$(this).parent().parent().data('check', '1');
+		} else {
+			$(this).parent().parent().removeClass('table-success');
+			$(this).parent().parent().data('check', '0');
+		}
+	});
+
+	// Обработчик нажатия на кнопку поиск по ФИО для списка водителей
+	$('.modal-ic-komi-view').on('click', '#btnSearchListCarForDrivers', function() {
+		var searchText = $('#searchFieldTextCarForDrivers').val().trim();
+		var tableName = '#ListFixedItem';
+
+		var regExp = new RegExp(searchText, 'i');
+	
+		$(tableName + ' tr').each(function() {
+			var text = $(this).find('#textList').html().trim();
+			if(regExp.test(text))
+				$(this).css({ 'display' : 'table-row' });
+			else
+				$(this).css({ 'display' : 'none' });
+		});
+	});
+
+	// Нажатие ENTER на поле ввода для поиска водителей
+	$('.modal-ic-komi-view').on('keydown', '#searchFieldTextCarForDrivers', function(event) {
+		if(event.keyCode === 13)
+			$('#btnSearchListCarForDrivers').click();
+	});
+
+	// Обработчик нажатия на кнопку скорректировать информацию о закреплении
+	$('.modal-ic-komi-view').on('click', '#btnEditCarForDrivers', function() {
+		var query = '';
+
+		if($(this).data('modeShow') == 1)
+			query = 'option=driver_fix&fix=' + $(this).data('fix') + '&operation=2' + '&nsyst=' + $(this).data('nsyst');
+		else
+			query = 'option=car_fix&fix=' + $(this).data('fix') + '&operation=2' + '&nsyst=' + $(this).data('nsyst');
+
+		showDownloader(true);
+		AjaxQuery('POST', 'car_for_driver', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'textHeader' : 'Закрепление водителей за транспортными средствами', 'textBody' : res[1] });
+				$("[data-datatype='date']").datepicker({
+					autoClose: true,
+					clearButton: true
+				}).mask('99.99.9999', {placeholder: "ДД.ММ.ГГГГ"});
+			});
+
 			/*var res = eval(result);
 			if(res[0] == -1) {
-				showModal('ModalWindow', 'При обработке запроса произошла ошибка!');
+				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
 			} else if(res[0] == 1) {
 				//showInterface('Закрепление водителей за транспортными средствами', res[1]);
 				showModalView('ModalWindowView', 'Закрепление водителей за транспортными средствами', res[1]);

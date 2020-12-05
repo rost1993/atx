@@ -24,12 +24,10 @@ class CarForDriver extends Model {
 
 		$role = 9;
 		
-		$sql = "SELECT b.fam, b.imj, b.otch, x1.text as kodrai_driver, x2.text as slugba_driver, a.ibd_arx as actual, a.id as id_fix, a.car_id, a.id_driver, "
+		$sql = "SELECT b.fam, b.imj, b.otch, a.ibd_arx as actual, a.id as id_fix, a.car_id, a.id_driver, "
 				. " a.number_doc_fix, a.date_doc_fix, x3.text as type_doc_fix, a.path_to_file, a.file_extension "
 				. " FROM " . $this->table . " a "
 				. " LEFT JOIN drivers b ON b.id=a.id_driver "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.type_doc_fix AND x3.nomer=14 "
 				. " WHERE a.car_id=" . $id_car;
 		
@@ -39,7 +37,7 @@ class CarForDriver extends Model {
 		if($role == 2)
 			$sql .= " AND a.dostup=1 ";
 		
-		$sql .= " ORDER BY b.kodrai, b.slugba, b.fam, b.imj, b.otch";
+		$sql .= " ORDER BY b.fam, b.imj, b.otch";
 
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -111,8 +109,6 @@ class CarForDriver extends Model {
 				. "<tr class='table-info'>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>№ п/п</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>ФИО</th>"
-						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Район</th>"
-						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Служба</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Основание</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Скорректировать</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Отправить в архив</th>"
@@ -124,8 +120,6 @@ class CarForDriver extends Model {
 				. "<tr class='table-info'>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>№ п/п</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>ФИО</th>"
-						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Район</th>"
-						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Служба</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Основание</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Скорректировать</th>"
 						. "<th style='vertical-align: middle; border: 1px solid gray;' scope='col'>Отправить в архив</th>"
@@ -165,8 +159,6 @@ class CarForDriver extends Model {
 					
 				if($type == 2) {
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['fam'] . " " . $data[$i]['imj'] .  " " . $data[$i]['otch'] . "</td>";
-					$html_actual .= "<td " . $style_border . ">" . $data[$i]['kodrai_driver'] . "</td>";
-					$html_actual .= "<td " . $style_border . ">" . $data[$i]['slugba_driver'] . "</td>";
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 					
 					if(($role > 1) && ($role != 4)) {
@@ -208,8 +200,6 @@ class CarForDriver extends Model {
 				
 				if($type == 2) {
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['fam'] . " " . $data[$i]['imj'] .  " " . $data[$i]['otch'] . "</td>";
-					$html_archve .= "<td " . $style_border . ">" . $data[$i]['kodrai_driver'] . "</td>";
-					$html_archve .= "<td " . $style_border . ">" . $data[$i]['slugba_driver'] . "</td>";
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 
 					if(($role > 1) && ($role != 4)) {
@@ -283,25 +273,20 @@ class CarForDriver extends Model {
 		$list_driver = "<table class='table table-bordered table-sm table-hover' id='ListFixedItem'>";
 		for($i = 0; $i < count($array_data); $i++) {
 			if($operation == 1)
-				$list_driver .= "<tr style='font-size: 15px;' data-check='0' id='" . $array_data[$i]['id'] . "'>"
+				$list_driver .= "<tr style='font-size: 13px;' data-check='0' id='" . $array_data[$i]['id'] . "'>"
 					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList'></td>"
-					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong> (" . $array_data[$i]['kodrai'] . ", " . $array_data[$i]['slugba'] . ")". "</td></tr>";
+					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong></td></tr>";
 			else
-				$list_driver .= "<tr style='font-size: 15px;' class='table-success' data-check='1' id='" . $array_data[$i]['id'] . "'>"
+				$list_driver .= "<tr style='font-size: 13px;' class='table-success' data-check='1' id='" . $array_data[$i]['id'] . "'>"
 					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList' checked disabled></td>"
-					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong> (" . $array_data[$i]['kodrai'] . ", " . $array_data[$i]['slugba'] . ")". "</td></tr>";
+					  . "<td id='textList'><strong>" . $array_data[$i]['fam'] . " " . $array_data[$i]['imj'] . " " . $array_data[$i]['otch'] . "</strong></td></tr>";
 		}
 		
 		$list_driver .= "</table>";
 
 		if(($html = $this->rendering_window_fix($list_driver, $nsyst, 1, $id_fix)) === false)
 			return false;
-		
-		/*$result = array();
-		array_push($result, 1);
-		array_push($result, $html);
-		
-		echo json_encode($result);*/
+
 		return [$html];
 	}
 
@@ -318,14 +303,12 @@ class CarForDriver extends Model {
 
 		$role = 9;
 		
-		$sql = "SELECT a.id, a.fam, a.imj, a.otch, x1.text as slugba, x2.text as kodrai FROM drivers a "
+		$sql = "SELECT a.id, a.fam, a.imj, a.otch FROM drivers a "
 					. " LEFT JOIN " . $this->table . " x ON x.id_driver=a.id AND x.car_id=" . $id_car
-					. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-					. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
 					. " WHERE x.id IS NULL ";
 
 		if($role == 1)
-			$sql .= " AND a.dostup=1 AND a.kodrai=" . $kodrai;
+			$sql .= " AND a.dostup=1 ";
 		
 		if($role == 2)
 			$sql .= " AND a.dostup=1 ";
@@ -347,16 +330,14 @@ class CarForDriver extends Model {
 
 		$role = 9;
 
-		$sql = "SELECT a.id as id_fix, x1.text as slugba, x2.text as kodrai, b.fam, b.imj, b.otch, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
+		$sql = "SELECT a.id as id_fix, b.fam, b.imj, b.otch, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
 				. " a.number_doc_fix, a.date_doc_fix, a.type_doc_fix "
 				. " FROM " . $this->table . " a "
 				. " LEFT JOIN drivers b ON b.id=a.id_driver "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.kodrai AND x2.nomer=11 "
 				. " WHERE a.id=" . $id_fix . " AND a.id_driver=" . $id_driver;
 		
 		if($role == 1)
-			$sql .= " AND b.dostup=1 AND b.kodrai=" . $kodrai;
+			$sql .= " AND b.dostup=1 ";
 		if($role == 2)
 			$sql .= " AND b.dostup=1 ";
 
@@ -381,7 +362,7 @@ class CarForDriver extends Model {
 			$name_form_fix = 'Список ТС не закрепленных за данным водителем';
 		
 		if($id_fix != -1) {
-			if(($array_data = $this->get($id_fix)) === false)
+			if(($array_data = $this->get(['id' => $id_fix])) === false)
 				return false;
 
 			$type_doc_fix = $array_data[0]['type_doc_fix'];
@@ -399,18 +380,6 @@ class CarForDriver extends Model {
 				$name_form_fix = 'ТС закрепленный за данным водителем';
 			}
 		}
-		
-		/*if(($array_data = $car_for_driver->get_spr(14)) === false)
-			return false;
-		
-		// Формируем список оснований для закрепления
-		$list_type_fix_doc = "<option value='0'></option>";
-		for($i = 0; $i < count($array_data); $i++) {
-			if($type_doc_fix == $array_data[$i]['kod'])
-				$list_type_fix_doc .= "<option value='" . $array_data[$i]['kod'] . "' selected>" . $array_data[$i]['text'] . "</option>";
-			else
-				$ .= "<option value='" . $array_data[$i]['kod'] . "'>" . $array_data[$i]['text'] . "</option>";
-		}*/
 
 		$list_type_fix_doc = Directory::get_directory(14, $type_doc_fix);
 
@@ -497,5 +466,149 @@ class CarForDriver extends Model {
 		$html .= "<div class='col-sm-12 text-center'><button class='btn btn-success' id='saveFixCarForDriver' style='margin: 10px;' data-nsyst='" . $nsyst_temp . "' data-fix='" . $id_fix . "' data-type-save='" . $type . "' data-ibd-arx='" . $ibd_arx . "'><span class='fa fa-check'></span>&nbsp;Сохранить изменения</button></div>";
 
 		return [$html];
+	}
+
+	// Отрисовка окна закрепления водителей за ТС
+	public function rendering_window_cars_for_driver($post) {
+		if(empty($post['nsyst']) || empty($post['operation']))
+			return false;
+
+		$nsyst = addslashes($post['nsyst']);		// ID водителя
+		$operation = addslashes($post['operation']);
+		$array_data = array();
+		
+		$id_fix = -1;
+		
+		if($operation == 1) {
+			if(($array_data = $this->get_list_cars_no_fixed($nsyst)) === false)
+				return false;
+		} else {
+			if(empty($post['fix']))
+				return false;
+			$id_fix = addslashes($post['fix']);
+			
+			if(($array_data = $this->get_information_fixed_car($id_fix, $nsyst)) === false)
+				return false;
+		}
+		
+		// Формируем список ТС
+		$list_car = "<table class='table table-bordered table-sm table-hover' id='ListFixedItem'>";
+		for($i = 0; $i < count($array_data); $i++) {
+			if($operation == 1)
+				$list_car .= "<tr style='font-size: 15px;' data-check='0' id='" . $array_data[$i]['id'] . "'>"
+					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList'></td>"
+					  . "<td id='textList' class='text-left'><strong>" . $array_data[$i]['gos_znak'] . "</strong> " . $array_data[$i]['markats'] . " " . $array_data[$i]['modelts'] . "</td></tr>";
+			else
+				$list_car .= "<tr style='font-size: 15px;' data-check='1' class='table-success' id='" . $array_data[$i]['id'] . "'>"
+					  . "<td class='text-center'><input type='checkbox' id='checkboxTextList' checked disabled></td>"
+					  . "<td id='textList'><strong>" . $array_data[$i]['gos_znak'] . "</strong> " . $array_data[$i]['markats'] . " " . $array_data[$i]['modelts'] . "</td></tr>";
+		}
+		$list_car .= "</table>";
+
+		if(($html = $this->rendering_window_fix($list_car, $nsyst, 2, $id_fix)) === false)
+			return false;
+
+		return [$html];
+	}
+
+	// Функция формирования списка ТС, которые не закреплены за данным водителем
+	public function get_list_cars_no_fixed($id_driver) {
+		if(empty($id_driver))
+			return false;
+		
+		/*Session::start();
+		$role = Session::get('role');
+		$kodrai = Session::get('slugba');
+		Session::commit();*/
+
+		$role = 9;
+		
+		$sql = "SELECT a.id, x1.text as markats, x2.text as modelts, a.gos_znak FROM cars a "
+				   . " LEFT JOIN " . $this->table . " x ON x.car_id=a.id AND x.ibd_arx=1 AND x.id_driver=" . $id_driver
+				   . " LEFT JOIN s2i_klass x1 ON a.marka=x1.kod AND x1.nomer=3 "
+				   . " LEFT JOIN s2i_klass x2 ON a.model=x2.kod AND x2.nomer=4 "
+				   . " WHERE x.id IS NULL ";
+		
+		if($role == 1)
+			$sql .= " AND a.dostup=1 ";
+		
+		if($role == 2)
+			$sql .= " AND a.dostup=1 ";
+		
+		$sql .= " ORDER BY a.id ";
+	   
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
+
+	// Функция подгрузи информации ТС, которое закреплено за водителем
+	public function get_information_fixed_car($id_fix, $id_car) {
+		if(empty($id_fix) || empty($id_car))
+			return false;
+		
+		/*Session::start();
+		$role = Session::get('role');
+		$kodrai = Session::get('slugba');
+		Session::commit();*/
+
+		$role = 9;
+		
+		$sql = "SELECT a.id as id_fix, x1.text as markats, x2.text as modelts, b.gos_znak, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
+				. " a.number_doc_fix, a.date_doc_fix, a.type_doc_fix "
+				. " FROM " . $this->table . " a "
+				. " LEFT JOIN cars b ON b.id=a.car_id "
+				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.marka AND x1.nomer=3 "
+				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.model AND x2.nomer=4 "
+				. " WHERE a.id=" . $id_fix . " AND a.car_id=" . $id_car;
+		
+		if($role == 1)
+			$sql .= " AND b.dostup=1 ";
+		if($role == 2)
+			$sql .= " AND b.dostup=1 ";
+		   
+		if(($data = DB::query($sql)) === false)
+			return false;
+		return $data;
+	}
+
+	// Процедура сохранения водительских удостоверений
+	public function save_car_for_driver($post) {
+		if(empty($post['nsyst']) || empty($post['JSON']) || empty($post['arrayItemFix']) || empty($post['typeSave']))
+			return false;
+
+		$type_save = addslashes($post['typeSave']);	// Тип сохранения: 1 - закрепить водителей за ТС, 2 - закрепить ТС за водителем
+		$temp_array = array();	// Временный массив, в который собираем сведения
+		$json_array = json_decode($post['JSON']);	// Декодированный массив формата JSON с массивом параметров для вставки
+		
+		// Формируем новый массив из формата stdClass  формат [поле] => { массив параметров }
+		foreach($json_array as $field => $array_field_item) {
+			$temp_array[$field] = $array_field_item;
+		}
+		
+		// Добавляем к полученному массиву ID водителя или ТС для вставки в базу данных
+		$array_item_fix = json_decode($post['arrayItemFix']);	
+		foreach($array_item_fix as $item_value) {
+			if($type_save == 1)
+				$temp_array['id_driver'] = array("value" => $item_value, "type" => "number");
+			else
+				$temp_array['car_id'] = array("value" => $item_value, "type" => "number");
+
+			// Формируем результирующий массив для сохранения
+			$result_save_array = array('JSON' => json_encode($temp_array), 'nsyst' => addslashes($post['nsyst']));
+
+			// Выполняем процедуру сохранения
+			if(($id = $this->save($result_save_array)) === false)
+				return false;
+			
+			$msg_error = $file_name = '';
+
+			if(!empty($_FILES)) {
+				if($this->save_file($_FILES, $id) === false)
+					return false;
+			}
+		}
+		
+		return true;
 	}
 }
