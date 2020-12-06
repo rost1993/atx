@@ -748,8 +748,8 @@
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>15. РЕМОНТ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
-								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='7' title="Открыть список всех ремонтов"><span class="fa fa-search">&nbsp</span>Список ремонтов</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='repairs' title='Добавить ремонт к транспортному средству'><span class='fa fa-plus'>&nbsp</span>Добавить ремонт</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='7' title="Открыть список всех ремонтов"><span class="fa fa-search">&nbsp;</span>Список ремонтов</button>
+								<a class="btn btn-sm btn-outline-info" href="repair?add_car=<?= $id; ?>" target="_blank" title='Добавить ремонт к транспортному средству'><span class="fa fa-plus">&nbsp;</span>Добавить ремонт</a>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
@@ -762,11 +762,11 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>16. ДТП</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>16. ДТП</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
-								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='1' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp</span>Список ДТП</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='dtp' title='Добавить ДТП к транспортному средству'><span class='fa fa-plus'>&nbsp</span>Добавить ДТП</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='1' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
+								<a class="btn btn-sm btn-outline-info" href="dtp?add_car=<?= $id; ?>" target="_blank" title='Добавить ДТП к транспортному средству'><span class="fa fa-plus">&nbsp;</span>Добавить ДТП</a>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
@@ -782,8 +782,8 @@
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeventeen" aria-controls="collapseSeventeen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>17. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
-								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='11' data-type='1' title=""><span class="fa fa-search">&nbsp</span>Список адм. правонарушений</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='addcar' data-page='adm-offense' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp</span>Добавить адм. правонарушение</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='11' data-type='1' title=""><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
+								<a class="btn btn-sm btn-outline-info" href="adm?add_car=<?= $id; ?>" target="_blank" title='Добавить адм. правонарушение'><span class="fa fa-plus">&nbsp;</span>Добавить адм. правонарушение</a>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">

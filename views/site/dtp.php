@@ -11,11 +11,25 @@
 	$date_recovery_cars = (empty($date_recovery_cars)) ? '' : IcKomiApp\core\Functions::convertToDate($date_recovery_cars);
 	$recovery_committing = (empty($recovery_committing)) ? '' : $recovery_committing;
 
-	$id_car = (empty($id_car)) ? '' : $id_car;
-	$id_car_select = Directory::get_directory_car($id_car);
+	if(!empty($id_car)) {
+		$id_car = (empty($id_car)) ? '' : $id_car;
+		$id_car_select = Directory::get_directory_car($id_car);
+	} else if(!empty($add_car)) {
+		$add_car = (empty($add_car)) ? '' : $add_car;
+		$id_car_select = Directory::get_directory_car($add_car);
+	} else {
+		$id_car_select = Directory::get_directory_car();
+	}
 
-	$id_driver = (empty($id_driver)) ? '' : $id_driver;
-	$id_driver_select = Directory::get_directory_driver($id_driver);
+	if(!empty($id_driver)) {
+		$id_driver = (empty($id_driver)) ? '' : $id_driver;
+		$id_driver_select = Directory::get_directory_driver($id_driver);
+	} else if(!empty($add_driver)) {
+		$add_driver = (empty($add_driver)) ? '' : $add_driver;
+		$id_driver_select = Directory::get_directory_driver($add_driver);
+	} else {
+		$id_driver_select = Directory::get_directory_driver();
+	}
 
 	$offender = (empty($offender)) ? '' : $offender;
 	$offender_checkbox = (empty($offender)) ? '' : ' checked ';

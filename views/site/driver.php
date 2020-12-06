@@ -387,7 +387,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='2' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='adddriver' data-page='dtp' title='Добавить ДТП к водителю'><span class='fa fa-plus'>&nbsp;</span>Добавить ДТП</button>" : ""; ?>
+								<a class="btn btn-sm btn-outline-info" href="dtp?add_driver=<?= $id; ?>" target="_blank" title='Добавить ДТП'><span class="fa fa-plus">&nbsp;</span>Добавить ДТП</a>
 							</div>
 						</div>
 
@@ -405,7 +405,7 @@
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="11" data-type='2' title="Открыть список всех адм. правонарушений"><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnOpenPageModule' data-param='adddriver' data-page='adm-offense' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp;</span>Добавить адм. правонарушение</button>" : ""; ?>
+								<a class="btn btn-sm btn-outline-info" href="adm?add_driver=<?= $id; ?>" target="_blank" title='Добавить адм. правонарушение'><span class="fa fa-plus">&nbsp;</span>Добавить адм. правонарушение</a>
 							</div>
 						</div>
 

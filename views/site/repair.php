@@ -2,7 +2,6 @@
 	use IcKomiApp\widgets\Directory;
 
 	$id = (empty($id)) ? '' : $id;
-	$id_car = (empty($id_car)) ? '' : $id_car;
 	$car_mileage = (empty($car_mileage)) ? '' : $car_mileage;
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
 	$date_start_repair = (empty($date_start_repair)) ? '' : IcKomiApp\core\Functions::convertToDate($date_start_repair);
@@ -10,7 +9,6 @@
 	$prim_repair = (empty($prim_repair)) ? '' : $prim_repair;
 	$change_oil = (empty($change_oil)) ? '' : $change_oil;
 	$price_repair = (empty($price_repair)) ? '' : $price_repair;
-	$id_car = (empty($id_car)) ? '' : $id_car;
 
 	$change_oil = (empty($change_oil)) ? '' : $change_oil;
 	$change_oil_checkbox = ($change_oil == 0) ? '' : ' checked ';
@@ -18,7 +16,16 @@
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
 
 	$org_repair_select = Directory::get_directory(18, $org_repair);
-	$car_select = Directory::get_directory_car($id_car);
+
+	if(!empty($id_car)) {
+		$id_car = (empty($id_car)) ? '' : $id_car;
+		$car_select = Directory::get_directory_car($id_car);
+	} else if(!empty($add_car)) {
+		$add_car = (empty($add_car)) ? '' : $add_car;
+		$car_select = Directory::get_directory_car($add_car);
+	} else {
+		$car_select = Directory::get_directory_car();
+	}
 
 	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
 

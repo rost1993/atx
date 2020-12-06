@@ -10,7 +10,12 @@ class DtpController extends Controller {
 
 	public function dtpAction() {
 		if(!empty($_GET)) {
-			$this->getCard();
+			if(!empty($_GET['add_car']))
+				$this->view->render([ 'add_car' => addslashes($_GET['add_car']) ]);
+			else if(!empty($_GET['add_driver']))
+				$this->view->render([ 'add_driver' => addslashes($_GET['add_driver']) ]);
+			else
+				$this->getCard();
 		} else if(!empty($_POST)) {
 			if($_POST['option'] == 'save')
 				$this->saveCard();

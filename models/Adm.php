@@ -469,7 +469,7 @@ class Adm extends Model {
 		}
 		
 		for($i = 0; $i < count($data); $i++) {
-			$page = "http://" . $_SERVER['HTTP_HOST'] . "/pages/adm-offense.php?id=" . $data[$i]['id'];
+			$page = "http://" . $_SERVER['HTTP_HOST'] . "/adm?id=" . $data[$i]['id'];
 			$oplat_adm = ($data[$i]['oplat_adm'] == 1) ? 'ДА' : 'НЕТ';
 			$html .= "<tr><td " . $style_border . ">" . ($i+1) . "</td>";
 			
