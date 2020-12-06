@@ -32,14 +32,6 @@ $(document).ready(function() {
 		}
 	});
 
-	/*$('.timepicker-here').datepicker({
-		dateFormat: '',
-		timepicker: true,
-		onlyTimepicker: true,
-		autoClose: true,
-		clearButton: true
-	});*/
-
 	$('.btn-cars-old-gos-znak').popover({
 		trigger: 'focus'
 	});
@@ -752,11 +744,9 @@ $(document).ready(function() {
 	$('.modal-ic-komi-view').on('click', '#btnSaveFirstTestimonySpeedometers', function() {
 		var query = 'option=save_first_testimony&nsyst=' + $(this).data('nsyst') + '&car=' + $(this).data('idCar') + '&speedometer=' + $(this).data('idSpeedometer');
 		query += '&value=' + $(this).closest('tr').find('.inputValueFirstTestimonySpeedometer').val();
-		alert(query);
 		showDownloader(true);
 		AjaxQuery('POST', 'speedometer', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, null, function(res) {
 				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
 			});
@@ -898,7 +888,7 @@ $(document).ready(function() {
 	});
 
 	// Обработчик нажатия на кнопку переместить/восстановить из архива сведений о закреплении
-	$('#ModalWindowView').on('click', '#btnMoveCarForDriversArchive', function() {
+	$('.modal-ic-komi-view').on('click', '#btnMoveCarForDriversArchive', function() {
 		var item = $(this).closest('tr');
 		var operation = $(this).data('operation');
 		$(this).data('operation', (operation == 1) ? 2 : 1);
@@ -906,24 +896,20 @@ $(document).ready(function() {
 		AjaxQuery('POST', 'car_for_driver', 'option=move_archive&nsyst=' + $(this).data('nsyst') + '&operation=' + operation, function(result) {
 			showDownloader(false);
 			handlerAjaxResult(result, null, function(res) {
-				if(operation == 1) {
-					$('#ActualCarForDriver').append($(item));
-				} else {
-					$('#ArchiveCarForDriver').append($(item));
-				}
+				$('.modal-ic-komi-view').ModalViewIcKomi({ 'method' : 'hide' });
 			});
-			/*var res = eval(result);
-			if(res[0] == -1) {
-				showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
-			} else if(res[0] == 1) {
-				if(operation == 1) {
-					$('#ActualCarForDriver').append($(item));
-				} else {
-					$('#ArchiveCarForDriver').append($(item));
-				}
-			} else {
-				showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-			}*/
+		});
+	});
+
+	// Обработчик нажатия на кнопку удалить сведения о закреплении
+	$('.modal-ic-komi-view').on('click', '#btnRemoveCarForDrive', function() {
+		var item = $(this).closest('tr');
+		showDownloader(true);
+		AjaxQuery('POST', 'car_for_driver', 'option=remove&nsyst=' + $(this).data('nsyst'), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				$(item).remove();
+			});
 		});
 	});
 });

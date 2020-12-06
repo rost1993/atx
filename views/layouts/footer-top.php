@@ -1,7 +1,7 @@
 <?php ?>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: #000033;">
-	<a class="navbar-brand" href="/" title="МВД по РК">
-		<img style="max-width: 60px; margin-top: -7px;" src="assets/images/brand.png" alt="МВД по РК">
+	<a class="navbar-brand" href="/" title="Автохозяйство">
+		<img style="max-width: 60px; margin-top: -7px;" src="assets/images/brand.png" alt="Автохозяйство">
 	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>

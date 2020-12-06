@@ -37,12 +37,12 @@ class CarForDriverController extends Controller {
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['remove']) {
+			} else if($_POST['option'] == 'remove') {
 				if((new CarForDriver())->remove($_POST) === false)
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
-			} else if($_POST['move_archive']) {
+			} else if($_POST['option'] == 'move_archive') {
 				if((new CarForDriver())->move_to_archive($_POST) === false)
 					echo json_encode([-1]);
 				else

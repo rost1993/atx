@@ -613,9 +613,12 @@ class CarForDriver extends Model {
 	}
 
 	// Функция перевода в архив сведений о закреплении
-	public function move_to_archive($id_fix, $operation) {
-		if(!ServiceFunction::check_number($id_fix) || !ServiceFunction::check_number($operation))
+	public function move_to_archive($post) {
+		if(empty($post['nsyst']) || empty($post['operation']))
 			return false;
+
+		$operation = addslashes($post['operation']);
+		$id_fix = addslashes($post['nsyst']);
 		
 		$archive = 1;	// Значение архива
 		if($operation == 1)
@@ -623,11 +626,9 @@ class CarForDriver extends Model {
 		else
 			$archive = 2;
 		
-		$sqlQuery = "UPDATE " . $this->table . " SET ibd_arx=" . $archive . " WHERE id=" . $id_fix;
-		$mysql = new mysqlRun();		   
-		if(!$mysql->mysqlQuery($sqlQuery, mysqlRun::MYSQL_INSERT_OR_UPDATE))
+		$sql = "UPDATE " . $this->table . " SET ibd_arx=" . $archive . " WHERE id=" . $id_fix;		   
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
 			return false;
-		
 		return true;
 	}
 }
