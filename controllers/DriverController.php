@@ -12,12 +12,15 @@ class DriverController extends Controller {
 		if(!empty($_GET)) {
 			$this->getCard();
 		} else if(!empty($_POST)) {
-			if($_POST['option'] == 'save')
+			if($_POST['option'] == 'save') {
 				$this->saveCard();
-			else if($_POST['option'] == 'remove')
+			} else if($_POST['option'] == 'remove') {
 				$this->removeCard();
-			else if($_POST['optsio'] == 'archive')
+			} else if($_POST['option'] == 'move_archive') {
 				$this->moveArchiveCard();
+			} else if($_POST['option'] == 'security') {
+				$this->securityCard();
+			}
 		} else {
 			$this->view->render();
 		}
@@ -59,11 +62,11 @@ class DriverController extends Controller {
 		Save card
 	*/
 	public function saveCard() {
-		$id = $message_error = '';
-		if(!(new Driver())->save($_POST, $id, $message_error)) {
-			echo json_encode(array(-2, $message_error));
+		$id = '';
+		if(($id = (new Driver())->save($_POST)) === false) {
+			echo json_encode([-1]);
 		} else {
-			echo json_encode(array(1, $id));
+			echo json_encode([1, $id]);
 		}
 	}
 
@@ -78,6 +81,18 @@ class DriverController extends Controller {
 		Move archive card
 	*/
 	public function moveArchiveCard() {
-		return true;
+		if((new Driver())->move_to_archive($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
+	}
+
+	public function securityCard() {
+		if((new Driver())->lock_unlock_driver($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
 	}
 }

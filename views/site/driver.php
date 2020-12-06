@@ -34,6 +34,28 @@
 	$file_vu_tractor = (empty($file_vu_tractor)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_vu_tractor, $ext_file_vu_tractor);
 	$file_dopog = (empty($file_dopog)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_dopog, $ext_file_dopog);
 
+	$dostup = (empty($dostup)) ? '' : $dostup;
+	$text_btn_dostup = $span_btn_dostup = $badge_dostup = '';
+	if($dostup == 1) {
+		$text_btn_dostup = 'Защитить водителя';
+		$span_btn_dostup = 'fa fa-lock';
+		$badge_dostup = '';
+	} else {
+		$text_btn_dostup = 'Снять защиту с водителя';
+		$span_btn_dostup = 'fa fa-unlock';
+		$badge_dostup = "<span class='badge badge-pill badge-danger' id='badgeDriversSecurity'><span class='fa fa-lock'></span>&nbsp;Доступ к водителю ограничен</span>";
+	}
+
+	$ibd_arx = (empty($ibd_arx)) ? '' : $ibd_arx;
+	$text_btn_archive = $badge_archive = '';
+	if($ibd_arx == 1) {
+		$text_btn_archive = 'Перевести в архив';
+		$badge_archive = '';
+	} else {
+		$text_btn_archive = 'Восстановить из архива';
+		$badge_archive = "<span class='badge badge-pill badge-warning' id='badgeDriverArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
+	}
+
 	// Обработка категорий ВУ
 	$strKategVU = $strKategVUTractor = $strKategVUBoat = '';
 			
@@ -116,7 +138,7 @@
 				<div class='card-header' id="cardCarsHeader">
 					<h4>Информация о водителе</h4>
 					<div id="nsyst" style="display: none;"><?= $id; ?></div>
-					<div id="cardDriversHeaderServiceBadge"></div>
+					<div id="cardDriversHeaderServiceBadge"><?= $badge_dostup; ?><?= $badge_archive; ?></div>
 				</div>
 				
 				<div class="card-body atx-form">
@@ -165,7 +187,7 @@
 										<label for="mob_phone" class="text-muted" style="font-size: 13px;"><strong>Контактный телефон</strong></label>
 									</div>
 									<div class="col col-sm-3 mb-1">
-										<input type="text" class="form-control form-control-sm black-text" id="mob_phone" maxlength="20" data-mandatory="true" data-message-error="Заполните обязательное поле: Контактный телефон" data-datatype="char" placeholder="+7(999)-999-99-99" value="<?= $mob_phone; ?>">
+										<input type="text" class="form-control form-control-sm black-text" id="mob_phone" maxlength="20" data-datatype="char" placeholder="+7(999)-999-99-99" value="<?= $mob_phone; ?>">
 									</div>
 								</div>
 							</div>
@@ -177,8 +199,9 @@
 				<div class='card-footer card-header'><?php
 					if(($role > 1) && ($role != 4)) {
 						echo "<button type='button' class='btn btn-success btn-save' id='saveDrivers' title='Сохранить информацию о водителе' style='margin: 3px;'><span class='fa fa-check'></span>&nbsp;Сохранить водителя</button>";
-						echo "<button type='button' class='btn btn-primary' id='lockDrivers' title='Изменить уровень видимости водителя' style='margin: 3px;'><span class='fa fa-lock'></span>&nbsp;Защитить водителя</button>";
-						echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='2' data-archive='1'><span class='fa fa-folder'>&nbsp;</span>Перевести в архив</button>";
+						echo "<button type='button' class='btn btn-primary' id='lockDrivers' title='Изменить уровень видимости водителя' style='margin: 3px;'><span class='" . $span_btn_dostup . "'></span>&nbsp;" . $text_btn_dostup . "</button>";
+
+						echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='2'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive ."</button>";
 						
 						echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownDeleteDrivers' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить водителя' style='margin: 3px;'><span class='fa fa-remove'></span>&nbsp;Удалить водителя</button>
 						<div class='dropdown-menu' aria-labelledby='dropdownDeleteDrivers'>

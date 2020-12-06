@@ -25,13 +25,6 @@ class Driver extends Model {
 			. " LEFT JOIN s2i_klass c6 ON c6.kod={table}.kodrai AND c6.nomer=11 "
 			. " WHERE {table}.id={id} ";
 
-	protected $field = ['fam' => ['type' => 'char', 'maxlength' => '150'],
-						'imj' =>  ['type' => 'char', 'maxlength' => '150'],
-						'otch' =>  ['type' => 'char', 'maxlength' => '150'],
-						'dt_rojd' =>  ['type' => 'date'],
-						'mob_phone' =>  ['type' => 'char', 'maxlength' => '20']
-					];
-
 	public function get_list($post = []) {
 		/*Session::start();
 		$role = Session::get('role');
@@ -499,7 +492,35 @@ class Driver extends Model {
 		return array($list_car_for_driver, $list_dtp, $list_adm, $list_tractor_vu);
 	}
 
-	
+	// Функция перемещения/восстановления из архива
+	//public function move_to_archive($nsyst, $archive) {
+	public function move_to_archive($post) {
+		if(empty($post['nsyst']))
+			return false;
+
+		$nsyst = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET ibd_arx=MOD(ibd_arx, 2)+1 WHERE id=" . $nsyst;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
+
+	// Функция блокирования/разблокирования доступа к водителю
+	public function lock_unlock_driver($post) {
+		if(empty($post['nsyst']))
+			return -1;
+		
+		/*if(!User::check_level_user(8))
+			return 0;*/
+		
+		$id = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET dostup=MOD(dostup, 2)+1 WHERE id=" . $id;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
 
 	
 }
