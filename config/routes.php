@@ -5,11 +5,6 @@ return [
 		'controller' => 'main',
 		'action' => 'main'
 	],
-	
-	'contacts' => [
-		'controller' => 'main',
-		'action' => 'contacts'
-	],
 
 	'login' => [
 		'controller' => 'login',

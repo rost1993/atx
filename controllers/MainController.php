@@ -11,10 +11,6 @@ class MainController extends Controller {
 		$this->view->render();
 	}
 
-	public function contactsAction() {
-		$this->view->render();
-	}
-
 	public function editAction() {
 		$this->view->render();
 	}
@@ -22,8 +18,4 @@ class MainController extends Controller {
 	public function editDirectoryAction() {
 		$this->view->render();
 	}
-
-	public function noticeEventsAction() {
-		$this->view->render();
-	} 
 }
