@@ -10,7 +10,7 @@
 <body>
 	<?php FooterTop::getFooter(); ?>
 	<div class="container-fluid starter-template">
-		<div id='not-found'> </div>
+		<div class="not-found-2 text-center">Ошибка 404: Страница не найдена</div>
 	</div>
 	<?php FooterBottom::getFooter(); ?>
 </body>

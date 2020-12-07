@@ -10,7 +10,7 @@
 <body>
 	<?php FooterTop::getFooter(); ?>
 	<div class="container-fluid starter-template">
-		<div id='access-denied'> </div>
+		<div class='access-denied-2 text-center'>Ошибка 403: Доступ к данной странице заблокирован</div>
 	</div>
 	<?php FooterBottom::getFooter(); ?>
 </body>

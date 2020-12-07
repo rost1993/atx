@@ -37,7 +37,7 @@ return [
 	],
 
 	'notice_events' => [
-		'controller' => 'main',
+		'controller' => 'noticeEvents',
 		'action' => 'noticeEvents'
 	],
 

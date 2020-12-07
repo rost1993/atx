@@ -1114,4 +1114,21 @@ $(document).ready(function() {
 			});
 		}, true);
 	});
+
+	$('#btnFilterNotice').click(function() {
+		var query = 'option=search&status=' + $('#selectNoticeStatus').val() + '&subsystem=' + $('#selectNoticeSubsystem').val();
+		showDownloader(true);
+		AjaxQuery('POST', 'notice_events', query, function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				$('.result-list-atx').empty();
+				$('.result-list-atx').html(res[1]);
+			});
+		});
+	});
+
+	$('#btnNoticeExcel').click(function() {
+		alert(2);
+	});
+
 });
