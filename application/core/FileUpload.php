@@ -33,6 +33,7 @@ class FileUpload {
 	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
 	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
 	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
+	const CLASS_CARS_CALIBRATION = 'IcKomiApp\models\Calibration';
 	
 	// Функция очистки содержимого директорий от файлов
 	private function clearPath($path) {
@@ -157,6 +158,10 @@ class FileUpload {
 
 			case self::CLASS_DRIVERS_DOPOG:
 				$path_to_file .= 'drivers/' . $id_main_object . '/dopog/' . $id_object . '/';
+				break;
+
+			case self::CLASS_CARS_CALIBRATION:
+				$path_to_file .= 'cars/' . $id_main_object . '/calibration/' . $id_object . '/';
 				break;
 			
 			default:
@@ -307,6 +312,10 @@ class FileUpload {
 
 			case self::CLASS_DRIVERS_DOPOG:
 				$table = 'drivers_dopog';
+				break;
+
+			case self::CLASS_CARS_CALIBRATION:
+				$table = 'car_calibration';
 				break;
 
 			default:

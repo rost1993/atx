@@ -180,6 +180,9 @@ $(function () {
 				case 17:
 					script = 'drivers_dopog';
 					break;
+				case 18:
+					script = 'calibration';
+					break;
 			}
 
 			showDownloader(true);

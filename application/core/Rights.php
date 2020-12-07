@@ -12,7 +12,7 @@ class Rights {
 		'0' => ['', 'login'],
 		'1' => ['', 'logout', 'car', 'car_search', 'driver', 'driver_search', 'repair', 'repair_search', 'dtp', 'dtp_search', 'adm', 'adm_search', 'car_document', 'edit', 'notice_events'],
 		'2' => ['', 'logout', 'car', 'car_search', 'driver', 'driver_search', 'repair', 'repair_search', 'dtp', 'dtp_search', 'adm', 'adm_search', 'car_document', 'edit', 'notice_events'],
-		'9' => ['', 'logout', 'car', 'car_search', 'driver', 'driver_search', 'repair', 'repair_search', 'dtp', 'dtp_search', 'adm', 'adm_search', 'car_document', 'edit', 'edit_directory', 'admin_panel', 'notice_events', 'cranvu', 'vu', 'car_document', 'car_for_driver', 'accessories', 'wheel', 'speedometer', 'osago', 'pts', 'certificate_registration', 'drivers_dopog', 'cars_dopog', 'technical_inspection', 'tractor_vu'],
+		'9' => ['', 'logout', 'car', 'car_search', 'driver', 'driver_search', 'repair', 'repair_search', 'dtp', 'dtp_search', 'adm', 'adm_search', 'car_document', 'edit', 'edit_directory', 'admin_panel', 'notice_events', 'cranvu', 'vu', 'car_document', 'car_for_driver', 'accessories', 'wheel', 'speedometer', 'osago', 'pts', 'certificate_registration', 'drivers_dopog', 'cars_dopog', 'technical_inspection', 'tractor_vu', 'calibration'],
 	];
 
 	// Функция проверки страницы, для отрисовки пользователем

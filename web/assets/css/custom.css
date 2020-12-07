@@ -22,6 +22,10 @@
 	overflow-y: scroll;
 }
 
+.fs-13 {
+	font-size: 13px;
+}
+
 .prokrutka_table {
 	overflow: scroll;
 	overflow-x: scroll;

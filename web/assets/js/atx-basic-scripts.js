@@ -162,6 +162,12 @@ $(document).ready(function() {
 			scripts = 'cars_dopog';
 			titleForm = 'Список свидетельство ДОПОГ';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 17) {
+			scripts = 'calibration';
+			titleForm = 'Список калибровок (экспертиз)';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else {
+			return;
 		}
 
 		showDownloader(true);
@@ -268,6 +274,13 @@ $(document).ready(function() {
 			scripts = 'cars_dopog';
 			action = 16;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 17) {
+			titleForm = 'Калибровка (экспертиза)';
+			scripts = 'calibration';
+			action = 17;
+			query = 'option=get_window&nsyst=-1';
+		} else {
+			return;
 		}
 
 		showDownloader(true);
@@ -351,6 +364,12 @@ $(document).ready(function() {
 			scripts = 'cars_dopog';
 			titleForm = 'Свидетельство ДОПОГ';
 			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 17) {
+			scripts = 'calibration';
+			titleForm = 'Калибровка (экспертиза)';
+			query = 'option=get_window&nsyst=' + id;
+		} else {
+			return;
 		}
 		
 		showDownloader(true);
@@ -376,7 +395,6 @@ $(document).ready(function() {
 	});
 
 	// Обработчик нажатия на кнопку сохранить объект
-	//$('.modal-ic-komi-service-interface').click(function(result) {
 	$('.modal-ic-komi-service-interface').on('click', '#saveModalWindowButton',function() {
 		if($(this).data('id') == 0 || $(this).data('id') === undefined) {
 			$('#error-message').empty();
@@ -388,7 +406,6 @@ $(document).ready(function() {
 		}
 		var PATH_TO_SCRIPT;
 		var arrayData = {};
-		//var query = '';
 		var query = new FormData();
 		var script = '';
 		
@@ -588,6 +605,20 @@ $(document).ready(function() {
 			query.append('option', 'save');
 			script = 'cars_dopog';
 		}
+
+		if($(this).data('action') == 17) {
+			var resultCollectionsItems = getArrayItemsForms('#formCalibration input, #formCalibration select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'calibration';
+		}
 		
 		$.each(filesList, function(key, value) {
 			query.append(key, value);
@@ -665,6 +696,11 @@ $(document).ready(function() {
 		} else if(item == 16) {
 			scripts = 'cars_dopog';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 17) {
+			scripts = 'calibration';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else {
+			return;
 		}
 		
 		AjaxQuery('POST', scripts, query, function(result) {

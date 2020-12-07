@@ -36,10 +36,6 @@ return [
 		'action' => 'noticeEvents'
 	],
 
-
-
-
-
 	'car' => [
 		'controller' => 'car',
 		'action' => 'car'
@@ -158,5 +154,10 @@ return [
 	'cars_dopog' => [
 		'controller' => 'carsDopog',
 		'action' => 'carsDopog'
+	],
+
+	'calibration' => [
+		'controller' => 'calibration',
+		'action' => 'calibration'
 	],
 ];
