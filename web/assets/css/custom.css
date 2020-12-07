@@ -50,6 +50,12 @@
 	margin: 10px;
 }
 
+.alert-yellow {
+  color: #856404;
+  background-color: #ffff00;
+  border-color: #000000;
+}
+
 .my_badge {
 	background: red;
 }

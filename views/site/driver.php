@@ -34,24 +34,24 @@
 	$file_vu_tractor = (empty($file_vu_tractor)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_vu_tractor, $ext_file_vu_tractor);
 	$file_dopog = (empty($file_dopog)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_dopog, $ext_file_dopog);
 
-	$dostup = (empty($dostup)) ? '' : $dostup;
+	$dostup = (empty($dostup)) ? 1 : $dostup;
 	$text_btn_dostup = $span_btn_dostup = $badge_dostup = '';
 	if($dostup == 1) {
 		$text_btn_dostup = 'Защитить водителя';
 		$span_btn_dostup = 'fa fa-lock';
 		$badge_dostup = '';
-	} else {
+	} else if($dostup == 2){
 		$text_btn_dostup = 'Снять защиту с водителя';
 		$span_btn_dostup = 'fa fa-unlock';
 		$badge_dostup = "<span class='badge badge-pill badge-danger' id='badgeDriversSecurity'><span class='fa fa-lock'></span>&nbsp;Доступ к водителю ограничен</span>";
 	}
 
-	$ibd_arx = (empty($ibd_arx)) ? '' : $ibd_arx;
+	$ibd_arx = (empty($ibd_arx)) ? 1 : $ibd_arx;
 	$text_btn_archive = $badge_archive = '';
 	if($ibd_arx == 1) {
 		$text_btn_archive = 'Перевести в архив';
 		$badge_archive = '';
-	} else {
+	} else if($ibd_arx == 2) {
 		$text_btn_archive = 'Восстановить из архива';
 		$badge_archive = "<span class='badge badge-pill badge-warning' id='badgeDriverArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
 	}
@@ -198,7 +198,7 @@
 				
 				<div class='card-footer card-header'><?php
 					if(($role > 1) && ($role != 4)) {
-						echo "<button type='button' class='btn btn-success btn-save' id='saveDrivers' title='Сохранить информацию о водителе' style='margin: 3px;'><span class='fa fa-check'></span>&nbsp;Сохранить водителя</button>";
+						echo "<button type='button' class='btn btn-success' id='saveDrivers' title='Сохранить информацию о водителе' style='margin: 3px;'><span class='fa fa-check'></span>&nbsp;Сохранить водителя</button>";
 						echo "<button type='button' class='btn btn-primary' id='lockDrivers' title='Изменить уровень видимости водителя' style='margin: 3px;'><span class='" . $span_btn_dostup . "'></span>&nbsp;" . $text_btn_dostup . "</button>";
 
 						echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='2'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive ."</button>";

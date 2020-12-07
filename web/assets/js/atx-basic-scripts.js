@@ -955,22 +955,16 @@ $(document).ready(function() {
 					$('#cardDriversHeaderServiceBadge').append(htmlBadgeArchive);
 				}
 
-				/*if($('*').is('#badgeDriversSecurity')) {
-					$('#btnMoveArchive').html("<span class='fa fa-folder'>&nbsp;</span>Восстановить из архива");
-					if(type_scripts == 1) {
-						var htmlBadgeArchive = "<span class='badge badge-pill badge-warning' id='badgeTSArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
-						$('#cardCarsHeaderServiceBadge').append(htmlBadgeArchive);
-					} else {
-						var htmlBadgeArchive = "<span class='badge badge-pill badge-warning' id='badgeDriverArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
-						$('#cardDriversHeaderServiceBadge').append(htmlBadgeArchive);
-					}
-				} else {
+				if($('*').is('#badgeTSArchive')) {
+					$('#badgeTSArchive').remove();
+					$('#btnMoveArchive').empty();
 					$('#btnMoveArchive').html("<span class='fa fa-folder'>&nbsp;</span>Перевести в архив");
-					if(type_scripts == 1)
-						$('#badgeTSArchive').remove();
-					else
-						$('#badgeDriverArchive').remove();
-				}*/
+				} else {
+					$('#btnMoveArchive').empty();
+					$('#btnMoveArchive').html("<span class='fa fa-folder'>&nbsp;</span>Восстановить из архива");
+					var htmlBadgeArchive = "<span class='badge badge-pill badge-warning' id='badgeTSArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
+					$('#cardCarsHeaderServiceBadge').append(htmlBadgeArchive);
+				}
 			});
 		});
 	});
@@ -978,7 +972,7 @@ $(document).ready(function() {
 	// Процедура защиты водителя
 	$('#lockDrivers').click(function() {
 		if($('#nsyst').html().trim().length == 0) {
-			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство или водителя!', 'method' : 'show' });
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните водителя!', 'method' : 'show' });
 			return;
 		}
 		var query = 'option=security' + '&nsyst=' + $('#nsyst').html().trim();
@@ -998,5 +992,126 @@ $(document).ready(function() {
 				}
 			});
 		});
+	});
+
+	// Процедура удаления водителя и связанного с ней информацией
+	$('#deleteDrivers').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните водителя!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'driver', 'option=remove&nsyst=' + $('#nsyst').html().trim(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				window.location = 'driver';
+			});
+		});
+	});
+
+	// Процедура блокировки/разблокировки ТС
+	$('#lockCars').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		var query = 'option=security' + '&nsyst=' + $('#nsyst').html().trim();
+		showDownloader(true);
+		AjaxQuery('POST', 'car', query, function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				if($('*').is('#badgeTSSecurity')) {
+					$('#badgeTSSecurity').remove();
+					$('#lockCars').empty();
+					$('#lockCars').html("<span class='fa fa-lock'></span>&nbsp;Защитить ТС");
+				} else {
+					var htmlBadgeSecurity = "<span class='badge badge-pill badge-danger' id='badgeTSSecurity'><span class='fa fa-lock'></span>&nbsp;Доступ к транспортному средству ограничен</span>";
+					$('#cardCarsHeaderServiceBadge').append(htmlBadgeSecurity);
+					$('#lockCars').empty();
+					$('#lockCars').html("<span class='fa fa-unlock'></span>&nbsp;Снять защиту с ТС");
+				}
+			});
+		});
+	});
+
+	// Включить/отключить уведомления на данное ТС
+	$('#btnEnableNoticeEvents').click(function() {
+		if($('#nsyst').html().trim().length == 0 || $('#nsyst').html() == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'car', 'option=notice_events&nsyst=' + $('#nsyst').html().trim(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				if($('#btnEnableNoticeEvents').find('span').hasClass('fa-bell')) {
+					var span = "<span class='fa fa-bell-slash'>&nbsp;</span>Откл. уведомления";
+					$('#btnEnableNoticeEvents').html(span);
+					$('#cardCarsHeaderServiceBadge').find('#badgeTSNoticeEvents').remove();
+				} else {
+					var span = "<span class='fa fa-bell'>&nbsp;</span>Вкл. уведомления";
+					$('#btnEnableNoticeEvents').html(span);
+					var htmlBadgeNoticeEvents = "<span class='badge badge-pill badge-danger' id='badgeTSNoticeEvents'><span class='fa fa-bell'>&nbsp;</span>Уведомления отключены</span>";
+					$('#cardCarsHeaderServiceBadge').append(htmlBadgeNoticeEvents);
+				}
+				$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Статус уведомлений изменен!', 'method' : 'show' });
+			});
+		});
+	});
+
+	$('#btnCarWriteOff').click(function() {
+		if($('#nsyst').html().trim().length == 0 || $('#nsyst').html() == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'car', 'option=write_off&nsyst=' + $('#nsyst').html().trim() + '&operation=' + $(this).data('operation'), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				if($('.car-notice').find('.alert-yellow').length == 0) {
+					$('#btnCarWriteOff').html("<span class='fa fa-trash'>&nbsp;</span>Вернуть в строй");
+					$('.car-notice').html("<div class='alert alert-yellow text-center'><b>Транспортное средство готовится к списанию!<br>Транспортное средство не подлежит страхованию и проведению тех. осмотра, не выдавать новые запасные части и другие товарно-материальные ценности!</b></div>");
+				} else {
+					$('#btnCarWriteOff').html("<span class='fa fa-trash'>&nbsp;</span>Готовится к списанию");
+					$('.car-notice').empty();
+				}
+				$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Статус изменен!', 'method' : 'show' });
+			});
+		});
+	});
+
+	// Функция сохранения данных о транспортном средстве
+	$('#saveInfoForCars').click(function() {
+		var arrSaveItem = {};
+		var resultCollectionsItems = getArrayItemsForms('#mainCarsInformation select, #mainCarsInformation input, #mainCarsInformation textarea');
+		if(resultCollectionsItems[0]) {
+			arrSaveItem = resultCollectionsItems[1];
+		} else {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : resultCollectionsItems[1], 'method' : 'show' });
+			return;
+		}
+
+		var query = new FormData();
+		query.append('option', 'save');
+		query.append('JSON', JSON.stringify(arrSaveItem));
+		
+		if($('#nsyst').html().trim().length == 0)
+			query.append('nsyst', -1);
+		else
+			query.append('nsyst', $('#nsyst').html().trim());
+
+		$.each(filesList, function(key, value) {
+			query.append(key, value);
+		});
+			
+		showDownloader(true);
+		AjaxQuery('POST', 'car', query, function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				$('#nsyst').empty;
+				$('#nsyst').html(res[1]);
+				$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Информация о транспортном средстве сохранена!', 'method' : 'show' });
+			});
+		}, true);
 	});
 });

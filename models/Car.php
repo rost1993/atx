@@ -9,6 +9,9 @@ use IcKomiApp\lib\Database\DB;
 
 class Car extends Model {
 	protected $table = 'cars';
+	protected $remove_directory = 1;
+	protected $trigger_operation = 0;
+	protected $array_file_extension = ['jpg', 'png', 'jpeg'];
 
 	protected $sql_get_record = "SELECT cars.*, x1.text as firma_osago, b.n_osago, CAST(cars.mileage AS CHAR) + 0 as mileage,
 					 DATE_FORMAT(b.start_date_osago, '%d.%m.%Y') as start_dt_osago, DATE_FORMAT(b.end_date_osago, '%d.%m.%Y') as end_dt_osago, 
@@ -779,4 +782,64 @@ class Car extends Model {
 		return $list_files;
 	}
 
+	// Функция перемещения/восстановления из архива
+	public function move_to_archive($post) {
+		if(empty($post['nsyst']))
+			return false;
+
+		$nsyst = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET ibd_arx=MOD(ibd_arx, 2)+1 WHERE id=" . $nsyst;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
+
+	// Функция блокирования/разблокирования доступа к водителю
+	public function lock_unlock_car($post) {
+		if(empty($post['nsyst']))
+			return -1;
+		
+		/*if(!User::check_level_user(8))
+			return 0;*/
+		
+		$id = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET dostup=MOD(dostup, 2)+1 WHERE id=" . $id;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
+
+	// Функция включения/отключения уведомлений на ТС
+	public function car_enable_disable_notice_events($post) {
+		if(empty($post['nsyst']))
+			return -1;
+		
+		/*if(!User::check_level_user(8))
+			return 0;*/
+		
+		$id = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET exception_notice_events=MOD(exception_notice_events+1, 2) WHERE id=" . $id;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
+
+	// Функция включения/отключения уведомлений на ТС
+	public function car_write_off($post) {
+		if(empty($post['nsyst']))
+			return -1;
+		
+		/*if(!User::check_level_user(8))
+			return 0;*/
+		
+		$id = addslashes($post['nsyst']);
+		
+		$sql = "UPDATE " . $this->table . " SET write_off=MOD(write_off+1, 2) WHERE id=" . $id;
+		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
+			return false;
+		return true;
+	}
 }

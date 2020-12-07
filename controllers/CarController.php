@@ -6,24 +6,30 @@ use IcKomiApp\core\Controller;
 use IcKomiApp\core\Functions;
 use IcKomiApp\models\Car;
 
-#use IcKomiApp\lib\Database\DB;
-#use IcKomiApp\core\Session;
-#use IcKomiApp\core\Cookie;
-#use IcKomiApp\models\TicketCard;
-
-
 class CarController extends Controller {
 
 	public function carAction() {
 		if(!empty($_GET)) {
 			$this->getCard();
 		} else if(!empty($_POST)) {
-			if($_POST['option'] == 'save')
+			if($_POST['option'] == 'save') {
 				$this->saveCard();
-			else if($_POST['option'] == 'remove')
+			} else if($_POST['option'] == 'remove') {
 				$this->removeCard();
-			else if($_POST['option'] == 'archive')
+			} else if($_POST['option'] == 'move_archive') {
 				$this->moveArchiveCard();
+			} else if($_POST['option'] == 'security') {
+				$this->securityCard();
+			} else if($_POST['option'] == 'notice_events') {
+				$this->carNoticeEvents();
+			} else if($_POST['option'] == 'write_off') {
+				$this->carWriteOff();
+			} else if($_POST['option'] == 'remove_file') {
+				if((new Car())->remove_file($_POST) === false)
+					echo json_encode([-1]);
+				else
+					echo json_encode([1]);
+			}
 		} else {
 			$this->view->render();
 		}
@@ -64,11 +70,18 @@ class CarController extends Controller {
 		Save card
 	*/
 	public function saveCard() {
-		$id = $message_error = '';
-		if(!(new TicketCard())->save($_POST, $id, $message_error)) {
-			echo json_encode(array(-2, $message_error));
+		$id = '';
+		if(($id = (new Car())->save($_POST)) === false) {
+			echo json_encode([-1]);
 		} else {
-			echo json_encode(array(1, $id));
+			if(!empty($_FILES)) {
+				if((new Car())->save_file($_FILES, $id) === false)
+					echo json_encode([-2, 'Информация о ТС сохранена, но файл не сохранен!']);
+				else
+					echo json_encode([1]);
+			} else {
+				echo json_encode([1]);
+			}
 		}
 	}
 
@@ -83,6 +96,34 @@ class CarController extends Controller {
 		Move archive card
 	*/
 	public function moveArchiveCard() {
-		return true;
+		if((new Car())->move_to_archive($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
+	}
+
+	public function securityCard() {
+		if((new Car())->lock_unlock_car($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
+	}
+
+	public function carNoticeEvents() {
+		if((new Car())->car_enable_disable_notice_events($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
+	}
+
+	public function carWriteOff() {
+		if((new Car())->car_write_off($_POST) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1]);
+		}
 	}
 }

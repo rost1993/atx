@@ -124,6 +124,9 @@ abstract class Model {
 			return false;
 		
 		$sql = "DELETE FROM " . $this->table . " WHERE id=" . $id;
+
+		//Functions::debug($sql);
+
 		if(($data = DB::query($sql, DB::OTHER)) === false)
 			return false;
 		
@@ -155,6 +158,8 @@ abstract class Model {
 			// Проверка расширения файла, можно ли загрузить файл с таким расширением
 			if(!Functions::check_extension_files(basename($file['name']), $this->array_file_extension))
 				continue;
+
+	//		Functions::debug($uploaddir);
 
 			if(!$fileUploadClass->downdloadFileToServer($file, $uploaddir, $file_name, 1, $msg_error))
 				return false;

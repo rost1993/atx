@@ -493,7 +493,6 @@ class Driver extends Model {
 	}
 
 	// Функция перемещения/восстановления из архива
-	//public function move_to_archive($nsyst, $archive) {
 	public function move_to_archive($post) {
 		if(empty($post['nsyst']))
 			return false;

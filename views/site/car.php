@@ -90,6 +90,50 @@
 	$file_tech_inspection = (empty($file_tech_inspection)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_tech_inspection, $ext_file_tech_inspection);
 	$file_dopog = (empty($file_dopog)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_dopog, $ext_file_dopog);
 
+	$ibd_arx = (empty($ibd_arx)) ? 1 : $ibd_arx;
+	$text_btn_archive = $badge_archive = '';
+	if($ibd_arx == 1) {
+		$text_btn_archive = 'Перевести в архив';
+		$badge_archive = '';
+	} else if($ibd_arx == 2) {
+		$text_btn_archive = 'Восстановить из архива';
+		$badge_archive = "<span class='badge badge-pill badge-warning' id='badgeTSArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
+	}
+
+	$dostup = (empty($dostup)) ? 1 : $dostup;
+	$text_btn_dostup = $span_btn_dostup = $badge_dostup = '';
+	if($dostup == 1) {
+		$text_btn_dostup = 'Защитить ТС';
+		$span_btn_dostup = 'fa fa-lock';
+		$badge_dostup = '';
+	} else if($dostup == 2) {
+		$text_btn_dostup = 'Снять защиту с ТС';
+		$span_btn_dostup = 'fa fa-unlock';
+		$badge_dostup = "<span class='badge badge-pill badge-danger' id='badgeTSSecurity'><span class='fa fa-lock'></span>&nbsp;Доступ к транспортному средству ограничен</span>";
+	}
+
+	$exception_notice_events = (empty($exception_notice_events)) ? 0 : $exception_notice_events;
+	$text_btn_exc = $span_btn_exc = $badge_exc = '';
+	if($exception_notice_events == 0) {
+		$text_btn_exc = 'Откл. уведомления';
+		$span_btn_exc = 'fa fa-bell-slash';
+		$badge_exc = '';
+	} else {
+		$text_btn_exc = 'Вкл. уведомления';
+		$span_btn_exc = 'fa fa-bell';
+		$badge_exc = "<span class='badge badge-pill badge-danger' id='badgeTSNoticeEvents'><span class='fa fa-bell'>&nbsp;</span>Уведомления отключены</span>";
+	}
+
+	$write_off = (empty($write_off)) ? 0 : $write_off;
+	$text_btn_write_off = $badge_write_off = '';
+	if($write_off == 0) {
+		$text_btn_write_off = 'Готовится к списанию';
+		$badge_write_off = '';
+	} else {
+		$text_btn_write_off = 'Вернуть в строй';
+		$badge_write_off = "<div class='alert alert-yellow text-center'><b>Транспортное средство готовится к списанию!<br>Транспортное средство не подлежит страхованию и проведению тех. осмотра, не выдавать новые запасные части и другие товарно-материальные ценности!</b></div>";
+	}
+
 	$role = 9;
 ?>
 
@@ -100,10 +144,10 @@
 				<div class='card-header' id="cardCarsHeader">
 					<h4>Информация о транспортном средстве</h4>
 					<div id="nsyst" style="display: none;"><?= $id; ?></div>
-					<div id="cardCarsHeaderServiceBadge"></div>
+					<div id="cardCarsHeaderServiceBadge"><?= $badge_archive; ?><?= $badge_dostup; ?><?= $badge_exc; ?></div>
 				</div>
 				<div class="card-body" id="cardCars">
-					<div class='car-notice'></div>
+					<div class='car-notice'><?= $badge_write_off; ?></div>
 
 					<?php
 						if($role >= 8) {
@@ -118,8 +162,8 @@
 						."<div class='collapse show' id='collapseSetting' aria-labelledby='headingOne'>"
 							. "<div class='form-row'>"
 								. "<div class='col mb-1 text-left'>"
-									. "<button class='btn btn-sm btn-info' id='btnEnableNoticeEvents' title='Включить/отключить уведомления' data-operation='disable'><span class='fa fa-bell-slash'>&nbsp;</span>Откл. уведомления</button>"
-									. "<button class='btn btn-sm btn-danger ml-2' id='btnCarWriteOff' title='ТС готовится к списанию' data-operation='disable'><span class='fa fa-trash'>&nbsp;</span>Готовится к списанию</button>"
+									. "<button class='btn btn-sm btn-info' id='btnEnableNoticeEvents' title='Включить/отключить уведомления'><span class='" . $span_btn_exc . "'>&nbsp;</span>" . $text_btn_exc . "</button>"
+									. "<button class='btn btn-sm btn-danger ml-2' id='btnCarWriteOff' title='ТС готовится к списанию' data-operation='disable'><span class='fa fa-trash'>&nbsp;</span>" . $text_btn_write_off . "</button>"
 								. "</div>"
 							. "</div>"
 						. "</div>"
@@ -373,7 +417,7 @@
 						</div>
 					</div>
 						
-					<div class="col-sm-12 atx-cars-block">	
+					<div class="col-sm-12 atx-cars-block" id="CarBlockImages">	
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSix" aria-controls="collapseSix" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>6. ФОТОГРАФИИ</a></h5></p>
@@ -400,8 +444,8 @@
 				<div class='card-footer card-header'><?php
 						if(($role > 1) && ($role != 4)) {
 							echo "<button type='button' class='btn btn-success' id='saveInfoForCars' title='Сохранить информацию о транспортном средстве' style='margin: 2px;'><span class='fa fa-check'>&nbsp;</span>Сохранить ТС</button>";
-							echo "<button type='button' class='btn btn-primary' id='lockCars' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-lock'>&nbsp;</span>Защитить ТС</button>";
-							echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='1' data-archive='1'><span class='fa fa-folder'>&nbsp;</span>Перевести в архив</button>";
+							echo "<button type='button' class='btn btn-primary' id='lockCars' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-lock'>&nbsp;</span>" . $text_btn_dostup . "</button>";
+							echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='1'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive . "</button>";
 							echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownDeleteCars' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-remove'></span>&nbspУдалить ТС</button>
 							<div class='dropdown-menu' aria-labelledby='dropdownDeleteCars'>
 								<button class='dropdown-item' id='deleteCars'><span class='fa fa-check text-success'>&nbsp;</span>Подтверждаю удаление</button>

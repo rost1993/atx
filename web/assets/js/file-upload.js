@@ -63,7 +63,7 @@ $(function () {
 	});
 	
 	// Обработчик выбора файла для модальных окон
-	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view').on('change', '#btnAddFileModalWindow', function() {
+	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view,#CarBlockImages').on('change', '#btnAddFileModalWindow', function() {
 		// Запрещаем/разрешаем прикрепление более одного документа
 		if(!$(this).prop('multiple')) {
 			if($(this).closest('.form-row').find('#uploadFileContainer').find('.badge').length > 0) {
