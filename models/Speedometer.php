@@ -11,6 +11,7 @@ use IcKomiApp\widgets\Directory;
 
 class Speedometer extends Model {
 	protected $table = 'speedometer';
+	protected $trigger_operation = 3;
 	protected $sql_get_record = "SELECT * FROM {table} WHERE id={id}";
 
 	protected $sql_get_list = "SELECT a.id, a.id_car, CAST(a.testimony_speedometer AS CHAR) + 0 as testimony_speedometer, a.date_speedometer, a.id_speedometer, a.ibd_arx, "

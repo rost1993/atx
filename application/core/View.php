@@ -2,6 +2,10 @@
 
 namespace IcKomiApp\core;
 
+use IcKomiApp\core\HeaderLoader;
+use IcKomiApp\widgets\FooterTop;
+use IcKomiApp\widgets\FooterBottom;
+
 class View {
 
 	public $path;
@@ -20,8 +24,21 @@ class View {
 
 		if(file_exists($file_view)) {
 			ob_start();
+			HeaderLoader::getHeader();
+			$header = ob_get_clean();
+
+			ob_start();
+			FooterTop::getFooter();
+			$footer_top = ob_get_clean();
+
+			ob_start();
+			FooterBottom::getFooter();
+			$footer_bottom = ob_get_clean();
+
+			ob_start();
 			require_once('../views/' . $this->path . '.php');
 			$content = ob_get_clean();
+
 			require_once('../views/layouts/' . $this->layout . '.php');
 		} else {
 			$this->errorCode(404);

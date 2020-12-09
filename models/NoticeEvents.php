@@ -78,21 +78,21 @@ class NoticeEvents extends Model {
 
 	public function search($post, $flg_excel = -1) {
 		$where_status = (empty($post['status'])) ? '' : " AND {table}.notice_status=" . addslashes($post['status']);
-		//$subsystem = (empty($post['subsystem'])) ? '' :  " {table}.notice_status=" . addslashes($post['subsystem']);
+		$where_subsystem = (empty($post['subsystem'])) ? '' :  " AND {table}.notice_code_subsystem=" . addslashes($post['subsystem']);
 
 		$role = 9;
 		
 		if($role == 9 || $role == 8) {
 			$sql = "SELECT {table}.* FROM {table} "
-				. " WHERE {table}.notice_dostup IN (1,2) " . $where_status
+				. " WHERE {table}.notice_dostup IN (1,2) " . $where_status . $where_subsystem
 				. " ORDER BY notice_status ASC";
 		} else if($role == 3) {
 			$sql = "SELECT {table}.* FROM {table} "
-				. " WHERE {table}.notice_dostup=1 " . $where_status
+				. " WHERE {table}.notice_dostup=1 " . $where_status . $where_subsystem
 				. " ORDER BY notice_status ASC";
 		} else if($role == 2) {
 			$sql = "SELECT {table}.* FROM {table} "
-			 	. " WHERE {table}.notice_dostup=1 " . $where_status
+			 	. " WHERE {table}.notice_dostup=1 " . $where_status . $where_subsystem
 			 	. " ORDER BY notice_status ASC";
 		} else {
 			return false;

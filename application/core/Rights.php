@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\core;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Session;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
@@ -20,10 +21,7 @@ class Rights {
 		if(!is_string($page))
 			return false;
 
-		$session = new Session();
-		$session->start();
-		$role = $session->get('role');
-		$session->commit();
+		$role = User::get('role');
 
 		$page = trim($page, '/');
 
@@ -49,10 +47,7 @@ class Rights {
 		if(!is_string($page))
 			return false;
 
-		$session = new Session();
-		$session->start();
-		$role = $session->get('role');
-		$session->commit();
+		$role = User::get('role');
 
 		// Flag ACL (access list user)
 		$acl = false;

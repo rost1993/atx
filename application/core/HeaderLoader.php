@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\core;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\CSSLoader;
 use IcKomiApp\core\JavaScriptLoader;
 
@@ -21,6 +22,9 @@ class HeaderLoader {
 		Производится подгрузка CSS и JavaScript
 	*/
 	public static function getHeader() {
+
+		$role = User::get('role');
+
 		echo "<head>";
 		echo "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8;'>";
 		echo "<meta charset='UTF-8'>";

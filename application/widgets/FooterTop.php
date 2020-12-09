@@ -12,9 +12,6 @@ class FooterTop {
 	protected static $default_class_nav_item = 'nav-item';
 	protected static $default_class_nav_link = 'nav-link text-white';
 
-
-
-
 	protected static $array_right_menu = [
 		['name' => 'Редактировать данные пользователя', 'href' => '/edit', 'icon' => 'fa fa-vcard-o'],
 		['name' => 'Панель администратора', 'href' => '/admin_panel', 'icon' => 'fa fa-clone'],
@@ -68,8 +65,7 @@ class FooterTop {
 
 		$left_menu = self::get_left_menu();
 		$right_menu = self::get_dropdown_menu(self::$array_right_menu);
-
-		return require_once(self::$footer_top_path);
+		require_once(self::$footer_top_path);
 	}
 
 	private static function get_dropdown_menu($array_menu) {

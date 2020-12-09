@@ -9,7 +9,7 @@ class FooterBottom {
 	public static function getFooter() {
 		if(!file_exists(self::$footer_bottom_path))
 			return;
-		return require_once(self::$footer_bottom_path);
+		require_once(self::$footer_bottom_path);
 	}
 	
 }

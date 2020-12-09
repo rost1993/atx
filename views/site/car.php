@@ -903,7 +903,6 @@
 									<?php
 									if(($role > 1) && ($role != 4)) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить огнетушитель' data-item='12' data-object='car_fire_extinguisher' data-title-form='Огнетушитель'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
-									echo "<button type='button' class='btn btn-sm btn-outline-primary btn-print-accessories-card' title='Сформировать карточку получения огнетушителя' data-object='car_fire_extinguisher'><span class='fa fa-file-pdf-o'>&nbsp;</span>Сформировать карточку</button>";
 									}
 									?>
 								</div>
@@ -940,7 +939,6 @@
 									<?php
 									if(($role > 1) && ($role != 4)) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить аптечку' data-item='12' data-object='car_first_aid_kid' data-title-form='Аптечка'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
-									echo "<button type='button' class='btn btn-sm btn-outline-primary btn-print-accessories-card' title='Сформировать карточку получения аптечки' data-object='car_first_aid_kid'><span class='fa fa-file-pdf-o'>&nbsp;</span>Сформировать карточку</button>";
 								}?>
 								</div>
 							</div>
@@ -977,7 +975,6 @@
 									<?php
 									if(($role > 1) && ($role != 4)) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить знак аварийной остановки' data-item='12' data-object='car_warning_triangle' data-title-form='Знак аварийной остановки'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
-									echo "<button type='button' class='btn btn-sm btn-outline-primary btn-print-accessories-card' title='Сформировать карточку получения знака аварийной остановки' data-object='car_warning_triangle'><span class='fa fa-file-pdf-o'>&nbsp;</span>Сформировать карточку</button>";
 								}?></div>
 							</div>
 
@@ -997,7 +994,6 @@
 									<?php
 									if(($role > 1) && ($role != 4)) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить аккумуляторную батарею' data-item='12' data-object='car_battery' data-title-form='Аккумуляторная батарея'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
-									echo "<button type='button' class='btn btn-sm btn-outline-primary btn-print-accessories-card' title='Сформировать карточку выдачи аккумуляторной батареи' data-object='car_battery'><span class='fa fa-file-pdf-o'>&nbsp;</span>Сформировать карточку</button>";
 								}?></div>
 							</div>
 							
