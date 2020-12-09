@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -17,12 +18,7 @@ class CarForDriver extends Model {
 
 	// Функция формирования списка водителей, которые закреплены за данным ТС
 	public function get_list_drivers_fixed($id_car) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 		
 		$sql = "SELECT b.fam, b.imj, b.otch, a.ibd_arx as actual, a.id as id_fix, a.car_id, a.id_driver, "
 				. " a.number_doc_fix, a.date_doc_fix, x3.text as type_doc_fix, a.path_to_file, a.file_extension "
@@ -31,11 +27,8 @@ class CarForDriver extends Model {
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.type_doc_fix AND x3.nomer=14 "
 				. " WHERE a.car_id=" . $id_car;
 		
-		if($role == 1)
+		if($role <= 2)
 			$sql .= " AND a.dostup=1";
-		
-		if($role == 2)
-			$sql .= " AND a.dostup=1 ";
 		
 		$sql .= " ORDER BY b.fam, b.imj, b.otch";
 
@@ -46,12 +39,7 @@ class CarForDriver extends Model {
 
 	// Функция формирования списка ТС, которые закреплены за данным водителем
 	public function get_list_cars_fixed($id_driver) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 
 		$sql = "SELECT a.id as id_fix, x1.text as marka_ts, x2.text as model_ts, b.gos_znak, a.ibd_arx as actual, a.car_id, a.id_driver, "
 				. " a.number_doc_fix, a.date_doc_fix, x3.text as type_doc_fix, a.path_to_file, a.file_extension "
@@ -62,11 +50,8 @@ class CarForDriver extends Model {
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.type_doc_fix AND x3.nomer=14 "
 				. " WHERE a.id_driver=" . $id_driver;
 
-		if($role == 1)
-			$sql .= " AND a.dostup=1 ";
-		
-		if($role == 2)
-			$sql .= " AND a.dostup=1 ";
+		if($role <= 2)
+			$sql .= " AND a.dostup=1";
 
 		$sql .= " ORDER BY a.date_doc_fix ";
 				
@@ -93,12 +78,8 @@ class CarForDriver extends Model {
 		if(count($data) == 0) {
 			return ["<div class='text-center'><p>Сведений в базе данных не найдено!</p></div>"];
 		}
-		
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
 
-		$role = 9;
+		$role = User::get('role');
 
 		$header = '';
 		$header_archive = '';
@@ -161,7 +142,7 @@ class CarForDriver extends Model {
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['fam'] . " " . $data[$i]['imj'] .  " " . $data[$i]['otch'] . "</td>";
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 					
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html_actual .= "<td " . $style_border . ">"
 						. "<button type='button' class='btn btn-sm btn-info' id='btnEditCarForDrivers' data-fix='" . $data[$i]['id_fix'] . "' data-mode-show='2' data-nsyst='" . $data[$i]['id_driver'] . "' title='Скорректировать сведения о закреплении'><span class='fa fa-pencil'></span>&nbsp;Изменить</button></td>";
 					} else {
@@ -173,7 +154,7 @@ class CarForDriver extends Model {
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['gos_znak'] . "</td>";
 					$html_actual .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html_actual .= "<td " . $style_border . ">"
 						. "<button type='button' class='btn btn-sm btn-info' id='btnEditCarForDrivers' data-fix='" . $data[$i]['id_fix'] . "' data-mode-show='1' data-nsyst='" . $data[$i]['car_id'] . "' title='Скорректировать сведения о закреплении'><span class='fa fa-pencil'></span>&nbsp;Изменить</button></td>";
 					} else {
@@ -181,7 +162,7 @@ class CarForDriver extends Model {
 					}
 				}
 
-				if(($role > 1) && ($role != 4)) {
+				if($role >= 2) {
 					$html_actual .= "<td " . $style_border . "><button type='button' class='btn btn-sm btn-primary dropdown-toggle' id='moveCarForDriverToArchive' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Переместить в архив'><span class='fa fa-folder'></span>&nbsp;В архив</button>"
 					. "<div class='dropdown-menu' aria-labelledby='moveCarForDriverToArchive'>"
 					. "<button type='button' class='dropdown-item' id='btnMoveCarForDriversArchive' data-operation='2' data-nsyst='" . $data[$i]['id_fix'] . "'><span class='fa fa-check text-success'></span>&nbspПодтверждаю перемещение в архив</button></div></td>"
@@ -202,7 +183,7 @@ class CarForDriver extends Model {
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['fam'] . " " . $data[$i]['imj'] .  " " . $data[$i]['otch'] . "</td>";
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html_archve .= "<td " . $style_border . ">"
 						. "<button type='button' class='btn btn-sm btn-info' id='btnEditCarForDrivers' data-fix='" . $data[$i]['id_fix'] . "'data-mode-show='2' data-nsyst='" . $data[$i]['id_driver'] . "' title='Скорректировать сведения о закреплении'><span class='fa fa-pencil'></span>&nbsp;Изменить</button></td>";
 					} else {
@@ -214,7 +195,7 @@ class CarForDriver extends Model {
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['gos_znak'] . "</td>";
 					$html_archve .= "<td " . $style_border . ">" . $data[$i]['type_doc_fix'] . " № " . $data[$i]['number_doc_fix'] . " от " . Functions::convertToDate($data[$i]['date_doc_fix']) . "&nbsp;" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html_archve .= "<td " . $style_border . ">"
 						. "<button type='button' class='btn btn-sm btn-info' id='btnEditCarForDrivers' data-fix='" . $data[$i]['id_fix'] . "' data-mode-show='1' data-nsyst='" . $data[$i]['car_id'] . "' title='Скорректировать сведения о закреплении'><span class='fa fa-pencil'></span>&nbsp;Изменить</button></td>";
 					} else {
@@ -222,8 +203,8 @@ class CarForDriver extends Model {
 					}
 				}
 
-				if(($role > 1) && ($role != 4)) {
-					$html_archve .= "<td " . $style_border . "><button type='button' class='btn btn-sm btn-primary dropdown-toggle' id='moveCarForDriverToArchive' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Восстановить из архива'><span class='fa fa-folder'></span>&nbspИз архива</button>"
+				if($role >= 2) {
+					$html_archve .= "<td " . $style_border . "><button type='button' class='btn btn-sm btn-primary dropdown-toggle' id='moveCarForDriverToArchive' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Восстановить из архива'><span class='fa fa-folder'></span>&nbsp;Из архива</button>"
 					. "<div class='dropdown-menu' aria-labelledby='moveCarForDriverToArchive'>"
 					. "<button type='button' class='dropdown-item' id='btnMoveCarForDriversArchive' data-operation='1' data-nsyst='" . $data[$i]['id_fix'] . "'><span class='fa fa-check text-success'></span>&nbspПодтверждаю восстановление из архива</button></div></td>"
 					
@@ -296,21 +277,13 @@ class CarForDriver extends Model {
 		if(empty($id_car))
 			return false;
 
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 		
 		$sql = "SELECT a.id, a.fam, a.imj, a.otch FROM drivers a "
 					. " LEFT JOIN " . $this->table . " x ON x.id_driver=a.id AND x.car_id=" . $id_car
 					. " WHERE x.id IS NULL ";
 
-		if($role == 1)
-			$sql .= " AND a.dostup=1 ";
-		
-		if($role == 2)
+		if($role <= 2)
 			$sql .= " AND a.dostup=1 ";
 
 		if(($data = DB::query($sql)) === false)
@@ -322,13 +295,8 @@ class CarForDriver extends Model {
 	public function get_information_fixed_driver($id_fix, $id_driver) {
 		if(empty($id_fix) || empty($id_driver))
 			return false;
-		
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
 
-		$role = 9;
+		$role = User::get('role');
 
 		$sql = "SELECT a.id as id_fix, b.fam, b.imj, b.otch, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
 				. " a.number_doc_fix, a.date_doc_fix, a.type_doc_fix "
@@ -336,9 +304,7 @@ class CarForDriver extends Model {
 				. " LEFT JOIN drivers b ON b.id=a.id_driver "
 				. " WHERE a.id=" . $id_fix . " AND a.id_driver=" . $id_driver;
 		
-		if($role == 1)
-			$sql .= " AND b.dostup=1 ";
-		if($role == 2)
+		if($role <= 2)
 			$sql .= " AND b.dostup=1 ";
 
 		if(($data = DB::query($sql)) === false)
@@ -515,13 +481,8 @@ class CarForDriver extends Model {
 	public function get_list_cars_no_fixed($id_driver) {
 		if(empty($id_driver))
 			return false;
-		
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
 
-		$role = 9;
+		$role = User::get('role');
 		
 		$sql = "SELECT a.id, x1.text as markats, x2.text as modelts, a.gos_znak FROM cars a "
 				   . " LEFT JOIN " . $this->table . " x ON x.car_id=a.id AND x.ibd_arx=1 AND x.id_driver=" . $id_driver
@@ -529,10 +490,7 @@ class CarForDriver extends Model {
 				   . " LEFT JOIN s2i_klass x2 ON a.model=x2.kod AND x2.nomer=4 "
 				   . " WHERE x.id IS NULL ";
 		
-		if($role == 1)
-			$sql .= " AND a.dostup=1 ";
-		
-		if($role == 2)
+		if($role <= 2)
 			$sql .= " AND a.dostup=1 ";
 		
 		$sql .= " ORDER BY a.id ";
@@ -546,13 +504,8 @@ class CarForDriver extends Model {
 	public function get_information_fixed_car($id_fix, $id_car) {
 		if(empty($id_fix) || empty($id_car))
 			return false;
-		
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
 
-		$role = 9;
+		$role = User::get('role');
 		
 		$sql = "SELECT a.id as id_fix, x1.text as markats, x2.text as modelts, b.gos_znak, a.ibd_arx as actual, a.car_id, a.id_driver, b.id, "
 				. " a.number_doc_fix, a.date_doc_fix, a.type_doc_fix "
@@ -562,9 +515,7 @@ class CarForDriver extends Model {
 				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.model AND x2.nomer=4 "
 				. " WHERE a.id=" . $id_fix . " AND a.car_id=" . $id_car;
 		
-		if($role == 1)
-			$sql .= " AND b.dostup=1 ";
-		if($role == 2)
+		if($role <= 2)
 			$sql .= " AND b.dostup=1 ";
 		   
 		if(($data = DB::query($sql)) === false)

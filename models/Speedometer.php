@@ -32,11 +32,7 @@ class Speedometer extends Model {
 		if(count($array_data) == 0) {
 			$html = "<div class='text-center'><p>Сведений в базе данных не обнаружено!</p></div>";
 		} else {
-			/*Session::start();
-			$role = Session::get('role');
-			Session::commit();*/
-
-			$role = 9;
+			$role = User::get('role');
 			
 			$style_border = "style='vertical-align: middle; border: 1px solid gray;'";
 			// Формируем готовый HTML код для списка закрепленных ТС
@@ -66,8 +62,8 @@ class Speedometer extends Model {
 						. "<td " . $style_border . ">" . Functions::convertToDate($array_data[$i]['date_speedometer']) . "</td>"
 						. "<td " . $style_border . ">" . $array_data[$i]['reason_speedometer'] . "</td>";
 				
-				if(($array_data[$i]['ibd_arx'] == 1) || ($role >= 8)) {
-					if(($role > 1) && ($role != 4)) {
+				if(($array_data[$i]['ibd_arx'] == 1) || ($role >= 2)) {
+					if($role >= 2) {
 						$html .= "<td " . $style_border . ">"
 							. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-item='4' data-nsyst='" . $array_data[$i]['id'] . "' data-car='" . $array_data[$i]['id_car'] . "' title='Скорректировать переданные сведения спидометра'><span class='fa fa-pencil'>&nbsp;</span>Изменить</button></td>";
 						$html .= "<td " . $style_border . "><div class='dropdown'>"
@@ -114,16 +110,12 @@ class Speedometer extends Model {
 		
 		if(($data = $this->get_number_speedometer($id_car)) === false)
 			return false;
-		
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
 
-		$role = 9;
+		$role = User::get('role');
 		
 		// Только администратору разрешается корректировать показания спидометра
 		$disabled_speedometer = "";
-		if($role != 9)
+		if($role >= 2)
 			$disabled_speedometer = " disabled ";
 		
 		// Формируем список спидометров

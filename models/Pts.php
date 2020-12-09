@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -28,12 +29,8 @@ class Pts extends Model {
 
 		if(($data = $this->get_list(addslashes($post['nsyst']))) === false)
 			return false;
-
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
 		
-		$role =9;
+		$role = User::get('role');
 
 		$html = "";
 		if(count($data) == 0) {
@@ -66,7 +63,7 @@ class Pts extends Model {
 							. "<td " . $style_border . ">" . $data[$i]['text_firma'] . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 							
-							if(($role > 1) && ($role != 4)) {
+							if($role >= 2) {
 								$html .= "<td " . $style_border . ">"
 								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"
@@ -88,7 +85,7 @@ class Pts extends Model {
 							. "<td " . $style_border . ">" . $data[$i]['text_firma'] . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
 
-							if(($role > 1) && ($role != 4)) {
+							if($role >= 2) {
 								$list_archive .= "<td " . $style_border . ">"
 								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='5'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"

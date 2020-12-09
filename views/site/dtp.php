@@ -13,22 +13,22 @@
 
 	if(!empty($id_car)) {
 		$id_car = (empty($id_car)) ? '' : $id_car;
-		$id_car_select = Directory::get_directory_car($id_car);
+		$id_car_select = IcKomiApp\widgets\Directory::get_directory_car($id_car);
 	} else if(!empty($add_car)) {
 		$add_car = (empty($add_car)) ? '' : $add_car;
-		$id_car_select = Directory::get_directory_car($add_car);
+		$id_car_select = IcKomiApp\widgets\Directory::get_directory_car($add_car);
 	} else {
-		$id_car_select = Directory::get_directory_car();
+		$id_car_select = IcKomiApp\widgets\Directory::get_directory_car();
 	}
 
 	if(!empty($id_driver)) {
 		$id_driver = (empty($id_driver)) ? '' : $id_driver;
-		$id_driver_select = Directory::get_directory_driver($id_driver);
+		$id_driver_select = IcKomiApp\widgets\Directory::get_directory_driver($id_driver);
 	} else if(!empty($add_driver)) {
 		$add_driver = (empty($add_driver)) ? '' : $add_driver;
-		$id_driver_select = Directory::get_directory_driver($add_driver);
+		$id_driver_select = IcKomiApp\widgets\Directory::get_directory_driver($add_driver);
 	} else {
-		$id_driver_select = Directory::get_directory_driver();
+		$id_driver_select = IcKomiApp\widgets\Directory::get_directory_driver();
 	}
 
 	$offender = (empty($offender)) ? '' : $offender;
@@ -37,7 +37,7 @@
 	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
 	$list_files_image = (empty($list_files_image)) ? '' : $list_files_image;
 
-	$role = 9;
+	$role = IcKomiApp\core\User::get('role');
 ?>
 
 <div class="container-fluid starter-template">
@@ -184,7 +184,7 @@
 				</div>
 				
 				<div class='card-footer card-header'><?php
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						echo "<button type='button' class='btn btn-success mr-1' id='btnSaveDtp' title='Сохранить информацию о ДТП'><span class='fa fa-check'>&nbsp;</span>Сохранить</button>";
 						echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownRemoveDtp' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить информацию о ДТП'><span class='fa fa-remove'>&nbsp;</span>Удалить</button>";
 						echo "<div class='dropdown-menu' aria-labelledby='dropdownRemoveDtp'>";

@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -28,11 +29,7 @@ class TechnicalInspection extends Model {
 		if(($array_data = $this->get_list(addslashes($post['nsyst']))) === false)
 			return false;
 
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 		
 		$html = "";
 		if(count($array_data) == 0) {
@@ -65,7 +62,7 @@ class TechnicalInspection extends Model {
 							. "<td " . $style_border . ">" . $array_data[$i]['address_technical_inspection'] . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($array_data[$i]['path_to_file'], $array_data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role > 2) {
 						$html .= "<td " . $style_border . ">"
 							. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $array_data[$i]['id'] . "' data-item='3' title='Скорректировать сведения о ТО'><span class='fa fa-pencil'></span>&nbspИзменить</button></td>"
 							. "<td " . $style_border . "><div class='dropdown'>"
@@ -85,7 +82,8 @@ class TechnicalInspection extends Model {
 							. "<td " . $style_border . ">" . $array_data[$i]['firma_to'] . "</td>"
 							. "<td " . $style_border . ">" . $array_data[$i]['address_technical_inspection'] . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($array_data[$i]['path_to_file'], $array_data[$i]['file_extension']) . "</td>";
-					if(($role > 1) && ($role != 4)) {
+
+					if($role > 2) {
 						$list_archive .= "<td " . $style_border . ">"
 							. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $array_data[$i]['id'] . "' data-item='3' title='Скорректировать сведения о ТО'><span class='fa fa-pencil'></span>&nbspИзменить</button></td>"
 							. "<td " . $style_border . "><div class='dropdown'>"
@@ -128,8 +126,6 @@ class TechnicalInspection extends Model {
 			return false;
 		
 		$id = addslashes($post['nsyst']);
-		/*if(($data = $this->get_spr(16)) === false)
-			return false;*/
 		
 		$number = $firma = $address = $end_date = $date = $path_to_file = $file_extension = $car_mileage = "";
 		if($id != -1) {
@@ -149,14 +145,6 @@ class TechnicalInspection extends Model {
 		}
 		
 		$spr_firma = Directory::get_directory(16, $firma);
-
-		/*$spr_firma = "<option value='0'></option>";
-		for($i = 0; $i < count($data); $i++) {
-			if($firma == $data[$i]['kod'])
-				$spr_firma .= "<option value='" . $data[$i]['kod'] . "' selected>" . $data[$i]['text'] . "</option>";
-			else
-				$spr_firma .= "<option value='" . $data[$i]['kod'] . "'>" . $data[$i]['text'] . "</option>";
-		}*/
 		
 		$html = "<div class='col-12'>"
 				. "<div id='formTechnicalInspection'>"

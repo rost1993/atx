@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -71,11 +72,7 @@ class Accessories extends Model {
 		if(($data = $this->get_list(addslashes($post['nsyst']))) === false)
 			return false;
 
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 		
 		$html = "";
 		if(count($data) == 0) {
@@ -125,7 +122,6 @@ class Accessories extends Model {
 				if($data[$i]['ibd_arx'] == 1) {
 					$html .= "<tr>"
 							. "<td " . $style_border . ">" . ($j++) . "</td>";
-							//. "<td " . $style_border . ">" . ServiceFunction::convertToDate($data[$i]['issued_date']) . "</td>";
 							
 					if($object == self::CAR_EXTINGUISHER || $object == self::CAR_FIRST_AID_KID) {
 						$html .= "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['issued_date']) . "</td>"
@@ -141,7 +137,7 @@ class Accessories extends Model {
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['start_date']) . "</td>";
 					}
 					
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html .= "<td " . $style_border . ">"
 							. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='12' data-object='" . $object . "' data-title-form='" . $this->title_form . "'><span class='fa fa-pencil'>&nbsp;</span>Изменить</button></td>"
 							. "<td " . $style_border . "><div class='dropdown'>"
@@ -172,7 +168,7 @@ class Accessories extends Model {
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['start_date']) . "</td>";
 					}
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$list_archive .= "<td " . $style_border . ">"
 							. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $data[$i]['id'] . "' data-item='12' data-object='" . $object . "' data-title-form='" . $this->title_form . "'><span class='fa fa-pencil'>&nbsp;</span>Изменить</button></td>"
 							. "<td " . $style_border . "><div class='dropdown'>"

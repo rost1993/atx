@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -29,10 +30,8 @@ class Osago extends Model {
 		if(($array_data = $this->get_list(addslashes($post['nsyst']))) === false)
 			return false;
 
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
-		$role = 9 ;
+		$role = User::get('role');
+
 		$html = "";
 		if(count($array_data) == 0) {
 			$html = "<div class='text-center'><p>Сведений в базе данных не найдено!</p></div>";
@@ -62,7 +61,7 @@ class Osago extends Model {
 							. "<td " . $style_border . ">" . Functions::convertToDate($array_data[$i]['end_date_osago']) . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($array_data[$i]['path_to_file'], $array_data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$html .= "<td " . $style_border . ">"
 								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $array_data[$i]['id'] . "' data-item='2'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"
@@ -83,7 +82,7 @@ class Osago extends Model {
 							. "<td " . $style_border . ">" . Functions::convertToDate($array_data[$i]['end_date_osago']) . "</td>"
 							. "<td " . $style_border . ">" . Functions::rendering_icon_file($array_data[$i]['path_to_file'], $array_data[$i]['file_extension']) . "</td>";
 
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						$list_archive .= "<td " . $style_border . ">"
 								. "<button type='button' class='btn btn-sm btn-info' id='btnEditItem' data-nsyst='" . $array_data[$i]['id'] . "' data-item='2'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 								. "<td " . $style_border . "><div class='dropdown'>"
@@ -127,9 +126,6 @@ class Osago extends Model {
 		
 		$id = addslashes($post['nsyst']);
 
-		/*if(($data = $this->get_spr(15)) === false)
-			return false;*/
-
 		$n_osago = $end_date_osago = $firma_osago = $path_to_file = $file_extension = "";
 		if($id != -1) {
 			if(($array_data = $this->get(['id' => $id])) === false)
@@ -145,14 +141,6 @@ class Osago extends Model {
 		}
 
 		$spr_firma_osago = Directory::get_directory(15, $firma_osago);
-		
-		/*$spr_firma_osago = "<option value='0'></option>";
-		for($i = 0; $i < count($data); $i++) {
-			if($firma_osago == $data[$i]['kod'])
-				$spr_firma_osago .= "<option value='" . $data[$i]['kod'] . "' selected>" . $data[$i]['text'] . "</option>";
-			else
-				$spr_firma_osago .= "<option value='" . $data[$i]['kod'] . "'>" . $data[$i]['text'] . "</option>";
-		}*/
 		
 		$html = "<div class='col-12'>"
 				. "<div id='formOsago'>"

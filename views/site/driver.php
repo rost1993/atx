@@ -126,7 +126,7 @@
 	if(!empty($c_parus_more_60) && $c_parus_more_60 > 0)
 		$strKategVUBoat .= "<span class='style-kateg-vu'>Парусное более 60 кв.м</span>";
 
-	$role = 9;
+	$role = IcKomiApp\core\User::get('role');
 ?>
 
 <div class="container-fluid starter-template">
@@ -197,7 +197,7 @@
 				</div>
 				
 				<div class='card-footer card-header'><?php
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						echo "<button type='button' class='btn btn-success' id='saveDrivers' title='Сохранить информацию о водителе' style='margin: 3px;'><span class='fa fa-check'></span>&nbsp;Сохранить водителя</button>";
 						echo "<button type='button' class='btn btn-primary' id='lockDrivers' title='Изменить уровень видимости водителя' style='margin: 3px;'><span class='" . $span_btn_dostup . "'></span>&nbsp;" . $text_btn_dostup . "</button>";
 
@@ -224,7 +224,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonVU'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='1' data-class="car" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='car' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='1' data-class='car' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 								<?= $file_vu; ?>
 							</div>
 						</div>
@@ -278,7 +278,7 @@
 							</div>
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='10' data-class="tractor" title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='10' data-class='tractor' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='10' data-class='tractor' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 								<?= $file_vu_tractor; ?>
 							</div>
 						</div>
@@ -334,7 +334,7 @@
 							</div>
 							<div class="col col-sm-6 mb-1 text-left" id='groupButtonVUBoat'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='14' data-class="boat" title="Показать список удостоверений"><span class="fa fa-search">&nbsp;</span>Список</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='14' data-class='boat' title='Добавить удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='14' data-class='boat' title='Добавить удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 							</div>
 						</div>
 
@@ -351,7 +351,7 @@
 							</div>
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='15' title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='15' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='15' title='Добавить водительское удостоверение'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
 								<?= $file_dopog; ?>
 							</div>
 						</div>
@@ -393,7 +393,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="1" title="Открыть историю закреплений"><span class="fa fa-search">&nbsp;</span>История закреплений</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='1' data-operation='1' title='Закрепить новое транспортное средство за водителем'><span class='fa fa-plus'>&nbsp;</span>Добавить ТС</button>" : ""; ?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='1' data-operation='1' title='Закрепить новое транспортное средство за водителем'><span class='fa fa-plus'>&nbsp;</span>Добавить ТС</button>" : ""; ?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseSix" aria-labelledby="headingFour">
@@ -410,7 +410,11 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='2' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
-								<a class="btn btn-sm btn-outline-info" href="dtp?add_driver=<?= $id; ?>" target="_blank" title='Добавить ДТП'><span class="fa fa-plus">&nbsp;</span>Добавить ДТП</a>
+								
+								<?php
+								if($role >= 2)
+									echo "<a class='btn btn-sm btn-outline-info' href='dtp?add_driver=<?= $id; ?>' target='_blank' title='Добавить ДТП'><span class='fa fa-plus'>&nbsp;</span>Добавить ДТП</a>";
+								?>
 							</div>
 						</div>
 
@@ -428,7 +432,10 @@
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="11" data-type='2' title="Открыть список всех адм. правонарушений"><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
-								<a class="btn btn-sm btn-outline-info" href="adm?add_driver=<?= $id; ?>" target="_blank" title='Добавить адм. правонарушение'><span class="fa fa-plus">&nbsp;</span>Добавить адм. правонарушение</a>
+								<?php
+								if($role >= 2)
+								echo "<a class='btn btn-sm btn-outline-info' href='adm?add_driver=<?= $id; ?>' target='_blank' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp;</span>Добавить адм. правонарушение</a>";
+								?>
 							</div>
 						</div>
 

@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -23,6 +24,8 @@ class TractorVu extends Model {
 	function rendering_list($post) {
 		if(empty($post['nsyst']))
 			return;
+
+		$role = User::get('role');
 
 		if(($data = $this->get_list(addslashes($post['nsyst']))) === false)
 			return false;
@@ -50,12 +53,17 @@ class TractorVu extends Model {
 				$temp = "<td " . $style_border . ">" . $data[$i]['doc_s'] . " " . $data[$i]['doc_n'] . "</td>"
 				   . "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['doc_date']) . "</td>"
 				   . "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['doc_end_date']) . "</td>"
-				   . "<td " . $style_border . ">" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>"
-				   . "<td " . $style_border . "><button type='button' id='btnEditItem' data-item='10' data-nsyst='" . $data[$i]['id'] . "' class='btn btn-sm btn-info' title='Изменить водительское удостоверение'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
+				   . "<td " . $style_border . ">" . Functions::rendering_icon_file($data[$i]['path_to_file'], $data[$i]['file_extension']) . "</td>";
+
+				   if($role >= 2) {
+				   		$temp .= "<td " . $style_border . "><button type='button' id='btnEditItem' data-item='10' data-nsyst='" . $data[$i]['id'] . "' class='btn btn-sm btn-info' title='Изменить водительское удостоверение'><span class='fa fa-pencil'>&nbsp</span>Изменить</button></td>"
 				   . "<td " . $style_border . "><div class='dropdown'>"
 				   . "<button type='button'  class='btn btn-sm btn-danger dropdown-toggle' id='btnDropdownRemoveVU' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить водительское удостоверение'><span class='fa fa-trash'>&nbsp</span>Удалить</button>"
 				   . "<div class='dropdown-menu' aria-labelledby='btnDropdownRemoveVU'>"
 				   . "<button class='dropdown-item' type='button' id='btnRemoveItem' data-item='10' data-nsyst='" . $data[$i]['id'] . "' data-object='" . $data[$i]['id_driver'] . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div></div></td>";
+				} else {
+					$temp .= "<td " . $style_border . "></td><td " . $style_border . "></td>";
+				}
 			
 				if($data[$i]['ibd_arx'] == 1)
 					$list_vu .= "<tr><td " . $style_border . ">" . $k1++ . "</td>" . $temp . "</tr>";

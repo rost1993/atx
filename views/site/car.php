@@ -1,7 +1,4 @@
 <?php
-	use IcKomiApp\widgets\Directory;
-	#use IcKomiApp\widgets\Modal;
-
 	$id = (empty($id)) ? '' : $id;
 	$gos_znak = (empty($gos_znak)) ? '' : $gos_znak;
 	$n_reg = (empty($n_reg)) ? '' : $n_reg;
@@ -29,7 +26,7 @@
 	$tip_strah = (empty($tip_strah)) ? '' : $tip_strah;
 	$kateg_gost = (empty($kateg_gost)) ? '' : $kateg_gost;
 
-	$array_directory = Directory::get_multiple_directory([3, 4, 12, 5, 7, 9], ['3' => $marka, '4' => $model, '12' => $color, '5' => $kateg_ts, '7' => $tip_strah, '9' => $kateg_gost]);
+	$array_directory = IcKomiApp\widgets\Directory::get_multiple_directory([3, 4, 12, 5, 7, 9], ['3' => $marka, '4' => $model, '12' => $color, '5' => $kateg_ts, '7' => $tip_strah, '9' => $kateg_gost]);
 
 	$marka_select = (empty($array_directory[3])) ? '' : $array_directory[3];
 	$model_select = (empty($array_directory[4])) ? '' : $array_directory[4];
@@ -139,7 +136,7 @@
 		$badge_write_off = "<div class='alert alert-yellow text-center'><b>Транспортное средство готовится к списанию!<br>Транспортное средство не подлежит страхованию и проведению тех. осмотра, не выдавать новые запасные части и другие товарно-материальные ценности!</b></div>";
 	}
 
-	$role = 9;
+	$role = (int)IcKomiApp\core\User::get('role');
 ?>
 
 <div class="container-fluid starter-template">
@@ -155,7 +152,7 @@
 					<div class='car-notice'><?= $badge_write_off; ?></div>
 
 					<?php
-						if($role >= 8) {
+						if($role >= 2) {
 
 						echo "<div class='col atx-cars-block'>"
 						. "<div class='form-row'>"
@@ -277,7 +274,7 @@
 						<div class="col-sm-12 atx-cars-block">	
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1 text-left">
-									<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThree" aria-controls="collapseThree" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>3. ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ ТРАНСПОРТНОГО СРЕДСТВА</a></h5></p>
+									<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThree" aria-controls="collapseThree" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>3. ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ ТРАНСПОРТНОГО СРЕДСТВА</a></h5></p>
 								</div>
 							</div>
 							
@@ -447,18 +444,17 @@
 					
 									
 				<div class='card-footer card-header'><?php
-						if(($role > 1) && ($role != 4)) {
+						if($role >= 2) {
 							echo "<button type='button' class='btn btn-success' id='saveInfoForCars' title='Сохранить информацию о транспортном средстве' style='margin: 2px;'><span class='fa fa-check'>&nbsp;</span>Сохранить ТС</button>";
-							echo "<button type='button' class='btn btn-primary' id='lockCars' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-lock'>&nbsp;</span>" . $text_btn_dostup . "</button>";
+
+							if($role > 2)
+								echo "<button type='button' class='btn btn-primary' id='lockCars' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-lock'>&nbsp;</span>" . $text_btn_dostup . "</button>";
+
 							echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='1'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive . "</button>";
 							echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownDeleteCars' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-remove'></span>&nbspУдалить ТС</button>
 							<div class='dropdown-menu' aria-labelledby='dropdownDeleteCars'>
 								<button class='dropdown-item' id='deleteCars'><span class='fa fa-check text-success'>&nbsp;</span>Подтверждаю удаление</button>
 							</div>";
-						}
-						
-						if($role >= 8) {
-							//echo "<button class='btn btn-info' id='btnEnableNoticeEvents' title='Включить/отключить уведомления на данное транспортное средство' data-operation='disable'><span class='fa fa-bell-slash'>&nbsp;</span>Откл. уведомления</button>";
 						}
 					?></div>
 
@@ -476,9 +472,9 @@
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-primary" id="btnShowListLink" data-item="car" title="Развернуть список всех свидетельств о регистрации"><span class="fa fa-cogs">&nbsp;</span>Редактор связей</button>
 								<?php
-								if(($role > 1) && ($role != 4)) {
+								if($role >= 2) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info mr-1' id='addCarsLinkDocument' data-item='car' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Добавить документ</button>";
-								echo "<a href='car_document' role='button' target='_blank' class='btn btn-sm btn-outline-info' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Создать документ</a>";
+									echo "<a href='car_document' role='button' target='_blank' class='btn btn-sm btn-outline-info' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Создать документ</a>";
 							}?></div>
 						</div>
 						
@@ -496,7 +492,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonSix'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='6' title="Развернуть список всех свидетельств о регистрации"><span class="fa fa-search">&nbsp;</span>История регистрации</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='6' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Добавить свидетельство</button>" : ""; ?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='6' title='Добавить свидетельство о регистрации'><span class='fa fa-plus'>&nbsp;</span>Добавить свидетельство</button>" : ""; ?>
 								<?= $file_cert_reg; ?>
 							</div>
 						</div>
@@ -549,7 +545,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonSeven'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='5' title="Развернуть список всех ПТС"><span class="fa fa-search">&nbsp</span>История ПТС</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='5' title='Добавить полис ПТС'><span class='fa fa-plus'>&nbsp</span>Добавить ПТС</button>" : ""; ?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='5' title='Добавить полис ПТС'><span class='fa fa-plus'>&nbsp</span>Добавить ПТС</button>" : ""; ?>
 								<?= $file_pts; ?>
 							</div>
 						</div>
@@ -601,7 +597,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonEight'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='2' title="Развернуть список всех полисов ОСАГО"><span class="fa fa-search"></span>&nbspИстория ОСАГО</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='2' title='Добавить полис ОСАГО'><span class='fa fa-plus'></span>&nbspДобавить ОСАГО</button>" : ""; ?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='2' title='Добавить полис ОСАГО'><span class='fa fa-plus'></span>&nbspДобавить ОСАГО</button>" : ""; ?>
 								<?= $file_osago; ?>
 							</div>
 						</div>
@@ -644,7 +640,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='3' title="Развернуть список всех технических осмотров"><span class="fa fa-search"></span>&nbspИстория Техосмотров</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='3' title='Добавить полис технический осмотр'><span class='fa fa-plus'></span>&nbspДобавить Техосмотр</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='3' title='Добавить полис технический осмотр'><span class='fa fa-plus'></span>&nbspДобавить Техосмотр</button>" : "";?>
 								<?= $file_tech_inspection; ?>
 							</div>
 						</div>
@@ -696,7 +692,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='16' title="Список всех ДОПОГ"><span class="fa fa-search"></span>&nbsp;История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='16' title='Добавить свидетельство ДОПОГ'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='16' title='Добавить свидетельство ДОПОГ'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
 								<?= $file_dopog; ?>
 							</div>
 						</div>
@@ -742,7 +738,7 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='17' title="Список всех экспертиз"><span class="fa fa-search"></span>&nbsp;История</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='17' title='Добавить экспертизу'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='17' title='Добавить экспертизу'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
 								<?= $file_calibration; ?>
 							</div>
 						</div>
@@ -779,16 +775,16 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='4' title="Развернуть список всех показаний спидометра"><span class="fa fa-search">&nbsp;</span>История спидометра</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='4' title='Передать показания спидометра'><span class='fa fa-plus'>&nbsp;</span>Показания спидометра</button>" : ""; ?>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='4' title='Передать показания спидометра'><span class='fa fa-plus'>&nbsp;</span>Показания спидометра</button>" : ""; ?>
 								
 								<?php
-									if(($role >= 3) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<div style='display: inline-block;'><button type='button' class='btn btn-sm btn-outline-primary' id='dropdownChangeSpeedometer' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Добавить новый спидометр'><span class='fa fa-cogs'>&nbsp;</span>Замена спидометра</button>"
 											. "<div class='dropdown-menu' aria-labelledby='dropdownChangeSpeedometer'>"
 												. "<button class='dropdown-item' id='btnChangeSpeedometer'><span class='fa fa-check text-success'>&nbsp;</span>Добавить новый спидометр</button>"
 									. "</div></div>";
 									}
-									if(($role >= 8) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<div style='display: inline-block;'><button type='button' class='btn btn-sm btn-outline-danger' id='dropdownRemoveSpeedometer' style='margin-left: 4px;' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить спидометр'><span class='fa fa-trash'>&nbsp;</span>Удаление спидометра</button>"
 											. "<div class='dropdown-menu' aria-labelledby='dropdownRemoveSpeedometer'>"
 												. "<button class='dropdown-item' id='btnRemoveSpeedometer'><span class='fa fa-check text-success'>&nbsp;</span>Удалить спидометр</button>"
@@ -817,8 +813,8 @@
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>15. ВОДИТЕЛИ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
-								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="2" title="Открыть историю закреплений"><span class="fa fa-search"></span>&nbspИстория закреплений</button>
-								<?php echo (($role > 1) && ($role != 4)) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='2' data-operation='1' title='Закрепить нового водителя за транспортным средством'><span class='fa fa-plus'></span>&nbspДобавить водителя</button>" : "";?>
+								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="2" title="Открыть историю закреплений"><span class="fa fa-search"></span>&nbsp;История закреплений</button>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='2' data-operation='1' title='Закрепить нового водителя за транспортным средством'><span class='fa fa-plus'></span>&nbspДобавить водителя</button>" : "";?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
@@ -835,7 +831,11 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='7' title="Открыть список всех ремонтов"><span class="fa fa-search">&nbsp;</span>Список ремонтов</button>
-								<a class="btn btn-sm btn-outline-info" href="repair?add_car=<?= $id; ?>" target="_blank" title='Добавить ремонт к транспортному средству'><span class="fa fa-plus">&nbsp;</span>Добавить ремонт</a>
+
+								<?php
+								if($role >= 2)
+									echo "<a class='btn btn-sm btn-outline-info' href='repair?add_car=<?= $id; ?>' target='_blank' title='Добавить ремонт к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ремонт</a>";
+								?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
@@ -852,7 +852,11 @@
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='1' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
-								<a class="btn btn-sm btn-outline-info" href="dtp?add_car=<?= $id; ?>" target="_blank" title='Добавить ДТП к транспортному средству'><span class="fa fa-plus">&nbsp;</span>Добавить ДТП</a>
+
+								<?php
+								if($role >= 2)
+								echo "<a class='btn btn-sm btn-outline-info' href='dtp?add_car=<?= $id; ?>' target='_blank' title='Добавить ДТП к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ДТП</a>";
+								?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">
@@ -869,7 +873,11 @@
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='11' data-type='1' title=""><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
-								<a class="btn btn-sm btn-outline-info" href="adm?add_car=<?= $id; ?>" target="_blank" title='Добавить адм. правонарушение'><span class="fa fa-plus">&nbsp;</span>Добавить адм. правонарушение</a>
+
+								<?php
+								if($role >= 2)
+								echo "<a class='btn btn-sm btn-outline-info' href='adm?add_car=<?= $id; ?>' target='_blank' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp;</span>Добавить адм. правонарушение</a>";
+								?>
 							</div>
 						</div>
 						<div class="collapse show" id="collapseEighteen" aria-labelledby="headingOne">
@@ -901,7 +909,7 @@
 								<div class="col col-sm-6 mb-1 text-left">
 									<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="12" data-object="car_fire_extinguisher" data-title-form="Огнетушитель" title="Отобразить список огнетушителей"><span class="fa fa-search">&nbsp;</span>Список</button>
 									<?php
-									if(($role > 1) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить огнетушитель' data-item='12' data-object='car_fire_extinguisher' data-title-form='Огнетушитель'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
 									}
 									?>
@@ -937,7 +945,7 @@
 								<div class="col col-sm-6 text-left">
 									<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="12" title="Отобразить список аптечек" data-object="car_first_aid_kid" data-title-form="Аптечка"><span class="fa fa-search">&nbsp;</span>Список</button>
 									<?php
-									if(($role > 1) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить аптечку' data-item='12' data-object='car_first_aid_kid' data-title-form='Аптечка'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
 								}?>
 								</div>
@@ -973,7 +981,7 @@
 								<div class="col col-sm-6 mb-1 text-left">
 									<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="12" data-object="car_warning_triangle" title="Отобразить список знаков аварийной остановки" data-title-form="Знак аварийной остановки"><span class="fa fa-search">&nbsp;</span>Список</button>
 									<?php
-									if(($role > 1) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить знак аварийной остановки' data-item='12' data-object='car_warning_triangle' data-title-form='Знак аварийной остановки'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
 								}?></div>
 							</div>
@@ -992,7 +1000,7 @@
 								<div class="col col-sm-6 mb-1 text-left">
 									<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="12" data-object="car_battery" title="Отобразить список аккумуляторных батарей" data-title-form="Аккумуляторная батарея"><span class="fa fa-search">&nbsp;</span>Список</button>
 									<?php
-									if(($role > 1) && ($role != 4)) {
+									if($role >= 2) {
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить аккумуляторную батарею' data-item='12' data-object='car_battery' data-title-form='Аккумуляторная батарея'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
 								}?></div>
 							</div>
@@ -1019,12 +1027,12 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwenty" aria-controls="collapseTwenty" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>20. УЧЕТ ШИН</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwenty" aria-controls="collapseTwenty" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>20. УЧЕТ ШИН</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='13' title="Развернуть список всех шин"><span class="fa fa-search"></span>&nbsp;Список шин</button>
 								<?php
-									if(($role > 1)  && ($role != 4))
+									if($role >= 2)
 									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='13' title='Добавить шину'><span class='fa fa-plus'></span>&nbsp;Добавить шину</button>";
 								?>
 							</div>

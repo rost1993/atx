@@ -1,6 +1,4 @@
 <?php
-	use IcKomiApp\widgets\Directory;
-
 	$id = (empty($id)) ? '' : $id;
 	$car_mileage = (empty($car_mileage)) ? '' : $car_mileage;
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
@@ -15,21 +13,21 @@
 
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
 
-	$org_repair_select = Directory::get_directory(18, $org_repair);
+	$org_repair_select = IcKomiApp\widgets\Directory::get_directory(18, $org_repair);
 
 	if(!empty($id_car)) {
 		$id_car = (empty($id_car)) ? '' : $id_car;
-		$car_select = Directory::get_directory_car($id_car);
+		$car_select = IcKomiApp\widgets\Directory::get_directory_car($id_car);
 	} else if(!empty($add_car)) {
 		$add_car = (empty($add_car)) ? '' : $add_car;
-		$car_select = Directory::get_directory_car($add_car);
+		$car_select = IcKomiApp\widgets\Directory::get_directory_car($add_car);
 	} else {
-		$car_select = Directory::get_directory_car();
+		$car_select = IcKomiApp\widgets\Directory::get_directory_car();
 	}
 
 	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
 
-	$role = 9;
+	$role = IcKomiApp\core\User::get('role');
 ?>
 
 <div class="container-fluid starter-template">
@@ -133,7 +131,7 @@
 				</div>
 				
 				<div class='card-footer card-header'><?php
-					if(($role > 1) && ($role != 4)) {
+					if($role >= 2) {
 						echo "<button type='button' class='btn btn-success mr-1' id='btnSaveRepair' title='Сохранить информацию о ремонте'><span class='fa fa-check'></span>&nbsp;Сохранить</button>";
 						echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownRemoveRepair' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить информацию о ремонте''><span class='fa fa-remove'></span>&nbsp;Удалить</button>";
 						echo "<div class='dropdown-menu' aria-labelledby='dropdownRemoveRepair'>";
@@ -141,44 +139,6 @@
 						echo "</div>";
 					}
 				?></div>
-
-				
-				
-				<!--<div class="card-body" id="cardSections">
-					<nav class="nav nav-pills justify-content-center">
-						<a class="nav-item nav-link active" id="pills1" style='border: 1px solid black; margin: 3px;' data-toggle="pill" href="#SECTION1-VU" role="tab" aria-controls="pills-home" aria-selected="true">СПИСОК ОКАЗАННЫХ УСЛУГ</a>
-					</nav>
-					
-					<div class="tab-content">
-						<div id="SECTION1-VU" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-home-tab" style='margin: 0px; padding: 0px;'>
-							<div class="col-sm-12 atx-cars-block">
-								<div class="form-row">
-									<div class="col col-sm-3 mb-1 text-left">
-										<p style="margin: 0px;"><h5>2. СПИСОК ОКАЗАННЫХ УСЛУГ</h5></p>
-									</div>
-									<div class="col col-sm-9 mb-1 text-left">
-										<button type="button" class="btn btn-sm btn-outline-success" id="showHistoryService" title="Скорректировать услугу"><span class="fa fa-pencil">&nbsp</span>Скорректировать</button>
-										<button type="button" class="btn btn-sm btn-outline-info" id="addService" title="Добавить услугу"><span class="fa fa-plus">&nbsp</span>Добавить</button>
-									</div>
-								</div>
-								<div class="form-row">
-									<div class="col col-sm-12 mb-1">
-										<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px;' id="tableGoods">
-											<tr class='table-info'>
-												<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>№ п/п</th>
-												<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>Товарно-материальные ценности</th>
-												<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>Услуга</th>
-												<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>Сумма</th>
-												<th class='table_bordered_2' style='vertical-align: middle; border: 1px solid gray;' scope='col'>Примечание</th>
-											</tr>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					</div>-->
 				</div>
 			</div>
 		</div>
