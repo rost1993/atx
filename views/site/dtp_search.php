@@ -21,20 +21,20 @@
 						
 						<div class="collapse show" id="collapseOne" aria-labelledby="headingOne">
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="fam"><strong>Фамилия</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="fam">Фамилия</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="fam" maxlength="150" placeholder="Фамилия" data-datatype="char" autofocus>
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="imj"><strong>Имя</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="imj">Имя</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="imj" maxlength="150" placeholder="Имя" data-datatype="char">
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="gos_znak"><strong>Гос. номер</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="gos_znak">Гос. номер</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="gos_znak" maxlength="150" placeholder="Гос. номер" data-datatype="char">
@@ -42,8 +42,8 @@
 							</div>
 
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_dtp1" style="font-size: 13px;"><strong>Дата ДТП</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="date_dtp1">Дата ДТП</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<div class='input-group input-group-sm'>

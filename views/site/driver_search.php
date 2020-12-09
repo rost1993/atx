@@ -21,20 +21,20 @@
 						
 						<div class="collapse show" id="collapseOne" aria-labelledby="headingOne">
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="fam"><strong>Фамилия</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="fam">Фамилия</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="fam" maxlength="150" placeholder="Фамилия" data-datatype="char" autofocus>
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="imj"><strong>Имя</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="imj">Имя</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="imj" maxlength="150" placeholder="Имя" data-datatype="char">
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="otch"><strong>Отчество</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="otch">Отчество</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="otch" maxlength="150" placeholder="Отчество" data-datatype="char">
@@ -42,18 +42,18 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-12 mb-1 text-center" style="vertical-align: center;">
-									<label class="mr-3" style="font-size: 13px;">
+								<div class="col col-sm-12 mb-1 text-center">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="2" data-datatype="radio" checked>
 										<strong>Актуальные</strong>
 									</label>
 									
-									<label class="mr-3" style="font-size: 13px;">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="1" data-datatype="radio">
 										<strong>Архив</strong>
 									</label>
 									
-									<label style="font-size: 13px;">
+									<label class="fs-13">
 										<input type='radio' name='ibd_arx' value="3" data-datatype="radio">
 										<strong>Все</strong>
 									</label>

@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -34,93 +35,10 @@ class Adm extends Model {
 	}
 
 	public function get_list($post = []) {
-		/*if(!ServiceFunction::check_number($id))
-			return false;
+		$role = User::get('role');
 
-		Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
-		
-		$where = '';
-		if($id != -1)
-			$where = " WHERE a.id=" . $id;
-
-		if($role == 9 || $role == 8) {
-			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
-				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, x7.text as st_chast_koap_text "
-				. " FROM {table} a "
-				. " LEFT JOIN cars b ON b.id=a.id_car "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else if($role == 4) {
-			if(mb_strlen($where) == 0)
-				$where = " WHERE b.slugba IN " . User::get_all_slugba() . " OR c.slugba IN " . User::get_all_slugba();
-			else
-				$where .= " AND (b.slugba IN " . User::get_all_slugba() . " OR c.slugba IN " . User::get_all_slugba() . ") ";
-
-			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
-				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, x7.text as st_chast_koap_text "
-				. " FROM {table} a "
-				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else if($role == 3) {
-			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
-				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, x7.text as st_chast_koap_text "
-				. " FROM {table} a "
-				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else if($role == 2) {
-			if(mb_strlen($where) == 0)
-				$where = " WHERE b.kodrai=" . $kodrai . " OR c.kodrai=" . $kodrai;
-			else
-				$where .= " AND (b.kodrai=" . $kodrai . " OR c.kodrai=" . $kodrai . ") ";
-
-			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
-				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, x7.text as st_chast_koap_text "
-				. " FROM {table} a "
-				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1  "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else {
-			return false;
-		}*/
-
-		$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+		if($role == 9)
+			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
 				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
 				. " x7.text as st_chast_koap_text "
 				. " FROM {table} a "
@@ -130,6 +48,30 @@ class Adm extends Model {
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
 				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 "
 				. " ORDER BY a.date_adm DESC";
+		else if($role == 2)
+			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
+				. " x7.text as st_chast_koap_text "
+				. " FROM {table} a "
+				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
+				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
+				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
+				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 "
+				. " ORDER BY a.date_adm DESC";
+		else if($role == 1)
+			$this->sql_get_list = "SELECT a.*, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
+				. " x7.text as st_chast_koap_text "
+				. " FROM {table} a "
+				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
+				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
+				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
+				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 "
+				. " ORDER BY a.date_adm DESC";
+		else
+			return false;
 		
 		if(($data = parent::get_list()) === false)
 			return false;
@@ -186,16 +128,15 @@ class Adm extends Model {
 					$where .= " AND a.date_adm <= '" . Functions::convertToMySQLDateFormat($array_value_decode['value']) . "'";
 			}
 		}
-		
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
+
+		$sql = '';
+		$role = User::get('role');
 		
 		if(mb_strlen($where) > 0)
 				$where = " WHERE " . $where;
-		
-		$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
+
+		if($role == 9)
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
 				. " a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
 				. " FROM adm_offense a "
 				. " LEFT JOIN cars b ON b.id=a.id_car "
@@ -204,78 +145,29 @@ class Adm extends Model {
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
 				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
 				. " ORDER BY a.date_adm DESC";
-
-		/*if($role == 9 || $role == 8) {
-			$sqlQuery = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
-				. " FROM adm_offense a "
-				. " LEFT JOIN cars b ON b.id=a.id_car "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else if($role == 4) {
-			if(mb_strlen($where) == 0)
-				$where = " WHERE b.slugba IN " . User::get_all_slugba() . " OR c.slugba IN " . User::get_all_slugba();
-			else
-				$where .= " AND (b.slugba IN " . User::get_all_slugba() . " OR c.slugba IN " . User::get_all_slugba() . ") ";
-
-			$sqlQuery = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
-				. " FROM adm_offense a "
-				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
-				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
-				. " ORDER BY a.date_adm DESC";
-		} else if($role == 3) {
-			$sqlQuery = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
+		else if($role == 2)
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
+				. " a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
 				. " FROM adm_offense a "
 				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
+				. " LEFT JOIN drivers c ON c.id=a.id_driver "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
 				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
 				. " ORDER BY a.date_adm DESC";
-		} else if($role == 2) {
-			if(mb_strlen($where) == 0)
-				$where = " WHERE b.kodrai=" . $kodrai . " OR c.kodrai=" . $kodrai;
-			else
-				$where .= " AND (b.kodrai=" . $kodrai . " OR c.kodrai=" . $kodrai . ") ";
-
-			$sqlQuery = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
+		else if($role == 1)
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
+				. " a.date_adm, a.time_adm, a.place_adm, a.sum_adm, a.oplat_adm, x7.text as st_chast_koap_text, a.comment_adm, IF(a.oplat_adm = 1, 'ДА', 'НЕТ') as oplat_adm_text "
 				. " FROM adm_offense a "
-				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
+				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " LEFT JOIN drivers c ON c.id=a.id_driver "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
 				. " LEFT JOIN s2i_klass x7 ON x7.kod=a.st_chast_koap AND x7.nomer=26 " . $where
 				. " ORDER BY a.date_adm DESC";
-		} else {
+		else
 			return false;
-		}*/
 
-		
 		if(($data = DB::query($sql)) === false)
 			return false;
 
@@ -440,11 +332,7 @@ class Adm extends Model {
 		$style_border = "style='vertical-align: middle; border: 1px solid gray;'";
 		$html = "";
 
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 
 		if(count($data) == 0) {
 			return "<p class='text-center'>Сведений в базе данных не найдено!</p>";
@@ -482,15 +370,10 @@ class Adm extends Model {
 			$html .= "<td " . $style_border . ">" . $data[$i]['date_adm'] . "&nbsp;" . $data[$i]['time_adm'] . "</td>"
 				   . "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;'>ст.&nbsp;" . $data[$i]['st_chast_koap_text'];
 
-		/*	$html .= "<td " . $style_border . ">" . $data[$i]['date_adm'] . "&nbsp;" . $data[$i]['time_adm'] . "</td>"
-				   . "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;'>ст.&nbsp;" . $data[$i]['st_adm'];
-
-			$html .= (mb_strlen($data[$i]['chast_adm']) == 0) ? "</td>": "&nbsp;ч.&nbsp;" . $data[$i]['chast_adm'] . "</td>";*/
-
 			$html .= "<td style='vertical-align: middle; border: 1px solid gray; font-size: 10px;'>" . $data[$i]['place_adm'] . "</td>"
 				   . "<td " . $style_border . ">" . $data[$i]['sum_adm'] . "</td>"
 			       . "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;'>" . $oplat_adm . "</td>";
-			$html .= (($role > 1) && ($role != 4)) ? "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;'><a href='" . $page . "' class='btn btn-sm btn-info' target='_blank'><span class='fa fa-pencil'>&nbsp;</span>Изменить</a></td>" : "";
+			$html .= ($role >= 2) ? "<td style='vertical-align: middle; border: 1px solid gray; font-size: 11px;'><a href='" . $page . "' class='btn btn-sm btn-info' target='_blank'><span class='fa fa-pencil'>&nbsp;</span>Изменить</a></td>" : "<td " . $style_border . "></td>";
 			$html .= "</tr>";
 		}
 		$html .= "</table>";

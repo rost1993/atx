@@ -184,16 +184,16 @@
 							
 							<div class="collapse show" id="collapseOne" aria-labelledby="headingOne">
 								<div class="form-row">
-									<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-										<label for="marka" class="text-muted" style="font-size: 13px;"><strong>Марка</strong></label>
+									<div class="col col-sm-2 mb-1 text-right">
+										<label for="marka" class="text-muted font-weight-bold fs-13">Марка</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<select class="custom-select custom-select-sm black-text" id="marka" data-mandatory="true" data-message-error="Заполните обязательное поле: Марка" data-datatype="number">
 										<?= $marka_select; ?>
 										</select>
 									</div>
-									<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-										<label for="model" class="text-muted" style="font-size: 13px;"><strong>Модель</strong></label>
+									<div class="col col-sm-2 mb-1 text-right">
+										<label for="model" class="text-muted font-weight-bold fs-13">Модель</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<select class="custom-select custom-select-sm black-text" id="model" data-mandatory="true" data-message-error="Заполните обязательное поле: Модель" data-datatype="number">
@@ -202,8 +202,8 @@
 									</div>
 								</div>
 								<div class="form-row">
-									<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-										<label class="text-muted" style="font-size: 13px;" for="gos_znak"><strong>Гос. знак</strong></label>
+									<div class="col col-sm-2 mb-1 text-right">
+										<label class="text-muted font-weight-bold fs-13" for="gos_znak">Гос. знак</label>
 									</div>
 									<div class="col col-sm-2 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="gos_znak" data-mandatory="true" data-message-error="Заполните обязательное поле: Гос. знак" maxlength="11" placeholder="Гос. регистр. знак" data-datatype="char" value="<?= $gos_znak; ?>">
@@ -211,8 +211,8 @@
 									<div class="col col-sm-1 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="n_reg" maxlength="3" placeholder="Регион" data-datatype="number" value="<?= $n_reg; ?>">
 									</div>
-									<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-										<label class="text-muted" style="font-size: 13px;" for="color"><strong>Цвет</strong></label>
+									<div class="col col-sm-2 mb-1 text-right">
+										<label class="text-muted font-weight-bold fs-13" for="color">Цвет</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<select class="custom-select custom-select-sm black-text" id="color" data-datatype="number">
@@ -222,7 +222,7 @@
 								</div>
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="god_car"><strong>Год выпуска</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="god_car">Год выпуска</label>
 									</div>
 									<div class="col col-sm-1 mb-1">
 										<input type="text" class="form-control form-control-sm black-text datepicker-here" id="god_car" data-min-view="years" data-view="years" data-date-format="yyyy" data-mandatory="true" data-message-error="Заполните обязательное поле: Год выпуска" maxlength="4" placeholder="Год" data-datatype="number" value="<?= $god_car; ?>">
@@ -242,7 +242,7 @@
 							<div class="collapse show" id="collapseTwo" aria-labelledby="headingOne">
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="kateg_ts"><strong>Категория ТС</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="kateg_ts">Категория ТС</label>
 									</div>
 									<div class="col col-sm-3 mb-1 text-right">
 										<select class="custom-select custom-select-sm black-text" id="kateg_ts" data-datatype="number">
@@ -250,7 +250,7 @@
 										</select>
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="tip_strah"><strong>Тип для страховой</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="tip_strah">Тип для страховой</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<select class="custom-select custom-select-sm black-text" id="tip_strah" data-datatype="number">
@@ -260,7 +260,7 @@
 								</div>
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label for="kateg_gost" class="text-muted" style="font-size: 13px;"><strong>Категория ГОСТ</strong></label>
+										<label for="kateg_gost" class="text-muted font-weight-bold fs-13">Категория ГОСТ</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<select class="custom-select custom-select-sm black-text" id="kateg_gost" data-datatype="number">
@@ -281,13 +281,13 @@
 							<div class="collapse show" id="collapseThree" aria-labelledby="headingOne">
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="vin"><strong>VIN / зав. № машины (рамы)</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="vin">VIN / зав. № машины (рамы)</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="vin" maxlength="100" placeholder="VIN / зав. № машины (рамы)" data-datatype="char" value="<?= $vin; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="n_dvig"><strong>Двигатель</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="n_dvig">Двигатель</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="n_dvig" maxlength="100" placeholder="Двигатель" data-datatype="char" value="<?= $n_dvig; ?>">
@@ -296,13 +296,13 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="shassi"><strong>Шасси / коробка передач</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="shassi">Шасси / коробка передач</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="shassi" maxlength="100" placeholder="Шасси / коробка передач" data-datatype="char" value="<?= $shassi; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="kuzov"><strong>Кузов / осн. ведущий мост (мосты)</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="kuzov">Кузов / осн. ведущий мост (мосты)</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="kuzov" maxlength="100" placeholder="Кузов / осн. ведущий мост (мосты)" data-datatype="char" value="<?= $kuzov; ?>">
@@ -311,13 +311,13 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="mass_max"><strong>Разр. макс. масса</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="mass_max">Разр. макс. масса</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="mass_max" maxlength="10" placeholder="Макс. масса" data-datatype="number" value="<?= $mass_max; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="mass_min"><strong>Масса без нагрузки</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="mass_min">Масса без нагрузки</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="mass_min" maxlength="100" placeholder="Мин. масса" data-datatype="number" value="<?= $mass_min; ?>">
@@ -326,13 +326,13 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="car_vat"><strong>Мощность л.с</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="car_vat">Мощность л.с</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="car_vat" maxlength="10" placeholder="Мощность" data-datatype="number" value="<?= $car_vat; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="car_v"><strong>Раб. объем двигателя куб.см</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="car_v">Раб. объем двигателя куб.см</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="car_v" maxlength="10" placeholder="Объем" data-datatype="number" value="<?= $car_v; ?>">
@@ -341,7 +341,7 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="mileage_oil"><strong>ТО по замене масла, км</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="mileage_oil">ТО по замене масла, км</label>
 									</div>
 									<div class="col col-sm-2 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="mileage_oil" maxlength="10" placeholder="" data-datatype="number" value="<?= $mileage_oil; ?>">
@@ -359,7 +359,7 @@
 							<div class="collapse show" id="collapseFour" aria-labelledby="headingOne">
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="basic_fuel"><strong>Базовая норма</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="basic_fuel">Базовая норма</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="basic_fuel" maxlength="10" placeholder="Базовая норма" data-datatype="number" value="<?= $basic_fuel; ?>">
@@ -367,13 +367,13 @@
 								</div>
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="summer_fuel"><strong>Эксплуатационная летняя норма</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="summer_fuel">Эксплуатационная летняя норма</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="summer_fuel" maxlength="10" placeholder="Летняя норма" data-datatype="number" value="<?= $summer_fuel; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="winter_fuel"><strong>Эксплуатационная зимняя норма</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="winter_fuel">Эксплуатационная зимняя норма</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="winter_fuel" maxlength="10" placeholder="Зимняя норма" data-datatype="number" value="<?= $winter_fuel; ?>">
@@ -391,7 +391,7 @@
 							<div class="collapse show" id="collapseFive" aria-labelledby="headingOne">
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="inventory_n"><strong>Инвентарный номер</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="inventory_n">Инвентарный номер</label>
 									</div>
 									<div class="col col-sm-3 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="inventory_n" maxlength="50" placeholder="Инвентарный номер" data-datatype="char" value="<?= $inventory_n; ?>">
@@ -400,7 +400,7 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="balance_price"><strong>Первоначальная (балансовая) стоимость</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="balance_price">Первоначальная (балансовая) стоимость</label>
 									</div>
 									<div class="col col-sm-8 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="balance_price" maxlength="15" placeholder="Первоначальная (балансовая) стоимость" data-datatype="number" value="<?= $balance_price; ?>">
@@ -409,7 +409,7 @@
 								
 								<div class="form-row">
 									<div class="col col-sm-2 mb-1 text-right">
-										<label class="text-muted" style="font-size: 13px;" for="prim"><strong>Примечание</strong></label>
+										<label class="text-muted font-weight-bold fs-13" for="prim">Примечание</label>
 									</div>
 									<div class="col col-sm-8 mb-1">
 										<input type="text" class="form-control form-control-sm black-text" id="prim" maxlength="3000" placeholder="Примечание" data-datatype="char" value="<?= $prim; ?>">
@@ -834,7 +834,7 @@
 
 								<?php
 								if($role >= 2)
-									echo "<a class='btn btn-sm btn-outline-info' href='repair?add_car=<?= $id; ?>' target='_blank' title='Добавить ремонт к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ремонт</a>";
+									echo "<a class='btn btn-sm btn-outline-info' href='repair?add_car=" . $id . "' target='_blank' title='Добавить ремонт к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ремонт</a>";
 								?>
 							</div>
 						</div>
@@ -855,7 +855,7 @@
 
 								<?php
 								if($role >= 2)
-								echo "<a class='btn btn-sm btn-outline-info' href='dtp?add_car=<?= $id; ?>' target='_blank' title='Добавить ДТП к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ДТП</a>";
+								echo "<a class='btn btn-sm btn-outline-info' href='dtp?add_car=" . $id . "' target='_blank' title='Добавить ДТП к транспортному средству'><span class='fa fa-plus'>&nbsp;</span>Добавить ДТП</a>";
 								?>
 							</div>
 						</div>
@@ -876,7 +876,7 @@
 
 								<?php
 								if($role >= 2)
-								echo "<a class='btn btn-sm btn-outline-info' href='adm?add_car=<?= $id; ?>' target='_blank' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp;</span>Добавить адм. правонарушение</a>";
+								echo "<a class='btn btn-sm btn-outline-info' href='adm?add_car=" . $id . "' target='_blank' title='Добавить адм. правонарушение'><span class='fa fa-plus'>&nbsp;</span>Добавить адм. правонарушение</a>";
 								?>
 							</div>
 						</div>

@@ -21,14 +21,14 @@
 						
 						<div class="collapse show" id="collapseOne" aria-labelledby="headingOne">
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="gos_znak"><strong>Гос. номер</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="gos_znak">Гос. номер</label>
 								</div>
 								<div class="col col-sm-4 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="gos_znak" maxlength="150" placeholder="Гос. номер" data-datatype="char" autofocus>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="org_repair"><strong>Станция тех. обсл.</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="org_repair">Станция тех. обсл.</label>
 								</div>
 								<div class="col col-sm-4 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="org_repair" data-datatype="number"><?= $org_repair; ?></select>
@@ -36,8 +36,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_repair1" style="font-size: 13px;"><strong>Дата ремонта</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="date_repair1">Дата ремонта</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<div class='input-group input-group-sm'>

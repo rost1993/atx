@@ -58,16 +58,16 @@
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="id_car" class="text-muted" style="font-size: 13px;"><strong>Транспортное срество</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="id_car" class="text-muted font-weight-bold fs-13">Транспортное срество</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="id_car" data-mandatory="true" data-message-error="Заполните обязательное поле: Транспортное средство" data-datatype="number">
 									<?= $id_car_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="id_driver" class="text-muted" style="font-size: 13px;"><strong>Водитель</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="id_driver" class="text-muted font-weight-bold fs-13">Водитель</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Водитель" data-datatype="number">
@@ -77,14 +77,14 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_adm" class="text-muted" style="font-size: 13px;"><strong>Дата совершения</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="date_adm" class="text-muted font-weight-bold fs-13">Дата совершения</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_adm" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата совершения" data-datatype="date" maxlength="10" placeholder="Дата совершения" value="<?= $date_adm; ?>">
 								</div>
-								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
-									<label for="time_adm" class="text-muted" style="font-size: 13px;"><strong>Время совершения</strong></label>
+								<div class="col col-sm-3 mb-1 text-right">
+									<label for="time_adm" class="text-muted font-weight-bold fs-13">Время совершения</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" data-timepicker="true" data-only-timepicker='true' id="time_adm" data-datatype="char" maxlength="5" placeholder="Время совершения" value="<?= $time_adm; ?>">
@@ -92,8 +92,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="st_chast_koap" class="text-muted" style="font-size: 13px;"><strong>Статья и часть КоАП РФ</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="st_chast_koap" class="text-muted font-weight-bold fs-13">Статья и часть КоАП РФ</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="st_chast_koap" data-mandatory="true" data-message-error="Заполните обязательное поле: Статья и часть КоАП РФ" data-datatype="number">
@@ -103,8 +103,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="place_adm" class="text-muted" style="font-size: 13px;"><strong>Место совершения</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="place_adm" class="text-muted font-weight-bold fs-13">Место совершения</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="place_adm" data-mandatory="true" data-message-error="Заполните обязательное поле: Место совершения" data-datatype="char" maxlength="500" placeholder="Место совершения" value="<?= $place_adm; ?>">
@@ -112,32 +112,32 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="comment_adm" class="text-muted" style="font-size: 13px;"><strong>Описание</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="comment_adm" class="text-muted font-weight-bold fs-13">Описание</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<textarea type="text" class="form-control form-control-sm black-text" id="comment_adm" maxlength="1000" rows="5" data-datatype="char" placeholder="Описание адм. правонарушения"><?= $comment_adm; ?></textarea>
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="sum_adm" class="text-muted" style="font-size: 13px;"><strong>Сумма штрафа, руб</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="sum_adm" class="text-muted font-weight-bold fs-13">Сумма штрафа, руб</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="sum_adm" data-mandatory='true' data-message-error="Заполните обязательное поле: Сумма штрафа" data-datatype="number" placeholder="Сумма штрафа" value="<?= $sum_adm; ?>">
 								</div>
-								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
-									<label class='form-check-label text-muted' for='oplat_adm' style="font-size: 13px;"><strong>Оплата штрафа</strong></label>&nbsp
+								<div class="col col-sm-3 mb-1 text-right">
+									<label class='form-check-label text-muted font-weight-bold fs-13' for='oplat_adm'>Оплата штрафа</label>&nbsp
 								</div>
-								<div class="col col-sm-3 mb-1 text-left" style="vertical-align: center;">
+								<div class="col col-sm-3 mb-1 text-left">
 									<input type='checkbox' id='oplat_adm' name='oplat_adm' <?= $oplat_adm_checkbox; ?> data-datatype="checkbox">
 								</div>
 							</div>
 						</div>
 						
 						<div class='form-row'>
-							<div class='col-2 mb-1 text-right' style='vertical-align: center;'>
-								<label for='btnAddFileModalWindow' class='text-muted' style='font-size: 13px;'><strong>Квитанция об оплате штрафа</strong></label>
+							<div class='col-2 mb-1 text-right'>
+								<label for='btnAddFileModalWindow' class='text-muted font-weight-bold fs-13'>Квитанция об оплате штрафа</label>
 							</div>
 							
 							<div class='col-5 mb-1 text-left'>

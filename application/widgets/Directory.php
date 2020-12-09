@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\widgets;
 
+use IcKomiApp\core\User;
 use IcKomiApp\lib\Database\DB;
 
 class Directory {
@@ -140,65 +141,28 @@ class Directory {
 	}
 
 	public static function get_directory_car($selected_value = '') {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
+		$sql = '';
+		$role = User::get('role');
 
-		if($role == 8 || $role == 9) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
+		if($role == 9)
+			$sql = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts FROM cars a "
 				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
 				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " UNION ALL "
-				. " SELECT kod, text, '', '', '', '', 0, 0, 2 FROM s2i_klass WHERE nomer=18 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 4) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
+				. " ORDER BY a.id ";
+		else if($role == 2)
+			$sql = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts FROM cars a "
 				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
 				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup=1 AND a.slugba IN " . User::get_all_slugba()
-				. " UNION ALL "
-				. " SELECT kod, text, '', '', '', '', 0, 0, 2 FROM s2i_klass WHERE nomer=18 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 3) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
+				. " WHERE a.dostup=1 "
+				. " ORDER BY a.id ";
+		else if($role == 1)
+			$sql = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts FROM cars a "
 				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
 				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup = 1 "
-				. " UNION ALL "
-				. " SELECT kod, text, '', '', '', '', 0, 0, 2 FROM s2i_klass WHERE nomer=18 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 2) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup=1 AND a.kodrai=" . $kodrai
-				. " UNION ALL "
-				. " SELECT kod, text, '', '', '', '', 0, 0, 2 FROM s2i_klass WHERE nomer=18 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else {
+				. " WHERE a.dostup=1 "
+				. " ORDER BY a.id ";
+		else
 			return false;
-		}*/
-
-		$sql = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " ORDER BY number_spr, kodrai, slugba ";
 
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -214,73 +178,22 @@ class Directory {
 	}
 
 	public static function get_directory_driver($selected_value = '') {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
-		
-		if($role == 8 || $role == 9) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " UNION ALL "
-				. " SELECT a.id, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch), 0, 0, x1.text, x2.text, a.kodrai, a.slugba, 2 FROM drivers a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 4) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup=1 AND a.slugba IN " . User::get_all_slugba()
-				. " UNION ALL "
-				. " SELECT a.id, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch), 0, 0, x1.text, x2.text, a.kodrai, a.slugba, 2 FROM drivers a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
-				. " WHERE a.dostup=1 AND a.slugba IN " . User::get_all_slugba()
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 3) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup = 1 "
-				. " UNION ALL "
-				. " SELECT a.id, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch), 0, 0, x1.text, x2.text, a.kodrai, a.slugba, 2 FROM drivers a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
-				. " WHERE a.dostup=1 "
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else if($role == 2) {
-			$sqlQuery = "SELECT a.id as kod, IFNULL(a.gos_znak, '') as text, IFNULL(x1.text, '') as model_ts, IFNULL(x2.text, '') as marka_ts, IFNULL(x3.text, '') as slugba_text,"
-				. " IFNULL(x4.text, '') as kodrai_text, a.kodrai, a.slugba, 1 as number_spr FROM cars a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.model AND x1.nomer=4 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=a.slugba AND x3.nomer=1 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=a.kodrai AND x4.nomer=11 "
-				. " WHERE a.dostup=1 AND a.kodrai=" . $kodrai
-				. " UNION ALL "
-				. " SELECT a.id, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch), 0, 0, x1.text, x2.text, a.kodrai, a.slugba, 2 FROM drivers a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
-				. " WHERE a.dostup=1 AND a.kodrai=" . $kodrai
-				. " ORDER BY number_spr, kodrai, slugba ";
-		} else {
-			return false;
-		}*/
+		$sql = '';
+		$role = User::get('role');
 
-		$sql = " SELECT a.id as kod, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch) as text FROM drivers a "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.slugba AND x1.nomer=1 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=a.kodrai AND x2.nomer=11 "
-				. " ORDER BY kodrai, slugba ";
+		if($role == 9)
+			$sql = " SELECT a.id as kod, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch) as text FROM drivers a "
+				. " ORDER BY a.id ";
+		else if($role == 2)
+			$sql = " SELECT a.id as kod, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch) as text FROM drivers a "
+				. " WHERE a.dostup=1 "
+				. " ORDER BY a.id ";
+		else if($role == 1)
+			$sql = " SELECT a.id as kod, CONCAT(a.fam, ' ' , a.imj, ' ' , a.otch) as text FROM drivers a "
+				. " WHERE a.dostup=1 "
+				. " ORDER BY a.id ";
+		else
+			return false;
 
 		if(($data = DB::query($sql)) === false)
 			return false;

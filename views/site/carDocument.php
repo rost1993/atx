@@ -7,7 +7,7 @@
 	$list_add_car = (empty($list_add_car)) ? '' : $list_add_car;
 	$list_files_doc = (empty($list_files_doc)) ? '' : $list_files_doc;
 
-	$role = 9;
+	$role = IcKomiApp\core\User::get('role');
 ?>
 
 <div class="container-fluid starter-template">
@@ -29,24 +29,24 @@
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="type_car_document" class="text-muted" style="font-size: 13px;"><strong>Тип документа</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="type_car_document" class="text-muted font-weight-bold fs-13">Тип документа</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="type_car_document" data-mandatory="true" data-message-error="Заполните обязательное поле: Тип документа" data-datatype="number">
 									<?= $type_car_document_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_car_document" class="text-muted" style="font-size: 13px;"><strong>Дата документа</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="date_car_document" class="text-muted font-weight-bold fs-13">Дата документа</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_car_document" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата документа" data-datatype="date" maxlength="20" placeholder="Дата документа" value="<?= $date_car_document; ?>">
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="number_car_document" class="text-muted" style="font-size: 13px;"><strong>Номер документа</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="number_car_document" class="text-muted font-weight-bold fs-13">Номер документа</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="number_car_document" data-mandatory="true" data-message-error="Заполните обязательное поле: Номер документа" data-datatype="char" placeholder="Номер документа" value="<?= $number_car_document; ?>">
@@ -55,8 +55,8 @@
 
 						</div>
 						<div class='form-row'>
-							<div class='col-2 mb-1 text-right' style='vertical-align: center;'>
-								<label for='btnAddFileModalWindow' class='text-muted' style='font-size: 13px;'><strong>Эл. образы</strong></label>
+							<div class='col-2 mb-1 text-right'>
+								<label for='btnAddFileModalWindow' class='text-muted font-weight-bold fs-13'>Эл. образы</label>
 							</div>
 							
 							<div class='col-6 mb-1 text-left'>
@@ -74,11 +74,15 @@
 				</div>
 				
 				<div class='card-footer card-header'>
-					<button type="button" class="btn btn-success" id="btnSaveCarDocument" title="Сохранить информацию о документе"><span class="fa fa-check">&nbsp;</span>Сохранить</button>
-					<button type="button" class="btn btn-danger dropdown-toggle" id="dropdownRemoveCarDocument" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Удалить информацию о документе"><span class="fa fa-remove">&nbsp;</span>Удалить</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownRemoveCarDocument">
-						<button class="dropdown-item" id="btnRemoveCarDocument"><span class="fa fa-check text-success">&nbsp;</span>Подтверждаю удаление</button>
-					</div>
+					<?php
+					if($role >= 2) {
+						echo "<button type='button' class='btn btn-success' id='btnSaveCarDocument' title='Сохранить информацию о документе'><span class='fa fa-check'>&nbsp;</span>Сохранить</button>";
+						echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownRemoveCarDocument' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить информацию о документе'><span class='fa fa-remove'>&nbsp;</span>Удалить</button>";
+						echo "<div class='dropdown-menu' aria-labelledby='dropdownRemoveCarDocument'>"
+							. "<button class='dropdown-item' id='btnRemoveCarDocument'><span class='fa fa-check text-success'>&nbsp;</span>Подтверждаю удаление</button>"
+						. "</div>";
+					}
+					?>
 				</div>
 				
 				
@@ -89,8 +93,12 @@
 								<p style="margin: 0px;"><h5>2. Список транспортных средств</h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
-								<button type="button" class="btn btn-sm btn-outline-primary" id="btnShowListLink" data-item="document" title="Добавить услугу"><span class="fa fa-cogs">&nbsp;</span>Редактор связей</button>
-								<button type="button" class="btn btn-sm btn-outline-info" id="addCarsLinkDocument" data-item="document" title="Добавить услугу"><span class="fa fa-plus">&nbsp;</span>Добавить ТС</button>
+								<?php
+								if($role >= 2) {
+									echo "<button type='button' class='btn btn-sm btn-outline-primary' id='btnShowListLink' data-item='document' title='Добавить услугу'><span class='fa fa-cogs'>&nbsp;</span>Редактор связей</button>";
+									echo "<button type='button' class='btn btn-sm btn-outline-info' id='addCarsLinkDocument' data-item='document' title='Добавить услугу'><span class='fa fa-plus'>&nbsp;</span>Добавить ТС</button>";
+								}
+								?>
 							</div>
 						</div>
 						<div class="form-row">

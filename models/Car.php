@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
@@ -52,14 +53,10 @@ class Car extends Model {
 					 WHERE cars.id={id}";
 
 	public function get_list($post = []) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
-
 		$where_archive1 = $where_archive2 = "";
 
 		$where_archive1 = " WHERE a.ibd_arx <> 2 ";
+		$where_archive2 = " AND a.ibd_arx <> 2 ";
 		/*if($archive == 1) {
 			$where_archive1 = " WHERE a.ibd_arx <> 1 ";
 			$where_archive2 = " AND a.ibd_arx <> 1 ";
@@ -144,7 +141,10 @@ class Car extends Model {
 		else
 			return false;*/
 
-		$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+		$role = User::get('role');
+
+		if($role == 9)
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
 					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
 					  . " FROM " . $this->table . " a "
 					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
@@ -156,7 +156,37 @@ class Car extends Model {
 					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
 					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
 					  . $where_archive1
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
+					  . "ORDER BY a.god_car";
+		else if($role == 2)
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
+					  . " FROM " . $this->table . " a "
+					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
+					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
+					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
+					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
+					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
+					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
+					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
+					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
+					  . " WHERE a.dostup=1 " . $where_archive2
+					  . "ORDER BY a.god_car";
+		else if($role == 1)
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
+					  . " FROM " . $this->table . " a "
+					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
+					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
+					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
+					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
+					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
+					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
+					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
+					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
+					  . " WHERE a.dostup=1 " . $where_archive2
+					  . "ORDER BY a.god_car";
+		else
+			return false;
 
 		if(($data = parent::get_list()) === false)
 			return false;
@@ -168,13 +198,10 @@ class Car extends Model {
 
 	// Функция поиска
 	public function search($post, $flg_excel = -1) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
+		$role = User::get('role');
 		
 		if($role == 0)
-			return false;*/
+			return false;
 		
 		if(empty($post['JSON']))
 			return false;
@@ -215,7 +242,7 @@ class Car extends Model {
 				}
 				
 				if(mb_strlen($where) == 0)
-					$where .= "a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
+					$where .= " a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
 				else
 					$where .= " AND a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
 
@@ -233,7 +260,7 @@ class Car extends Model {
 					$end_date_certificate2 = Functions::convertToMySQLDateFormat($array_value_decode['value']);
 				} else {
 					if(mb_strlen($where) == 0)
-						$where .= "a." . $field . "='" . $array_value_decode['value'] . "'";
+						$where .= " a." . $field . "='" . $array_value_decode['value'] . "'";
 					else
 						$where .= " AND a." . $field . "='" . $array_value_decode['value'] . "'";
 				}
@@ -265,7 +292,7 @@ class Car extends Model {
 					continue;
 
 				if(mb_strlen($where) == 0)
-					$where .= "a." . $field . "=" . $array_value_decode['value'];
+					$where .= " a." . $field . "=" . $array_value_decode['value'];
 				else
 					$where .= " AND a." . $field . "=" . $array_value_decode['value'];
 			}
@@ -329,7 +356,7 @@ class Car extends Model {
 
 		if(mb_strlen($where) > 0)
 			$sql .= " WHERE (" . $where . ") " . $join_gos_znak;
-		$sql .= " ORDER BY a.kodrai, a.slugba, a.god_car ";
+		$sql .= " ORDER BY a.god_car ";
 		
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -802,10 +829,10 @@ class Car extends Model {
 	// Функция блокирования/разблокирования доступа к водителю
 	public function lock_unlock_car($post) {
 		if(empty($post['nsyst']))
-			return -1;
+			return false;
 		
-		/*if(!User::check_level_user(8))
-			return 0;*/
+		if(User::get('role') != 9)
+			return false;
 		
 		$id = addslashes($post['nsyst']);
 		
@@ -818,10 +845,10 @@ class Car extends Model {
 	// Функция включения/отключения уведомлений на ТС
 	public function car_enable_disable_notice_events($post) {
 		if(empty($post['nsyst']))
-			return -1;
+			return false;
 		
-		/*if(!User::check_level_user(8))
-			return 0;*/
+		if(User::get('role') != 9)
+			return false;
 		
 		$id = addslashes($post['nsyst']);
 		
@@ -834,10 +861,10 @@ class Car extends Model {
 	// Функция включения/отключения уведомлений на ТС
 	public function car_write_off($post) {
 		if(empty($post['nsyst']))
-			return -1;
+			return false;
 		
-		/*if(!User::check_level_user(8))
-			return 0;*/
+		if(User::get('role') != 9)
+			return false;
 		
 		$id = addslashes($post['nsyst']);
 		

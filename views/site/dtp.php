@@ -59,16 +59,16 @@
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="id_car" class="text-muted" style="font-size: 13px;"><strong>Транспортное срество</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="id_car" class="text-muted font-weight-bold fs-13">Транспортное срество</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="id_car" data-mandatory="true" data-message-error="Заполните обязательное поле: Транспортное средство" data-datatype="number">
 									<?= $id_car_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="id_driver" class="text-muted" style="font-size: 13px;"><strong>Водитель</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="id_driver" class="text-muted font-weight-bold fs-13">Водитель</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="id_driver" data-mandatory="true" data-message-error="Заполните обязательное поле: Водитель" data-datatype="number">
@@ -78,23 +78,23 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_committing" class="text-muted" style="font-size: 13px;"><strong>Дата совершения</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="date_committing" class="text-muted font-weight-bold fs-13">Дата совершения</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_committing" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата совершения" data-datatype="date" maxlength="10" placeholder="Дата совершения" value="<?= $date_committing; ?>">
 								</div>
-								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
-									<label for="time_committing" class="text-muted" style="font-size: 13px;"><strong>Время совершения</strong></label>
+								<div class="col col-sm-3 mb-1 text-right">
+									<label for="time_committing" class="text-muted font-weight-bold fs-13">Время совершения</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
-									<input type="text" class="form-control form-control-sm black-text timepicker-here" id="time_committing" data-datatype="char" maxlength="5" placeholder="Время совершения" value="<?= $time_committing; ?>">
+									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="time_committing" data-timepicker="true" data-only-timepicker='true' data-datatype="char" maxlength="5" placeholder="Время совершения" value="<?= $time_committing; ?>">
 								</div>
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="place_committing" class="text-muted" style="font-size: 13px;"><strong>Место совершения</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="place_committing" class="text-muted font-weight-bold fs-13">Место совершения</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="place_committing" data-mandatory="true" data-message-error="Заполните обязательное поле: Место совершения" data-datatype="char" maxlength="500" placeholder="Место совершения" value="<?= $place_committing; ?>">
@@ -102,31 +102,31 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="comment_committing" class="text-muted" style="font-size: 13px;"><strong>Описание ДТП</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="comment_committing" class="text-muted font-weight-bold fs-13">Описание ДТП</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<textarea type="text" class="form-control form-control-sm black-text" id="comment_committing" maxlength="4000" rows="5" data-datatype="char" placeholder="Описание ДТП"><?= $comment_committing; ?></textarea>
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="sum_committing" class="text-muted" style="font-size: 13px;"><strong>Сумма ущерба, руб</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="sum_committing" class="text-muted font-weight-bold fs-13">Сумма ущерба, руб</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="sum_committing" data-message-error="Заполните обязательное поле: Сумма ущерба" data-datatype="number" placeholder="Сумма ущерба" value="<?= $sum_committing; ?>">
 								</div>
-								<div class="col col-sm-3 mb-1 text-right" style="vertical-align: center;">
-									<label class='form-check-label text-muted' for='offender' style="font-size: 13px;"><strong>Виновен сотрудник</strong></label>&nbsp
+								<div class="col col-sm-3 mb-1 text-right">
+									<label class='form-check-label text-muted font-weight-bold fs-13' for='offender'>Виновен сотрудник</label>&nbsp
 								</div>
-								<div class="col col-sm-3 mb-1 text-left" style="vertical-align: center;">
+								<div class="col col-sm-3 mb-1 text-left">
 									<input type='checkbox' id='offender' name='offender' <?= $offender_checkbox; ?> data-datatype="checkbox">
 								</div>
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="sum_committing" class="text-muted" style="font-size: 13px;"><strong>Дата восстановления ТС</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="sum_committing" class="text-muted font-weight-bold fs-13">Дата восстановления ТС</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_recovery_cars" data-datatype="date" placeholder="Дата восстановления ТС" value="<?= $date_recovery_cars; ?>">
@@ -134,8 +134,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="recovery_committing" class="text-muted" style="font-size: 13px;"><strong>Восстановление</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="recovery_committing" class="text-muted font-weight-bold fs-13">Восстановление</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<textarea type="text" class="form-control form-control-sm black-text" id="recovery_committing" maxlength="4000" rows="3" data-datatype="char" placeholder="Восстановление после ДТП"><?= $recovery_committing; ?></textarea>
@@ -144,8 +144,8 @@
 						</div>
 							
 						<div class='form-row'>
-							<div class='col-2 mb-1 text-right' style='vertical-align: center;'>
-								<label for='btnAddFileModalWindow' class='text-muted' style='font-size: 13px;'><strong>Эл. образы</strong></label>
+							<div class='col-2 mb-1 text-right'>
+								<label for='btnAddFileModalWindow' class='text-muted font-weight-bold fs-13'>Эл. образы</label>
 							</div>
 							
 							<div class='col-5 mb-1 text-left'>

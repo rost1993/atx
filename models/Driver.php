@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
@@ -68,9 +69,20 @@ class Driver extends Model {
 					  . " WHERE a.dostup=1 " . $where_archive2
 					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";*/
 
-
-		$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, a.dostup, a.ibd_arx FROM {table} a "
-					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";
+		$role = User::get('role');
+		if($role == 9)
+			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, a.dostup, a.ibd_arx FROM {table} a "
+			  . " ORDER BY a.fam, a.imj, a.otch";
+		else if($role == 2)
+			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, a.dostup, a.ibd_arx FROM {table} a "
+			. " WHERE a.dostup=1 "
+			. " ORDER BY a.fam, a.imj, a.otch";
+		else if($role == 1)
+			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, a.dostup, a.ibd_arx FROM {table} a "
+			. " WHERE a.dostup=1 "
+			. " ORDER BY a.fam, a.imj, a.otch";
+		else
+			return false;
 		
 		if(($data = parent::get_list()) === false)
 			return false;
@@ -90,6 +102,10 @@ class Driver extends Model {
 		// Начинаем формировать условие для поиска
 		// Если уровень прав пользователя меньше чем 2, то ставим ограничение, что ищем только открытые ТС
 		$where = '';
+		$role = User::get('role');
+		if($role <= 2)
+			$where = ' a.dostup=1 ';
+
 		/*if(!User::check_level_user(8))
 			$where = " a.dostup=1 ";*/
 
@@ -108,7 +124,7 @@ class Driver extends Model {
 					continue;
 			
 				if(mb_strlen($where) == 0)
-					$where .= "a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
+					$where .= " a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
 				else
 					$where .= " AND a." . $field . " LIKE '%" . $array_value_decode['value'] . "%'";
 			} else if($array_value_decode['type'] == 'date') {
@@ -116,7 +132,7 @@ class Driver extends Model {
 					continue;
 			
 				if(mb_strlen($where) == 0)
-					$where .= "a." . $field . "='" . $array_value_decode['value'] . "'";
+					$where .= " a." . $field . "='" . $array_value_decode['value'] . "'";
 				else
 					$where .= " AND a." . $field . "='" . $array_value_decode['value'] . "'";
 			} else if($array_value_decode['type'] == 'checkbox') {
@@ -142,7 +158,7 @@ class Driver extends Model {
 				if(trim($array_value_decode['value']) == "0" || (mb_strlen(trim($array_value_decode['value'])) == 0))
 					continue;
 				if(mb_strlen($where) == 0)
-					$where .= "a." . $field . "=" . $array_value_decode['value'];
+					$where .= " a." . $field . "=" . $array_value_decode['value'];
 				else
 					$where .= " AND a." . $field . "=" . $array_value_decode['value'];
 			}
@@ -153,7 +169,7 @@ class Driver extends Model {
 		if(mb_strlen($where) > 0)
 			$sql .= " WHERE " . $where;
 		
-		$sql .= " ORDER BY a.kodrai, a.slugba, a.fam, a.imj ";
+		$sql .= " ORDER BY a.fam, a.imj ";
 		
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -510,8 +526,8 @@ class Driver extends Model {
 		if(empty($post['nsyst']))
 			return -1;
 		
-		/*if(!User::check_level_user(8))
-			return 0;*/
+		if(User::get('role') != 9)
+			return false;
 		
 		$id = addslashes($post['nsyst']);
 		

@@ -65,68 +65,33 @@ class CarDocument extends Model {
 
 	// Get list cars add for document
 	public function get_additional_information($id) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();*/
+		$role = User::get('role');
 
-		/*$sqlQuery = '';
-		if($role == 9 || $role == 8)
-			$sqlQuery = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, x1.text AS kodrai, x2.text AS slugba, b.comment, b.id as link_id "
+		if($role == 9)
+			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x1 ON a.kodrai=x1.kod AND x1.nomer=11 "
-					  . " LEFT JOIN s2i_klass x2 ON a.slugba=x2.kod AND x2.nomer=1 "
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " ORDER BY a.kodrai, a.slugba";
-		else if($role == 3)
-			$sqlQuery = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, x1.text AS kodrai, x2.text AS slugba, b.comment, b.id as link_id "
+					  . " ORDER BY a.id";
+		else if($role == 2)
+			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x1 ON a.kodrai=x1.kod AND x1.nomer=11 "
-					  . " LEFT JOIN s2i_klass x2 ON a.slugba=x2.kod AND x2.nomer=1 "
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
 					  . " WHERE a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
-		else if($role == 2)
-			$sqlQuery = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, x1.text AS kodrai, x2.text AS slugba, b.comment, b.id as link_id "
-					  . " FROM cars a "
-					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x1 ON a.kodrai=x1.kod AND x1.nomer=11 "
-					  . " LEFT JOIN s2i_klass x2 ON a.slugba=x2.kod AND x2.nomer=1 "
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " ORDER BY a.id";
 		else if($role == 1)
-			$sqlQuery = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, x1.text AS kodrai, x2.text AS slugba, b.comment, b.id as link_id "
+			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x1 ON a.kodrai=x1.kod AND x1.nomer=11 "
-					  . " LEFT JOIN s2i_klass x2 ON a.slugba=x2.kod AND x2.nomer=1 "
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE a.dostup=1 "
+					  . " ORDER BY a.id";
 		else
-			$sqlQuery = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, x1.text AS kodrai, x2.text AS slugba, b.comment, b.id as link_id "
-					  . " FROM cars a "
-					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x1 ON a.kodrai=x1.kod AND x1.nomer=11 "
-					  . " LEFT JOIN s2i_klass x2 ON a.slugba=x2.kod AND x2.nomer=1 "
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";*/
-
-		$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
-					  . " FROM cars a "
-					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " ORDER BY a.kodrai, a.slugba";
+			return false;
 
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -134,10 +99,7 @@ class CarDocument extends Model {
 	}
 
 	public function get_list_add_car($id) {
-		$session = new Session();
-		$session->start();
-		$role = $session->get('role');
-		$session->commit();
+		$role = User::get('role');
 
 		$sql = '';
 		if($role == 9)
@@ -145,40 +107,25 @@ class CarDocument extends Model {
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " ORDER BY a.kodrai, a.slugba";
-		else if($role == 3)
-			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
-					  . " FROM cars a "
-					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 ";
 		else if($role == 2)
 			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE a.dostup=1 "
+					  . " ORDER BY a.id";
 		else if($role == 1)
 			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
 					  . " FROM cars a "
 					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE a.dostup=1 "
+					  . " ORDER BY a.id";
 		else
-			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak, b.comment, b.id as link_id "
-					  . " FROM cars a "
-					  . " INNER JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 "
-					  . " ORDER BY a.kodrai, a.slugba";
+			return false;
 
 		if(($data = DB::query($sql)) === false)
 			return false;
@@ -201,13 +148,10 @@ class CarDocument extends Model {
 		if(empty($post['nsyst']) || empty($post['item']))
 			return false;
 
-		$session = new Session();
-		$session->start();
-		$role = $session->get('role');
-		$session->commit();
+		$role = User::get('role');
 		
 		$item = addslashes($post['item']);
-		$data = array();
+		$data = [];
 		$style_border = "style='vertical-align: middle; border: 1px solid gray;'"; // Стиль для ячейки
 		if($item == 'document') {
 			if(($data = $this->get_list_add_car(addslashes($post['nsyst']))) === false)
@@ -262,7 +206,7 @@ class CarDocument extends Model {
 						. "<td " . $style_border . ">" . $data[$i]['date_car_document'] . "</td>"
 						. "<td " . $style_border . ">" . $data[$i]['comment'] . "</td>";
 
-				if(($role > 1) && ($role != 4)) {
+				if($role >= 2) {
 					$table .= "<td " . $style_border . "><button class='btn btn-sm btn-info btnEditLinkCarDocument' data-id='" . $data[$i]['link_id'] . "' data-item='document'><span class='fa fa-pencil'>&nbsp;</span>Изменить</button></td>"
 						. "<td " . $style_border . "><div class='dropdown'>"
 							. "<button type='button' class='btn btn-sm btn-danger dropdown-toggle' id='dropdownRemoveLinkCarDocument' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить'><span class='fa fa-close'>&nbsp;</span>Удалить</button>"
@@ -282,10 +226,7 @@ class CarDocument extends Model {
 
 	// Get list cars no add for document
 	public function get_list_no_add_car($id) {
-		$session = new Session();
-		$session->start();
-		$role = $session->get('role');
-		$session->commit();
+		$role = User::get('role');
 
 		$sql = '';
 		if($role == 9)
@@ -294,32 +235,25 @@ class CarDocument extends Model {
 					  . " LEFT JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE b.id IS NULL "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE b.id IS NULL ";
 		else if($role == 2)
 			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak "
 					  . " FROM cars a "
 					  . " LEFT JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 AND b.id IS NULL "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE a.dostup=1 AND b.id IS NULL "
+					  . " ORDER BY a.id";
 		else if($role == 1)
 			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak "
 					  . " FROM cars a "
 					  . " LEFT JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
 					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
 					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 AND b.id IS NULL "
-					  . " ORDER BY a.kodrai, a.slugba";
+					  . " WHERE a.dostup=1 AND b.id IS NULL "
+					  . " ORDER BY a.id";
 		else
-			$sql = "SELECT a.id, x3.text AS marka, x4.text AS model, a.gos_znak "
-					  . " FROM cars a "
-					  . " LEFT JOIN car_link_document b ON b.id_car=a.id AND b.id_document=" . $id
-					  . " LEFT JOIN s2i_klass x3 ON a.marka=x3.kod AND x3.nomer=3 "
-					  . " LEFT JOIN s2i_klass x4 ON a.model=x4.kod AND x4.nomer=4 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 AND b.id IS NULL "
-					  . " ORDER BY a.kodrai, a.slugba";
+			return false;
 
 		if(($data = DB::query($sql)) === false)
 			return false;

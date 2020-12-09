@@ -31,22 +31,22 @@
 						
 						<div class="collapse show" id="collapseOne" aria-labelledby="headingOne">
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="gos_znak"><strong>Гос. номер</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="gos_znak">Гос. номер</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="gos_znak" data-datatype="char" maxlength="11" placeholder="Гос. рег. номер" autofocus>
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="marka"><strong>Марка</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="marka">Марка</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="marka" data-datatype="number">
 										<?= $marka_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="model"><strong>Модель</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="model">Модель</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="model" data-datatype="number">
@@ -56,20 +56,20 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="god_car"><strong>Год выпуска</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="god_car">Год выпуска</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<input type="text" class="form-control form-control-sm black-text datepicker-here" id="god_car" data-datatype="number" data-min-view="years" data-view="years" data-date-format="yyyy" maxlength="10" placeholder="Год выпуска">
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="vin"><strong>VIN</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="vin">VIN</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="vin" data-datatype="char" maxlength="100" placeholder="VIN / зав. № машины (рамы)">
 								</div>
 								<div class="col col-sm-4 mb-1">
-									<label class="mr-3" style="font-size: 13px;">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="2" data-datatype="radio" checked>
 										<strong>Актуальные</strong>
 									</label>
@@ -77,16 +77,16 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="kateg_ts"><strong>Категория ТС</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="kateg_ts">Категория ТС</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="kateg_ts" data-datatype="number">
 									<?= $kateg_ts_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="kateg_gost"><strong>Категория ГОСТ</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="kateg_gost">Категория ГОСТ</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="kateg_gost" data-datatype="number">
@@ -94,7 +94,7 @@
 									</select>
 								</div>
 								<div class="col col-sm-4 mb-1">
-									<label class="mr-3" style="font-size: 13px;">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="4" data-datatype="radio">
 										<strong>Готовится к списанию</strong>
 									</label>
@@ -102,8 +102,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="kateg_ts"><strong>Дата окончания ОСАГО</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="kateg_ts">Дата окончания ОСАГО</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<div class='input-group input-group-sm'>
@@ -119,7 +119,7 @@
 									</div>
 								</div>
 								<div class="col col-sm-4 mb-1">
-									<label class="mr-3" style="font-size: 13px;">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="1" data-datatype="radio">
 										<strong>Архив</strong>
 									</label>
@@ -127,8 +127,8 @@
 							</div>
 							
 							<div class="form-row">
-								<div class="col col-sm-1 mb-1 text-right" style="vertical-align: center;">
-									<label style="font-size: 13px;" for="kateg_ts"><strong>Дата окончания тех. осмотра</strong></label>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="font-weight-bold fs-13" for="kateg_ts">Дата окончания тех. осмотра</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<div class='input-group input-group-sm'>
@@ -144,7 +144,7 @@
 									</div>
 								</div>
 								<div class="col col-sm-4 mb-1">
-									<label class="mr-3" style="font-size: 13px;">
+									<label class="mr-3 fs-13">
 										<input type='radio' name='ibd_arx' value="3" data-datatype="radio">
 										<strong>Все</strong>
 									</label>

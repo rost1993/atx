@@ -109,7 +109,7 @@ class Functions {
 	}
 
 	// Функция формирования SQL-запроса для сохранения/обновления информации о водителе
-	public static function generate_sql_query($flg_insert, $array_data, $nsyst = 0, $table) {
+	public static function generate_sql_query($flg_insert, $array_data, $table, $nsyst = 0) {
 		$sqlQuery = "";
 		
 		if(!$array_data_decode = json_decode($array_data))
