@@ -46,6 +46,18 @@ class View {
 	}
 
 	public static function errorCode($code) {
+		ob_start();
+		HeaderLoader::getHeader();
+		$header = ob_get_clean();
+
+		ob_start();
+		FooterTop::getFooter();
+		$footer_top = ob_get_clean();
+
+		ob_start();
+		FooterBottom::getFooter();
+		$footer_bottom = ob_get_clean();
+
 		http_response_code($code);
 		$error_page = '../views/layouts/errors/' . $code . '.php';
 		if(file_exists($error_page))

@@ -1,17 +1,14 @@
 <?php
-	use IcKomiApp\core\HeaderLoader;
-	use IcKomiApp\widgets\FooterTop;
-	use IcKomiApp\widgets\FooterBottom;
 ?>
 
 <!DOCTYPE html>
 <html>
-	<?php HeaderLoader::getHeader(); ?>
+	<?= $header; ?>
 <body>
-	<?php FooterTop::getFooter(); ?>
+	<?= $footer_top; ?>
 	<div class="container-fluid starter-template">
 		<div class='access-denied-2 text-center'>Ошибка 403: Доступ к данной странице заблокирован</div>
 	</div>
-	<?php FooterBottom::getFooter(); ?>
+	<?= $footer_bottom; ?>
 </body>
 </html>
