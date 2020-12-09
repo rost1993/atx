@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\widgets;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Rights;
 
 class FooterTop {
@@ -65,6 +66,7 @@ class FooterTop {
 
 		$left_menu = self::get_left_menu();
 		$right_menu = self::get_dropdown_menu(self::$array_right_menu);
+		$login = self::get_user_label();
 		require_once(self::$footer_top_path);
 	}
 
@@ -120,6 +122,16 @@ class FooterTop {
 			}
 		}
 		return $html;
+	}
+
+	public static function get_user_label() {
+		$login = User::get('login');
+
+		if(mb_strlen($login) == 0)
+			return '';
+
+		$login = '(' . $login . ')';
+		return $login;
 	}
 	
 }
