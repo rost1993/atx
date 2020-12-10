@@ -166,6 +166,10 @@ $(document).ready(function() {
 			scripts = 'calibration';
 			titleForm = 'Список калибровок (экспертиз)';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 18) {
+			scripts = 'drivers_card';
+			titleForm = 'Список карт водителя';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		} else {
 			return;
 		}
@@ -279,6 +283,11 @@ $(document).ready(function() {
 			scripts = 'calibration';
 			action = 17;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 18) {
+			titleForm = 'Карта водителя';
+			scripts = 'drivers_card';
+			action = 18;
+			query = 'option=get_window&nsyst=-1';
 		} else {
 			return;
 		}
@@ -368,6 +377,10 @@ $(document).ready(function() {
 			scripts = 'calibration';
 			titleForm = 'Калибровка (экспертиза)';
 			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 18) {
+			scripts = 'drivers_card';
+			titleForm = 'Карта водителя';
+			query = 'option=get_window&nsyst=' + id;
 		} else {
 			return;
 		}
@@ -425,9 +438,7 @@ $(document).ready(function() {
 			query.append('class', $(this).data('object'));
 			query.append('option', 'save');
 			script = 'vu';
-		}
-		
-		if($(this).data('action') == 2) {
+		} else if($(this).data('action') == 2) {
 			var resultCollectionsItems = getArrayItemsForms('#formOsago input, #formOsago select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -440,9 +451,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'osago';
-		}
-		
-		if($(this).data('action') == 3) {
+		} else if($(this).data('action') == 3) {
 			var resultCollectionsItems = getArrayItemsForms('#formTechnicalInspection input, #formTechnicalInspection select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -455,9 +464,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'technical_inspection';
-		}
-		
-		if($(this).data('action') == 4) {
+		} else if($(this).data('action') == 4) {
 			var resultCollectionsItems = getArrayItemsForms('#formSpeedometer input, #formSpeedometer select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -470,9 +477,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'speedometer';
-		}
-
-		if($(this).data('action') == 5) {
+		} else if($(this).data('action') == 5) {
 			var resultCollectionsItems = getArrayItemsForms('#formPts input, #formPts select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -485,9 +490,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'pts';
-		}
-		
-		if($(this).data('action') == 6) {
+		} else if($(this).data('action') == 6) {
 			var resultCollectionsItems = getArrayItemsForms('#formCertificate input, #formCertificate select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -501,9 +504,7 @@ $(document).ready(function() {
 
 			query.append('option', 'save');
 			script = 'certificate_registration';			
-		}
-
-		if($(this).data('action') == 8) {
+		} else if($(this).data('action') == 8) {
 			var resultCollectionsItems = getArrayItemsForms('#formCarDocument input, #formCarDocument select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -516,9 +517,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 2);
 			script = PATH_TO_SCRIPT + 'car-documents-events.php';
-		}
-		
-		if($(this).data('action') == 10) {
+		} else if($(this).data('action') == 10) {
 			var resultCollectionsItems = getArrayItemsForms('#TractorVU input, #TractorVU select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -531,9 +530,7 @@ $(document).ready(function() {
 			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'tractor_vu';
-		}
-		
-		if($(this).data('action') == 12) {
+		} else if($(this).data('action') == 12) {
 			var resultCollectionsItems = getArrayItemsForms('#formAccessories input');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -548,9 +545,7 @@ $(document).ready(function() {
 			query.append('object', $(this).data('object'));
 			
 			script = 'accessories';
-		}
-
-		if($(this).data('action') == 13) {
+		} else if($(this).data('action') == 13) {
 			var resultCollectionsItems = getArrayItemsForms('#formWheel input, #formWheel select,#formWheel textarea');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -562,9 +557,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'wheel';
-		}
-
-		if($(this).data('action') == 14) {
+		} else if($(this).data('action') == 14) {
 			var resultCollectionsItems = getArrayItemsForms('#formCranVu input, #formCranVu select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -576,9 +569,7 @@ $(document).ready(function() {
 			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'cranvu';
-		}
-
-		if($(this).data('action') == 15) {
+		} else if($(this).data('action') == 15) {
 			var resultCollectionsItems = getArrayItemsForms('#formDriversDopog input, #formDriversDopog select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -590,9 +581,7 @@ $(document).ready(function() {
 			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'drivers_dopog';
-		}
-
-		if($(this).data('action') == 16) {
+		} else if($(this).data('action') == 16) {
 			var resultCollectionsItems = getArrayItemsForms('#formCarsDopog input, #formCarsDopog select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -604,9 +593,7 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'cars_dopog';
-		}
-
-		if($(this).data('action') == 17) {
+		} else if($(this).data('action') == 17) {
 			var resultCollectionsItems = getArrayItemsForms('#formCalibration input, #formCalibration select');
 			if(resultCollectionsItems[0]) {
 				arrayData = resultCollectionsItems[1];
@@ -618,6 +605,20 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'calibration';
+		} else if($(this).data('action') == 18) {
+			var resultCollectionsItems = getArrayItemsForms('#formDriversCard input, #formDriversCard select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'drivers_card';
+		} else {
+			return;
 		}
 		
 		$.each(filesList, function(key, value) {
@@ -698,6 +699,9 @@ $(document).ready(function() {
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 17) {
 			scripts = 'calibration';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 18) {
+			scripts = 'drivers_card';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else {
 			return;

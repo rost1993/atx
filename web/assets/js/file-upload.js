@@ -183,6 +183,9 @@ $(function () {
 				case 18:
 					script = 'calibration';
 					break;
+				case 19:
+					script = 'drivers_card';
+					break;
 			}
 
 			showDownloader(true);

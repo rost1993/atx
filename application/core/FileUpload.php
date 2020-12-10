@@ -22,14 +22,13 @@ class FileUpload {
 	const CLASS_VU_DOCUMENT = 'IcKomiApp\models\Vu';
 	const CLASS_VU_DOCUMENT_TRACTOR = 'IcKomiApp\models\TractorVu';
 	const CLASS_VU_DOCUMENT_CRAN = 'IcKomiApp\models\CranVu';
+	const CLASS_DRIVERS_CARD = 'IcKomiApp\models\DriversCard';
 	
 	const CLASS_CERTIFICATE_REGISTRATION_DOCUMENT = 'IcKomiApp\models\CertificateRegistration';
 	const CLASS_CAR_FOR_DRIVER_DOCUMENT = 'IcKomiApp\models\CarForDriver';
-	//const CLASS_EXAM_DOCUMENT = 'Exam';
 	const CLASS_REPAIR_DOCUMENT = 'IcKomiApp\models\Repair';
 	const CLASS_DTP = 'IcKomiApp\models\Dtp';
 	const CLASS_CARS = 'IcKomiApp\models\Car';
-	//const CLASS_SPEC_SIGNALS = 'PermissionSpecSignals';
 	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
 	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
 	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
@@ -128,9 +127,9 @@ class FileUpload {
 				$path_to_file .= 'car_for_driver/' . $id_object . '/';
 				break;
 			
-		/*	case self::CLASS_EXAM_DOCUMENT:
-				$path_to_file .= 'exams/' . $id_object . '/';
-				break;*/
+			case self::CLASS_DRIVERS_CARD:
+				$path_to_file .= 'drivers/' . $id_main_object . '/card/' . $id_object . '/';
+				break;
 			
 			case self::CLASS_REPAIR_DOCUMENT:
 				$path_to_file .= 'repair/' . $id_object . '/';
@@ -290,9 +289,9 @@ class FileUpload {
 				$table = 'drivers_document_cran';
 				break;
 			
-			/*case self::CLASS_SPEC_SIGNALS:
-				$table = 'drivers_permission_spec_signals';
-				break;*/
+			case self::CLASS_DRIVERS_CARD:
+				$table = 'drivers_card';
+				break;
 			
 			case self::CLASS_CAR_FOR_DRIVER_DOCUMENT:
 				$table = 'car_for_driver';

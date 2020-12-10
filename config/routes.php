@@ -160,4 +160,9 @@ return [
 		'controller' => 'calibration',
 		'action' => 'calibration'
 	],
+
+	'drivers_card' => [
+		'controller' => 'driversCard',
+		'action' => 'driversCard'
+	],
 ];

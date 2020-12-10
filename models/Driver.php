@@ -15,15 +15,16 @@ class Driver extends Model {
 			. " b.c_a, b.c_a1, b.c_b, b.c_b1, b.c_c, b.c_c1, b.c_d, b.c_d1, b.c_be, b.c_ce, b.c_c1e, b.c_de, b.c_d1e, b.c_m, b.c_tm, b.c_tb, b.path_to_file as file_vu, b.file_extension as ext_file_vu,"
 			. " c.doc_s as doc_s_tractor, c.doc_n as doc_n_tractor, DATE_FORMAT(c.doc_date, '%d.%m.%Y') as doc_date_tractor, DATE_FORMAT(c.doc_end_date, '%d.%m.%Y') as doc_end_date_tractor, "
 			. " c.c_a1 as c_a1_tr, c.c_a2 as c_a2_tr, c.c_a3 as c_a3_tr, c.c_a4 as c_a4_tr, c.c_b as c_b_tr, c.c_c as c_c_tr, c.c_d as c_d_tr, c.c_e as c_e_tr, c.c_f as c_f_tr, c.path_to_file as file_vu_tractor, c.file_extension as ext_file_vu_tractor,"
-			. " c5.text as TEXT_SLUGBA, c6.text as TEXT_KODRAI, "
 			. " f.number_dopog, DATE_FORMAT(f.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(f.date_end_dopog, '%d.%m.%Y') as date_end_dopog, "
-			. " f.path_to_file as file_dopog, f.file_extension as ext_file_dopog"
+			. " f.path_to_file as file_dopog, f.file_extension as ext_file_dopog, "
+			. " e.number_card, DATE_FORMAT(e.date_start_card, '%d.%m.%Y') as date_start_card, DATE_FORMAT(e.date_end_card, '%d.%m.%Y') as date_end_card, c1.text as firma_card_text, "
+			. " e.path_to_file as file_card, e.file_extension as ext_file_card"
 			. " FROM {table} "
 			. " LEFT JOIN drivers_document b ON {table}.id = b.id_driver AND b.ibd_arx=1 "
 			. " LEFT JOIN drivers_document_tractor c ON {table}.id = c.id_driver AND c.ibd_arx=1 "
 			. " LEFT JOIN drivers_dopog f ON {table}.id = f.id_driver AND f.ibd_arx=1 "
-			. " LEFT JOIN s2i_klass c5 ON c5.kod={table}.slugba AND c5.nomer=1 "
-			. " LEFT JOIN s2i_klass c6 ON c6.kod={table}.kodrai AND c6.nomer=11 "
+			. " LEFT JOIN drivers_card e ON {table}.id = e.id_driver AND e.ibd_arx=1 "
+			. " LEFT JOIN s2i_klass c1 ON c1.kod=e.firma_card AND c1.nomer=38 "
 			. " WHERE {table}.id={id} ";
 
 	public function get_list($post = []) {

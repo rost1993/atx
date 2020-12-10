@@ -56,6 +56,12 @@
 		$badge_archive = "<span class='badge badge-pill badge-warning' id='badgeDriverArchive'><span class='fa fa-folder'>&nbsp;</span>В архиве</span>";
 	}
 
+	$number_card = (empty($number_card)) ? '' : $number_card;
+	$firma_card_text = (empty($firma_card_text)) ? '' : $firma_card_text;
+	$date_start_card = (empty($date_start_card)) ? '' : $date_start_card;
+	$date_end_card = (empty($date_end_card)) ? '' : $date_end_card;
+	$file_card = (empty($file_card)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_card, $ext_file_card);
+
 	// Обработка категорий ВУ
 	$strKategVU = $strKategVUTractor = $strKategVUBoat = '';
 			
@@ -326,7 +332,7 @@
 					
 					
 					
-					<div class="col-sm-12 atx-cars-block" id="SECTION3-VU">
+					<div class="col-sm-12 atx-cars-block">
 
 						<div class="form-row">
 							<div class="col col-sm-5 mb-1 text-left">
@@ -343,11 +349,11 @@
 						</div>
 					</div>
 
-					<div class="col-sm-12 atx-cars-block" id="SECTION4-VU">
+					<div class="col-sm-12 atx-cars-block">
 
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThree" aria-controls="collapseThree" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. СВИДЕТЕЛЬСТВО ДОПОГ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFive" aria-controls="collapseFive" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. СВИДЕТЕЛЬСТВО ДОПОГ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left" id='groupButtonVUTractor'>
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='15' title="Показать историю водительских удостоверений"><span class="fa fa-search">&nbsp;</span>История</button>
@@ -356,7 +362,7 @@
 							</div>
 						</div>
 
-						<div class="collapse show" id="collapseThree" aria-labelledby="headingTwo">
+						<div class="collapse show" id="collapseFive" aria-labelledby="headingTwo">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
 									<label for="number_dopog" class="text-muted" style="font-size: 13px;"><strong>Свидетельство</strong></label>
@@ -385,18 +391,67 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="col-sm-12 atx-cars-block">
+
+						<div class="form-row">
+							<div class="col col-sm-4 mb-1 text-left">
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSix" aria-controls="collapseSix" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>6. КАРТА ВОДИТЕЛЯ</a></h5></p>
+							</div>
+							<div class="col col-sm-7 mb-1 text-left">
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='18' title="Показать историю карт водителя"><span class="fa fa-search">&nbsp;</span>История</button>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='18' title='Добавить карту водителя'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>" : "";?>
+								<?= $file_card; ?>
+							</div>
+						</div>
+
+						<div class="collapse show" id="collapseSix" aria-labelledby="headingTwo">
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="number_dopog" class="text-muted font-weight-bold fs-13">Номер</label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" placeholder="Номер" value="<?= $number_card; ?>" disabled>
+								</div>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="number_dopog" class="text-muted font-weight-bold fs-13">Кем выдана</label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" placeholder="Кем выдана" value="<?= $firma_card_text; ?>" disabled>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted">Срок действия</label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" maxlength="10" placeholder="Дата выдачи" value="<?= $date_start_card; ?>" disabled>
+									</div>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" maxlength="10" placeholder="Дата окончания" value="<?= $date_end_card; ?>" disabled>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSix" aria-controls="collapseSix" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>5. ЗАКРЕПЛЕНИЕ ЗА ТС</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeven" aria-controls="collapseSeven" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>7. ЗАКРЕПЛЕНИЕ ЗА ТС</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="1" title="Открыть историю закреплений"><span class="fa fa-search">&nbsp;</span>История закреплений</button>
 								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='1' data-operation='1' title='Закрепить новое транспортное средство за водителем'><span class='fa fa-plus'>&nbsp;</span>Добавить ТС</button>" : ""; ?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseSix" aria-labelledby="headingFour">
+						<div class="collapse show" id="collapseSeven" aria-labelledby="headingFour">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-car-for-driver"><?= $list_car_for_driver; ?></div>
 							</div>
@@ -406,7 +461,7 @@
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeven" aria-controls="collapseSeven" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>6. ДТП</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEight" aria-controls="collapseEight" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>8. ДТП</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='2' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
@@ -418,7 +473,7 @@
 							</div>
 						</div>
 
-						<div class="collapse show" id="collapseSeven" aria-labelledby="headingFive">
+						<div class="collapse show" id="collapseEight" aria-labelledby="headingFive">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-dtp-for-driver"><?= $list_dtp; ?></div>
 							</div>
@@ -428,7 +483,7 @@
 					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEight" aria-controls="collapseEight" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>7. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseNine" aria-controls="collapseNine" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>9. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="11" data-type='2' title="Открыть список всех адм. правонарушений"><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
@@ -439,7 +494,7 @@
 							</div>
 						</div>
 
-						<div class="collapse show" id="collapseEight" aria-labelledby="headingSix">
+						<div class="collapse show" id="collapseNine" aria-labelledby="headingSix">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-adm"><?= $list_adm; ?></div>
 							</div>
