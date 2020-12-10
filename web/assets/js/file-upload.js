@@ -186,6 +186,9 @@ $(function () {
 				case 19:
 					script = 'drivers_card';
 					break;
+				case 20:
+					script = 'car_tachograph';
+					break;
 			}
 
 			showDownloader(true);

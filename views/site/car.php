@@ -92,6 +92,12 @@
 	$firma_calibration_text = (empty($firma_calibration_text)) ? '' : $firma_calibration_text;
 	$file_calibration = (empty($file_calibration)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_calibration, $ext_file_calibration);
 
+	$number_tachograph = (empty($number_tachograph)) ? '' : $number_tachograph;
+	$model_tachograph_text = (empty($model_tachograph_text)) ? '' : $model_tachograph_text;
+	$date_start_skzi = (empty($date_start_skzi)) ? '' : $date_start_skzi;
+	$date_end_skzi = (empty($date_end_skzi)) ? '' : $date_end_skzi;
+	$file_tachograph = (empty($file_tachograph)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_tachograph, $ext_file_tachograph);
+
 	$ibd_arx = (empty($ibd_arx)) ? 1 : $ibd_arx;
 	$text_btn_archive = $badge_archive = '';
 	if($ibd_arx == 1) {
@@ -731,7 +737,7 @@
 						</div>
 					</div>
 
-					<div class="col-sm-12 atx-cars-block">	
+					<div class="col-sm-12 atx-cars-block">
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
 								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseThirteen" aria-controls="collapseThirteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>13. КАЛИБРОВКА (ЭКСПЕРТИЗА)</a></h5></p>
@@ -763,6 +769,52 @@
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="firma_calibration_text" value="<?= $firma_calibration_text; ?>" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-12 atx-cars-block">	
+						<div class="form-row">
+							<div class="col col-sm-3 mb-1 text-left">
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFourteen" aria-controls="collapseFourteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>14. ТАХОГРАФ</a></h5></p>
+							</div>
+							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='19' title="Список всех экспертиз"><span class="fa fa-search"></span>&nbsp;История</button>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='19' title='Добавить экспертизу'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+								<?= $file_tachograph; ?>
+							</div>
+						</div>
+						<div class="collapse show" id="collapseFourteen" aria-labelledby="headingOne">
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Номер</label>
+								</div>
+								<div class="col col-sm-4 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $number_tachograph; ?>" disabled>
+								</div>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Модель</label>
+								</div>
+								<div class="col col-sm-4 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $model_tachograph_text; ?>" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Срое действия блока СКЗИ</label>
+								</div>
+								<div class="col col-sm-2 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $date_start_skzi; ?>" disabled>
+									</div>
+								</div>
+								<div class="col col-sm-2 mb-1">
+									<div class='input-group input-group-sm'>
+										<div class='input-group-prepend'><label class='input-group-text'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $date_end_skzi; ?>" disabled>
+									</div>
 								</div>
 							</div>
 						</div>

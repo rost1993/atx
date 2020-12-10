@@ -31,7 +31,9 @@ class Car extends Model {
 					 m.number_dopog, DATE_FORMAT(m.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(m.date_end_dopog, '%d.%m.%Y') as date_end_dopog, x6.text as firma_dopog_text,
 					 m.path_to_file as file_dopog, m.file_extension as ext_file_dopog,
 					 DATE_FORMAT(n.date_calibration, '%d.%m.%Y') as date_calibration, DATE_FORMAT(n.date_next_calibration, '%d.%m.%Y') as date_next_calibration, x7.text as firma_calibration_text,
-					 n.path_to_file as file_calibration, n.file_extension as ext_file_calibration
+					 n.path_to_file as file_calibration, n.file_extension as ext_file_calibration,
+					 o.number_tachograph, DATE_FORMAT(o.date_start_skzi, '%d.%m.%Y') as date_start_skzi, DATE_FORMAT(o.date_end_skzi, '%d.%m.%Y') as date_end_skzi, x8.text as model_tachograph_text,
+					 o.path_to_file as file_tachograph, o.file_extension as ext_file_tachograph
 					 FROM {table} 
 					 LEFT JOIN osago b ON b.id_car=cars.id AND b.ibd_arx=1 
 					 LEFT JOIN technical_inspection c ON c.id_car=cars.id AND c.ibd_arx=1 
@@ -43,6 +45,7 @@ class Car extends Model {
 					 LEFT JOIN car_battery l ON l.id_car=cars.id AND l.ibd_arx=1
 					 LEFT JOIN cars_dopog m ON m.id_car=cars.id AND m.ibd_arx=1
 					 LEFT JOIN car_calibration n ON n.id_car=cars.id AND n.ibd_arx=1
+					 LEFT JOIN car_tachograph o ON o.id_car=cars.id AND o.ibd_arx=1
 					 LEFT JOIN s2i_klass x1 ON x1.kod=b.firma_osago AND x1.nomer=15 
 					 LEFT JOIN s2i_klass x2 ON x2.kod=c.firma_technical_inspection AND x2.nomer=16 
 					 LEFT JOIN s2i_klass x3 ON x3.kod=g.type_ts_pts AND x3.nomer=6 
@@ -50,6 +53,7 @@ class Car extends Model {
 					 LEFT JOIN s2i_klass x5 ON x5.kod=h.org_certificate_reg AND x5.nomer=22
 					 LEFT JOIN s2i_klass x6 ON x6.kod=m.firma_dopog AND x6.nomer=34
 					 LEFT JOIN s2i_klass x7 ON x7.kod=n.firma_calibration AND x7.nomer=37
+					 LEFT JOIN s2i_klass x8 ON x8.kod=o.model_tachograph AND x8.nomer=39
 					 WHERE cars.id={id}";
 
 	public function get_list($post = []) {

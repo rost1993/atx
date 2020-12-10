@@ -170,6 +170,10 @@ $(document).ready(function() {
 			scripts = 'drivers_card';
 			titleForm = 'Список карт водителя';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 19) {
+			scripts = 'car_tachograph';
+			titleForm = 'Список тахографов';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		} else {
 			return;
 		}
@@ -288,6 +292,11 @@ $(document).ready(function() {
 			scripts = 'drivers_card';
 			action = 18;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 19) {
+			titleForm = 'Тахограф';
+			scripts = 'car_tachograph';
+			action = 19;
+			query = 'option=get_window&nsyst=-1';
 		} else {
 			return;
 		}
@@ -380,6 +389,10 @@ $(document).ready(function() {
 		} else if(item == 18) {
 			scripts = 'drivers_card';
 			titleForm = 'Карта водителя';
+			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 19) {
+			scripts = 'car_tachograph';
+			titleForm = 'Тахограф';
 			query = 'option=get_window&nsyst=' + id;
 		} else {
 			return;
@@ -617,6 +630,18 @@ $(document).ready(function() {
 			arrayData['id_driver'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'drivers_card';
+		} else if($(this).data('action') == 19) {
+			var resultCollectionsItems = getArrayItemsForms('#formCarTachograph input, #formCarTachograph select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'car_tachograph';
 		} else {
 			return;
 		}
@@ -702,6 +727,9 @@ $(document).ready(function() {
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 18) {
 			scripts = 'drivers_card';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 19) {
+			scripts = 'car_tachograph';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else {
 			return;

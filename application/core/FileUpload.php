@@ -15,22 +15,24 @@ class FileUpload {
 	public $MAX_FILE_SIZE = 41943040; 		// Максимально допустимый размер файла для загрузки на сервер 40 MB (данный параметр может установить пользователь)
 	public $LAST_COPY_FILE = '';
 	
+
+	const CLASS_CARS = 'IcKomiApp\models\Car';
 	const CLASS_CAR_DOCUMENT = 'IcKomiApp\models\CarDocument';
 	const CLASS_TECHNICAL_INSPECTION_DOCUMENT = 'IcKomiApp\models\TechnicalInspection';
 	const CLASS_OSAGO_DOCUMENT = 'IcKomiApp\models\Osago';
 	const CLASS_PTS_DOCUMENT = 'IcKomiApp\models\Pts';
+	const CLASS_CERTIFICATE_REGISTRATION_DOCUMENT = 'IcKomiApp\models\CertificateRegistration';
+	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
+	const CLASS_CAR_FOR_DRIVER_DOCUMENT = 'IcKomiApp\models\CarForDriver';
+	const CLASS_REPAIR_DOCUMENT = 'IcKomiApp\models\Repair';
+	const CLASS_DTP = 'IcKomiApp\models\Dtp';
+	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
+	const CLASS_CAR_TACHOGRAPH = 'IcKomiApp\models\Tachograph';
+
 	const CLASS_VU_DOCUMENT = 'IcKomiApp\models\Vu';
 	const CLASS_VU_DOCUMENT_TRACTOR = 'IcKomiApp\models\TractorVu';
 	const CLASS_VU_DOCUMENT_CRAN = 'IcKomiApp\models\CranVu';
 	const CLASS_DRIVERS_CARD = 'IcKomiApp\models\DriversCard';
-	
-	const CLASS_CERTIFICATE_REGISTRATION_DOCUMENT = 'IcKomiApp\models\CertificateRegistration';
-	const CLASS_CAR_FOR_DRIVER_DOCUMENT = 'IcKomiApp\models\CarForDriver';
-	const CLASS_REPAIR_DOCUMENT = 'IcKomiApp\models\Repair';
-	const CLASS_DTP = 'IcKomiApp\models\Dtp';
-	const CLASS_CARS = 'IcKomiApp\models\Car';
-	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
-	const CLASS_CARS_DOPOG = 'IcKomiApp\models\CarsDopog';
 	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
 	const CLASS_CARS_CALIBRATION = 'IcKomiApp\models\Calibration';
 	
@@ -143,9 +145,9 @@ class FileUpload {
 				$path_to_file .= 'cars/' . $id_object . '/';
 				break;
 			
-			/*case self::CLASS_SPEC_SIGNALS:
-				$path_to_file .= 'drivers/' . $id_main_object . '/permission_spec_signals/' . $id_object . '/';
-				break;*/
+			case self::CLASS_CAR_TACHOGRAPH:
+				$path_to_file .= 'cars/' . $id_main_object . '/tachograph/' . $id_object . '/';
+				break;
 			
 			case self::CLASS_ADM_OFFENSE:
 				$path_to_file .= 'adm_offense/' . $id_object . '/';
@@ -296,8 +298,7 @@ class FileUpload {
 			case self::CLASS_CAR_FOR_DRIVER_DOCUMENT:
 				$table = 'car_for_driver';
 				break;
-			
-			//case self::CLASS_EXAM_DOCUMENT:
+
 			case self::CLASS_REPAIR_DOCUMENT:
 			case self::CLASS_DTP:
 			case self::CLASS_CARS:
@@ -315,6 +316,10 @@ class FileUpload {
 
 			case self::CLASS_CARS_CALIBRATION:
 				$table = 'car_calibration';
+				break;
+
+			case self::CLASS_CAR_TACHOGRAPH:
+				$table = 'car_tachograph';
 				break;
 
 			default:

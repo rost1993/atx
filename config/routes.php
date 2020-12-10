@@ -165,4 +165,9 @@ return [
 		'controller' => 'driversCard',
 		'action' => 'driversCard'
 	],
+
+	'car_tachograph' => [
+		'controller' => 'tachograph',
+		'action' => 'tachograph'
+	],
 ];
