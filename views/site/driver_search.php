@@ -63,7 +63,7 @@
 							<div class="form-row">
 								<div class="col col-sm-12 text-center">
 									<button type="button" class="btn btn-success btn-search-item mb-2 mt-2 mr-2 btn-search-drivers" data-page="1" data-excel="-1" title="Поиск"><span class="fa fa-search">&nbsp;</span>Поиск водителя</button>
-									<button type="button" class="btn btn-info mb-2 mt-2 ml-2 btn-search" data-page="1" data-excel="1" title="Выгрузить в Excel"><span class="fa fa-file-excel-o">&nbsp;</span>Выгрузить в Excel</button>
+									<button type="button" class="btn btn-info mb-2 mt-2 ml-2 btn-search-drivers" data-page="1" data-excel="1" title="Выгрузить в Excel"><span class="fa fa-file-excel-o">&nbsp;</span>Выгрузить в Excel</button>
 								</div>
 							</div>
 							

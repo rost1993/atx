@@ -170,4 +170,9 @@ return [
 		'controller' => 'tachograph',
 		'action' => 'tachograph'
 	],
+
+	'download_file' => [
+		'controller' => 'main',
+		'action' => 'downloadFile'
+	],
 ];

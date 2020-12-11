@@ -5,6 +5,7 @@ namespace IcKomiApp\models;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\lib\excel\GenerateExcel;
 
 class Repair extends Model {
 	protected $table = 'car_repair';
@@ -343,8 +344,10 @@ class Repair extends Model {
 		return $html;
 	}
 
-	public function generate_excel_document() {
-
+	public function generate_excel_document($data) {
+		$header = array('№ п/п', 'Гос. знак', 'Марка', 'Модель', 'Станция ремонта', 'Начало ремонта', 'Окончание ремонта', 'Стоимость ремонта', 'Пробег', 'Замена масла в ДВС', 'Примечание');
+		$body = array(['{index}'], ['gos_znak'], ['marka_ts'], ['model_ts'], ['org_repair'], ['date_start_repair', 'date'], ['date_end_repair', 'date'], ['price_repair'], ['car_mileage'], ['change_oil_text'], ['prim_repair']);
+		return GenerateExcel::generate_excel_document('repairs', 'Ремонты', $header, $body, $data);
 	}
 
 	// Функция получения списка ремонтов для данного ТС

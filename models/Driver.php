@@ -6,6 +6,7 @@ use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\lib\excel\GenerateExcel;
 
 class Driver extends Model {
 	protected $table = 'drivers';
@@ -176,7 +177,6 @@ class Driver extends Model {
 			return false;
 
 		$html = ($_POST['excel'] != -1) ? $this->generate_excel_document($data) : $this->draw_result_table($data, 2, addslashes($post['page']), 2);
-
 		return [ 'search_result' => $html];
 	}
 
@@ -279,7 +279,9 @@ class Driver extends Model {
 	}
 
 	function generate_excel_document($data) {
-
+		$header = array('№ п/п', 'Фамилия', 'Имя', 'Отчество', 'Мобильный телефон');
+		$body = array(['{index}'], ['fam'], ['imj'], ['otch'], ['mob_phone']);
+		return GenerateExcel::generate_excel_document('drivers', 'Водители', $header, $body, $data);
 	}
 
 	// Функция получения дополнительной информации

@@ -7,6 +7,7 @@ use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\lib\excel\GenerateExcel;
 
 class Car extends Model {
 	protected $table = 'cars';
@@ -214,6 +215,9 @@ class Car extends Model {
 		
 		if(!$array_data_decode = json_decode($post['JSON']))
 			return false;
+
+		if(!empty($post['excel']))
+			$flg_excel = $post['excel'];
 		
 		// Начинаем формировать условие для поиска
 		// Если уровень прав пользователя меньше чем 2, то ставим ограничение, что ищем только открытые ТС
@@ -344,7 +348,7 @@ class Car extends Model {
 		else
 			$sql = "SELECT a.id, x1.text AS marka, x2.text AS model, x3.text AS color, a.gos_znak, a.n_reg, a.god_car, a.ibd_arx, x9.text AS kateg_ts, "
 					. " a.basic_fuel, a.summer_fuel, a.winter_fuel, a.inventory_n, a.prim, a.vin, a.n_dvig, a.shassi, a.kuzov, a.mass_max, a.mass_min, a.car_vat, a.car_v, "
-					. " x6.text as tip_strah, x7.text as kateg_gost, x8.text as kateg_mvd, CAST(a.mileage AS CHAR) + 0 as mileage, DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, x10.text as firma_osago, osago.n_osago, "
+					. " x6.text as tip_strah, x7.text as kateg_gost, CAST(a.mileage AS CHAR) + 0 as mileage, DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, x10.text as firma_osago, osago.n_osago, "
 					. " DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate,  DATE_FORMAT(technical_inspection.date_certificate, '%d.%m.%Y') as date_certificate, "
 					. " technical_inspection.address_technical_inspection, x11.text as firma_technical_inspection, technical_inspection.number_certificate "
 					. " FROM " . $this->table . " a "
@@ -355,7 +359,6 @@ class Car extends Model {
 					. " LEFT JOIN s2i_klass x3 ON a.color = x3.kod AND x3.nomer = 12 "
 					. " LEFT JOIN s2i_klass x6 ON a.tip_strah = x6.kod AND x6.nomer = 7 "
 					. " LEFT JOIN s2i_klass x7 ON a.kateg_gost = x7.kod AND x7.nomer = 9 "
-					. " LEFT JOIN s2i_klass x8 ON a.kateg_mvd = x8.kod AND x8.nomer = 8 "
 					. " LEFT JOIN s2i_klass x9 ON a.kateg_ts = x9.kod AND x9.nomer = 5 "
 					. " LEFT JOIN s2i_klass x10 ON osago.firma_osago = x10.kod AND x10.nomer = 15 "
 					. " LEFT JOIN s2i_klass x11 ON technical_inspection.firma_technical_inspection = x11.kod AND x11.nomer = 16 ";
@@ -632,7 +635,15 @@ class Car extends Model {
 	}
 
 	public function generate_excel_document($data) {
-
+		$header = array('№ п/п', 'Марка', 'Модель', 'Гос. номер', 'Год выпуска', 'Цвет', 'Пробег', 'Категория ТС', 'Тип для страховой', 'Категория ГОСТ', 'VIN / зав. № машины (рамы)', 'Двигатель',
+			'Шасси / коробка передач', 'Кузов / осн. ведущий мост (мосты)', 'Разр. макс. масса', 'Масса без нагрузки', 'Мощность л.с', 'Раб. объем двигателя куб.см', 'Базовая норма', 'Эксплуатационная летняя норма',
+			'Эксплуатационная зимняя норма', 'Инвентарный номер', 'Примечание', 'Дата окончания полиса ОСАГО', 'Серия и номер полиса ОСАГО', 'Страховая компания', 'Номер сертификата технического осмотра',
+			'Дата выдачи сертификата технического осмотра', 'Дата окончания сертификата технического осмотра', 'Организация выдавшая сертификат технического осмотра', 'Адрес прохождения технического осмотра');
+		$body = array(['{index}'], ['marka'], ['model'], ['gos_znak'], ['god_car'], ['color'], ['mileage'], ['kateg_ts'],
+			['tip_strah'], ['kateg_gost'], ['vin'], ['n_dvig'], ['shassi'], ['kuzov'], ['mass_max'], ['mass_min'], ['car_vat'],
+			['car_v'], ['basic_fuel'], ['summer_fuel'], ['winter_fuel'], ['inventory_n'], ['prim'], ['end_date_osago'], ['n_osago'], ['firma_osago'], ['number_certificate'],
+			['date_certificate'], ['end_date_certificate'], ['firma_technical_inspection'], ['address_technical_inspection']);
+		return GenerateExcel::generate_excel_document('cars', 'Транспортные средства', $header, $body, $data);
 	}
 
 	public function draw_additional_information($id) {

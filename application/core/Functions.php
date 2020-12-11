@@ -2,6 +2,11 @@
 
 namespace IcKomiApp\core;
 
+use IcKomiApp\core\User;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+
 /*
 	Служебный класс, содержащий различные вспомогательные функции
 */
@@ -80,13 +85,9 @@ class Functions {
 		// Если передан параметр, то отрисовываем возможность удаления файла
 		$btn_remove = "";
 		
-		/*Session::start();
-		$role = Session::get('role');
-		Session::commit();*/
-
-		$role = 9;
+		$role = User::get('role');
 	
-		if($flg_remove && ($role > 1))
+		if($flg_remove && ($role >= 2))
 			$btn_remove = "<button class='btn my_close_button dropdown-toggle' id='btnDropdownDeleteFile' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>&times</button>"
 						. "<div class='dropdown-menu' aria-labelledby='btnDropdownDeleteFile'>"
 						. "<button type='button' class='dropdown-item' id='btnDeleteFile' data-save='" . $id_file . "' data-item='" . $action_item . "' data-class='" . $class_name . "'><span class='fa fa-check text-success'>&nbsp</span>Подтверждаю удаление</button></div>";
@@ -259,9 +260,6 @@ class Functions {
 			$file_extension = mb_strtolower($file_name_explode[count($file_name_explode) - 1]);
 		else
 			return false;
-
-		//$array_file_extension_lower = array_map('mb_strtolower', $array);
 		return in_array($file_extension, array_map('mb_strtolower', $array_file_extension));
 	}
-
 }

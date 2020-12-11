@@ -7,6 +7,7 @@ use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\lib\excel\GenerateExcel;
 
 class Dtp extends Model {
 	protected $table = 'dtp';
@@ -145,14 +146,14 @@ class Dtp extends Model {
 		}
 		
 		$sql = '';
-		$role = User::get(role);
+		$role = User::get('role');
 		
 		if(mb_strlen($where) > 0)
 				$where = " WHERE " . $where;
 
 		if($role == 9)
-			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text "
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, a.recovery_committing, "
+				. " a.date_committing, a.time_committing, a.place_committing, a.sum_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text, a.date_recovery_cars "
 				. " FROM dtp a "
 				. " LEFT JOIN cars b ON b.id=a.id_car "
 				. " LEFT JOIN drivers c ON c.id=a.id_driver "
@@ -160,8 +161,8 @@ class Dtp extends Model {
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 " . $where
 				. " ORDER BY a.date_committing DESC";
 		else if($role == 2)
-			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text "
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, a.recovery_committing, "
+				. " a.date_committing, a.time_committing, a.place_committing, a.sum_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text, a.date_recovery_cars "
 				. " FROM dtp a "
 				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
 				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
@@ -169,8 +170,8 @@ class Dtp extends Model {
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 " . $where
 				. " ORDER BY a.date_committing DESC";
 		else if($role == 1)
-			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text "
+			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, a.recovery_committing, "
+				. " a.date_committing, a.time_committing, a.place_committing, a.sum_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text, a.date_recovery_cars "
 				. " FROM dtp a "
 				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
 				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
@@ -286,7 +287,11 @@ class Dtp extends Model {
 	}
 
 	public function generate_excel_document($data) {
-
+		$header = array('№ п/п', 'Марка ТС', 'Модель ТС', 'Гос. номер', 'Водитель', 'Дата совершения', 'Время совершения',
+			'Место совершения', 'Описание', 'Сумма ущерба', 'Дата восстановления ТС', 'Восстановление', 'Виновен ли сотрудник');
+		$body = array(['{index}'], ['marka_ts'], ['model_ts'], ['gos_znak'], ['driver'], ['date_committing', 'date'], ['time_committing'],
+			['place_committing'], ['comment_committing'], ['sum_committing'], ['date_recovery_cars', 'date'], ['recovery_committing'], ['offender_text']);
+		return GenerateExcel::generate_excel_document('dtp', 'ДТП', $header, $body, $data);
 	}
 
 	// Функция построения списка ДТП по ID транспортного средства

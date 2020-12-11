@@ -7,6 +7,7 @@ use IcKomiApp\core\Model;
 use IcKomiApp\core\Logic;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
+use IcKomiApp\lib\excel\GenerateExcel;
 
 class Adm extends Model {
 	protected $table = 'adm_offense';
@@ -279,7 +280,11 @@ class Adm extends Model {
 	}
 
 	function generate_excel_document($data) {
-
+		$header = array('№ п/п', 'Марка ТС', 'Модель ТС', 'Гос. номер', 'Водитель', 'Дата совершения', 'Время совершения', 'Статья и часть КоАП РФ',
+			'Место совершения', 'Описание', 'Сумма штрафа', 'Оплата штрафа');
+		$body = array(['{index}'], ['marka_ts'], ['model_ts'], ['gos_znak'], ['driver'], ['date_adm', 'date'], ['time_adm'],
+			['st_chast_koap_text'], ['place_adm'], ['comment_adm'], ['sum_adm'], ['oplat_adm_text']);
+		return GenerateExcel::generate_excel_document('adm', 'Адм. правонарушения', $header, $body, $data);
 	}
 
 	// Получение списка адм. правонарушений для страницы водители

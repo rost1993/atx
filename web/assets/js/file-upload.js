@@ -8,59 +8,10 @@
 var filesList = [];
 var MAX_FILE_SIZE = 20971520; // 35 Mb - максимальный разрешенный размер файла
 var COUNT_MAX_FILE = 3; 	  // Максимальное количество файлов
-var PATH_TO_SCRIPT = '../php-bin/handlers-events/';
 
 $(function () {
 	
     'use strict';
-
-	// Функция выбора файла
-	$('#btnChangeUploadFile').change(function(){
-		if(!$('*').is('#nsyst')) {
-			showModal('ModalWindow', 'Функция не поддерживается!');
-			return;
-		} else {
-			if($('#nsyst').html().trim().length == 0) {
-				showModal('ModalWindow', 'Сначала сохраните экзамен!');
-				return;
-			}
-		}
-
-		var regExp = /xls|xlsx|pdf/i;
-
-		var files = this.files;
-		showDownloader(true);
-		for(var i = 0; i < files.length; i++) {
-			var fileNameSplit = files[i].name.split('.');
-			var fileExtension = fileNameSplit[fileNameSplit.length - 1];
-			
-			if(!regExp.test(fileExtension)) {
-				showModal('ModalWindow', 'Запрещено прикреплять электронный образ документа с таким расширением! Возможна загрузка только PDF документов!');
-				filesList = [];
-				return;
-			}
-			
-			filesList[0] = files[i];
-			
-			AjaxDownloadFile('/php-bin/handlers-events/upload-file.php?option=1&nsyst=' + $('#nsyst').html().trim(), 'POST', function(result) {
-				showDownloader(false);
-				var res = eval(result);
-				if(res[0] == -1) {
-					showModal('ModalWindow', 'При обработке запроса произошла ошибка! Повторите запрос!');
-				} else if(res[0] == -2) {
-					showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка! ' + res[1]);
-				} else if(res[0] == 1) {
-					var html = "<span class='badge badge-pill badge-secondary' style='font-size: 15px;'><span class='fa fa-file-pdf-o file-badge' id='openModalFile' data-href='/" + res[1] + "'></span><button class='btn my_close_button'>&times</button></span>";
-					$('#uploadFileContainer').append(html);
-				} else {
-					showModal('ModalWindow', 'При обработке запроса произошла непредвиденная ошибка!');
-				}
-			});
-		}
-		
-		
-		
-	});
 	
 	// Обработчик выбора файла для модальных окон
 	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view,#CarBlockImages').on('change', '#btnAddFileModalWindow', function() {
@@ -210,7 +161,6 @@ $(function () {
 			case 'pdf':
 				fileType = 'pdf';
 				break;
-		
 			case 'jpeg':
 			case 'jpg':
 			case 'png':
@@ -218,12 +168,10 @@ $(function () {
 			case 'gif':
 				fileType = 'image';
 				break;
-		
 			case 'xlsx':
 			case 'xls':
 				fileType = 'excel';
 				break;
-		
 			default:
 				fileType = 'pdf';
 				break;
@@ -233,20 +181,14 @@ $(function () {
 
 	// Обработчик открытия файла при нажатии на него
 	$('.starter-template,.modal-ic-komi-view,.modal-ic-komi-service-interface').on('click', '#openModalFile', function() {
-		var item = $(this).data('href');	
-
+		var item = $(this).data('href');
 		$('.modal-ic-komi-document-view').ModalDocumentViewIcKomi({ 'textBody' : item, 'method' : 'show' });
-
-		/*var modal = $('#ModalWindowViewDocument');
-		$(modal).find('#textModal').empty();
-		$(modal).find('#textModal').html('Просмотр документа');
-		$(modal).find('#bodyModal').empty();
-
-		if($(this).data('fileFormat').trim() == 'pdf')
-			$(modal).find('#bodyModal').html("<iframe class='file-frame' src='" + item + "' style='width: 100%;'></iframe>");
-		else
-			$(modal).find('#bodyModal').html("<img src='" + item + "' alt='Фотография' class='img-fluid rounded' style='height: 75vh;'>");
-
-		$(modal).modal('toggle');*/
 	});
 });
+
+// Функция для скачивания файла (в качестве параметра принимает имя файла)
+// Также осуществлена проверка по регулярному выражению, что нам передан именно xls файл
+function downloadFile(FileName) {
+	var pathScript = 'download_file?file=';
+	document.location.href = pathScript + FileName;
+}
