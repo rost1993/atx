@@ -33,7 +33,8 @@ class Car extends Model {
 					 DATE_FORMAT(n.date_calibration, '%d.%m.%Y') as date_calibration, DATE_FORMAT(n.date_next_calibration, '%d.%m.%Y') as date_next_calibration, x7.text as firma_calibration_text,
 					 n.path_to_file as file_calibration, n.file_extension as ext_file_calibration,
 					 o.number_tachograph, DATE_FORMAT(o.date_start_skzi, '%d.%m.%Y') as date_start_skzi, DATE_FORMAT(o.date_end_skzi, '%d.%m.%Y') as date_end_skzi, x8.text as model_tachograph_text,
-					 o.path_to_file as file_tachograph, o.file_extension as ext_file_tachograph
+					 o.path_to_file as file_tachograph, o.file_extension as ext_file_tachograph,
+					 p.number_dvr, p.marka_dvr, p.model_dvr
 					 FROM {table} 
 					 LEFT JOIN osago b ON b.id_car=cars.id AND b.ibd_arx=1 
 					 LEFT JOIN technical_inspection c ON c.id_car=cars.id AND c.ibd_arx=1 
@@ -46,6 +47,7 @@ class Car extends Model {
 					 LEFT JOIN cars_dopog m ON m.id_car=cars.id AND m.ibd_arx=1
 					 LEFT JOIN car_calibration n ON n.id_car=cars.id AND n.ibd_arx=1
 					 LEFT JOIN car_tachograph o ON o.id_car=cars.id AND o.ibd_arx=1
+					 LEFT JOIN car_dvr p ON p.id_car=cars.id AND p.ibd_arx=1
 					 LEFT JOIN s2i_klass x1 ON x1.kod=b.firma_osago AND x1.nomer=15 
 					 LEFT JOIN s2i_klass x2 ON x2.kod=c.firma_technical_inspection AND x2.nomer=16 
 					 LEFT JOIN s2i_klass x3 ON x3.kod=g.type_ts_pts AND x3.nomer=6 

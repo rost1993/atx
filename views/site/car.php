@@ -98,6 +98,10 @@
 	$date_end_skzi = (empty($date_end_skzi)) ? '' : $date_end_skzi;
 	$file_tachograph = (empty($file_tachograph)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_tachograph, $ext_file_tachograph);
 
+	$number_dvr = (empty($number_dvr)) ? '' : $number_dvr;
+	$marka_dvr = (empty($marka_dvr)) ? '' : $marka_dvr;
+	$model_dvr = (empty($model_dvr)) ? '' : $model_dvr;
+
 	$ibd_arx = (empty($ibd_arx)) ? 1 : $ibd_arx;
 	$text_btn_archive = $badge_archive = '';
 	if($ibd_arx == 1) {
@@ -950,11 +954,11 @@
 						<div class="collapse show" id="collapseNineteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 text-right">
-									<label class="blockquote" style="font-size: 15px;" for="issued_date_fire_extinguisher"><strong>Огнетушитель</strong></label>
+									<label class="blockquote font-weight-bold fs-13">Огнетушитель</label>
 								</div>
 								<div class="col col-sm-4">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">выдан&nbsp;&nbsp;</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">выдан&nbsp;&nbsp;</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="issued_date_fire_extinguisher" value="<?= $issued_date_fire_extinguisher; ?>" disabled>
 									</div>
 								</div>
@@ -972,13 +976,13 @@
 								<div class="col col-sm-2 mb-1 text-right"></div>
 								<div class="col col-sm-2 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">годен с</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">годен с</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="start_date_fire_extinguisher" date-format="date" value="<?= $start_date_fire_extinguisher; ?>" disabled>
 									</div>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">по</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">по</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="end_date_fire_extinguisher" value="<?= $end_date_fire_extinguisher; ?>" disabled>
 									</div>
 								</div>
@@ -986,11 +990,11 @@
 							
 							<div class="form-row">
 								<div class="col col-sm-2 text-right">
-									<label class="blockquote" style="font-size: 15px;" for="issued_date_first_aid_kid"><strong>Аптечка</strong></label>
+									<label class="blockquote font-weight-bold fs-13">Аптечка</label>
 								</div>
 								<div class="col col-sm-4">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">выдан&nbsp;&nbsp;</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">выдан&nbsp;&nbsp;</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="issued_date_first_aid_kid" value="<?= $issued_date_first_aid_kid; ?>" disabled>
 									</div>
 								</div>
@@ -1007,13 +1011,13 @@
 								<div class="col col-sm-2 mb-1 text-right"></div>
 								<div class="col col-sm-2 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">годен с</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">годен с</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="start_date_first_aid_kid" value="<?= $start_date_first_aid_kid; ?>" disabled>
 									</div>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">по</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">по</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="end_date_first_aid_kid" value="<?= $end_date_first_aid_kid; ?>" disabled>
 									</div>
 								</div>
@@ -1021,11 +1025,11 @@
 							
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="blockquote" style="font-size: 15px;" for="firma_technical_inspection"><strong>Знак аварийной остановки</strong></label>
+									<label class="blockquote font-weight-bold fs-13">Знак аварийной остановки</label>
 								</div>
 								<div class="col col-sm-4 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">выдан&nbsp;&nbsp;</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">выдан&nbsp;&nbsp;</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="issued_date_warning_triangle" value="<?= $issued_date_warning_triangle; ?>" disabled>
 									</div>
 								</div>
@@ -1040,11 +1044,11 @@
 
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="blockquote" style="font-size: 15px;" for="start_date_car_battery"><strong>Аккумуляторная батарея</strong></label>
+									<label class="blockquote font-weight-bold fs-13">Аккумуляторная батарея</label>
 								</div>
 								<div class="col col-sm-4 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">установлена</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">установлена</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="start_date_car_battery" value="<?= $start_date_car_battery; ?>" disabled>
 									</div>
 								</div>
@@ -1061,14 +1065,49 @@
 								<div class="col col-sm-2 mb-1 text-right"></div>
 								<div class="col col-sm-2 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">тип</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">тип</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="type_battery" value="<?= $type_battery; ?>" disabled>
 									</div>
 								</div>
 								<div class="col col-sm-5 mb-1">
 									<div class="input-group input-group-sm">
-										<div class="input-group-prepend"><label class="input-group-text">изготовитель</label></div>
+										<div class="input-group-prepend"><label class="input-group-text black-text">изготовитель</label></div>
 										<input type="text" class="form-control form-control-sm black-text" id="firma_battery" value="<?= $firma_battery; ?>" disabled>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-row mt-2">
+								<div class="col col-sm-2 text-right">
+									<label class="blockquote font-weight-bold fs-13">Видеорегистратор</label>
+								</div>
+								<div class="col col-sm-4">
+									<div class="input-group input-group-sm">
+										<div class="input-group-prepend"><label class="input-group-text black-text">номер</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $number_dvr; ?>" disabled>
+									</div>
+								</div>
+								
+								<div class="col col-sm-6 text-left">
+									<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item="12" data-object="car_dvr" title="Отобразить список видеорегистраторов" data-title-form="Видеорегистратор"><span class="fa fa-search">&nbsp;</span>Список</button>
+									<?php
+									if($role >= 2) {
+									echo "<button type='button' class='btn btn-sm btn-outline-info btnAddItem mr-1' title='Добавить видеорегистратор' data-item='12' data-object='car_dvr' data-title-form='Видеорегистратор'><span class='fa fa-plus'>&nbsp;</span>Добавить</button>";
+								}?></div>
+							</div>
+							
+							<div class="form-row">
+								<div class="col col-sm-2 text-right"></div>
+								<div class="col col-sm-4">
+									<div class="input-group input-group-sm">
+										<div class="input-group-prepend"><label class="input-group-text black-text">марка</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $marka_dvr; ?>" disabled>
+									</div>
+								</div>
+								<div class="col col-sm-4">
+									<div class="input-group input-group-sm">
+										<div class="input-group-prepend"><label class="input-group-text black-text">модель</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $model_dvr; ?>" disabled>
 									</div>
 								</div>
 							</div>

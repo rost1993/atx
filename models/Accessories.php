@@ -20,18 +20,21 @@ class Accessories extends Model {
 	const CAR_EXTINGUISHER = 'car_fire_extinguisher';
 	const CAR_WARNING_TRIANGLE = 'car_warning_triangle';
 	const CAR_BATTERY = 'car_battery';
+	const CAR_DVR = 'car_dvr';
 	
 	// CONST trigger operation move to archive
 	const TRIGGER_CAR_FIRST_AID_KID = 12;
 	const TRIGGER_CAR_EXTINGUISHER = 122;
 	const TRIGGER_WARNING_TRIANGLE = 1222;
 	const TRIGGER_CAR_BATTERY = 12222;
+	const TRIGGER_CAR_DVR = 122222;
 	
 	// CONST tittle form
 	const TITLE_FORM_CAR_FIRST_AID_KID = 'Аптечка';
 	const TITLE_FORM_TRIGGER_CAR_EXTINGUISHER = 'Огнетушитель';
 	const TITLE_FORM_WARNING_TRIANGLE = 'Знак аварийной остановки';
 	const TITLE_FORM_CAR_BATTERY = 'Аккумуляторная батарея';
+	const TITLE_FORM_CAR_DVR = 'Видеорегистратор';
 	
 	public $title_form = 'Акссесуары';
 
@@ -55,6 +58,10 @@ class Accessories extends Model {
 			$this->table = self::CAR_BATTERY;
 			$this->trigger_operation = self::TRIGGER_CAR_BATTERY;
 			$this->title_form = self::TITLE_FORM_CAR_BATTERY;
+		} else if($object == self::CAR_DVR) {
+			$this->table = self::CAR_DVR;
+			$this->trigger_operation = self::TRIGGER_CAR_DVR;
+			$this->title_form = self::TITLE_FORM_CAR_DVR;
 		} else {
 			$this->table = '';
 			$this->trigger_operation = 0;
@@ -82,8 +89,7 @@ class Accessories extends Model {
 
 			$html = "";
 			if($object == self::CAR_EXTINGUISHER || $object == self::CAR_FIRST_AID_KID) {
-				// Формируем готовый HTML код для списка закрепленных ТС
-				$html = "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+				$html = "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 					. "<tr class='table-info'>"
 						. "<th " . $style_border . " scope='col'>№ п/п</th>"
 						. "<th " . $style_border . " scope='col'>Дата выдачи</th>"
@@ -93,8 +99,7 @@ class Accessories extends Model {
 						. "<th " . $style_border . " scope='col'>Удалить</th>"
 					. "</tr>";
 			} else if($object == self::CAR_WARNING_TRIANGLE) {
-				// Формируем готовый HTML код для списка закрепленных ТС
-				$html = "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+				$html = "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 					. "<tr class='table-info'>"
 						. "<th " . $style_border . " scope='col'>№ п/п</th>"
 						. "<th " . $style_border . " scope='col'>Дата выдачи</th>"
@@ -102,14 +107,24 @@ class Accessories extends Model {
 						. "<th " . $style_border . " scope='col'>Удалить</th>"
 					. "</tr>";
 			} else if($object == self::CAR_BATTERY) {
-				// Формируем готовый HTML код для списка закрепленных ТС
-				$html = "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+				$html = "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 					. "<tr class='table-info'>"
 						. "<th " . $style_border . " scope='col'>№ п/п</th>"
 						. "<th " . $style_border . " scope='col'>Тип АКБ</th>"
 						. "<th " . $style_border . " scope='col'>Номер АКБ</th>"
 						. "<th " . $style_border . " scope='col'>Изготовитель АКБ</th>"
 						. "<th " . $style_border . " scope='col'>Дата изготовления</th>"
+						. "<th " . $style_border . " scope='col'>Дата установки</th>"
+						. "<th " . $style_border . " scope='col'>Изменить</th>"
+						. "<th " . $style_border . " scope='col'>Удалить</th>"
+					. "</tr>";
+			} else if($object == self::CAR_DVR) {
+				$html = "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
+					. "<tr class='table-info'>"
+						. "<th " . $style_border . " scope='col'>№ п/п</th>"
+						. "<th " . $style_border . " scope='col'>Номер</th>"
+						. "<th " . $style_border . " scope='col'>Марка</th>"
+						. "<th " . $style_border . " scope='col'>Модель</th>"
 						. "<th " . $style_border . " scope='col'>Дата установки</th>"
 						. "<th " . $style_border . " scope='col'>Изменить</th>"
 						. "<th " . $style_border . " scope='col'>Удалить</th>"
@@ -135,6 +150,11 @@ class Accessories extends Model {
 								. "<td " . $style_border . ">" . $data[$i]['firma_battery'] . "</td>"
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['producion_date']) . "</td>"
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['start_date']) . "</td>";
+					} else if($object == self::CAR_DVR) {
+						$html .= "<td " . $style_border . ">" . $data[$i]['number_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . $data[$i]['marka_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . $data[$i]['model_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['date_issued_dvr']) . "</td>";
 					}
 					
 					if($role >= 2) {
@@ -152,7 +172,6 @@ class Accessories extends Model {
 				} else {
 					$list_archive .= "<tr>"
 							. "<td " . $style_border . ">" . ($k++) . "</td>";
-							//. "<td " . $style_border . ">" . ServiceFunction::convertToDate($data[$i]['issued_date']) . "</td>";
 							
 					if($object == self::CAR_EXTINGUISHER || $object == self::CAR_FIRST_AID_KID) {
 						$list_archive .= "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['issued_date']) . "</td>"
@@ -166,6 +185,11 @@ class Accessories extends Model {
 								. "<td " . $style_border . ">" . $data[$i]['firma_battery'] . "</td>"
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['producion_date']) . "</td>"
 								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['start_date']) . "</td>";
+					} else if($object == self::CAR_DVR) {
+						$list_archive .= "<td " . $style_border . ">" . $data[$i]['number_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . $data[$i]['marka_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . $data[$i]['model_dvr'] . "</td>"
+								. "<td " . $style_border . ">" . Functions::convertToDate($data[$i]['date_issued_dvr']) . "</td>";
 					}
 
 					if($role >= 2) {
@@ -187,8 +211,7 @@ class Accessories extends Model {
 			
 			if(mb_strlen($list_archive) > 0) {
 				if($object == Accessories::CAR_EXTINGUISHER || $object == Accessories::CAR_FIRST_AID_KID) {
-				// Формируем готовый HTML код для списка закрепленных ТС
-				$html .= "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+				$html .= "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 					. "<tr class='table-success'><th colspan='6' " . $style_border . " scope='col'>АРХИВ</th></tr>"
 					. "<tr class='table-info'>"
 						. "<th " . $style_border . " scope='col'>№ п/п</th>"
@@ -199,8 +222,7 @@ class Accessories extends Model {
 						. "<th " . $style_border . " scope='col'>Удалить</th>"
 					. "</tr>";
 				} else if($object == Accessories::CAR_WARNING_TRIANGLE) {
-					// Формируем готовый HTML код для списка закрепленных ТС
-					$html .= "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+					$html .= "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 						. "<tr class='table-success'><th colspan='4' " . $style_border . " scope='col'>АРХИВ</th></tr>"
 						. "<tr class='table-info'>"
 							. "<th " . $style_border . " scope='col'>№ п/п</th>"
@@ -209,8 +231,7 @@ class Accessories extends Model {
 							. "<th " . $style_border . " scope='col'>Удалить</th>"
 						. "</tr>";
 				} else if($object == Accessories::CAR_BATTERY) {
-					// Формируем готовый HTML код для списка закрепленных ТС
-					$html .= "<table class='table table-striped table-sm table-hover text-center' style='font-size: 13px; margin: 10px;'>"
+					$html .= "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
 						. "<tr class='table-success'><th colspan='8' " . $style_border . " scope='col'>АРХИВ</th></tr>"
 						. "<tr class='table-info'>"
 							. "<th " . $style_border . " scope='col'>№ п/п</th>"
@@ -222,7 +243,19 @@ class Accessories extends Model {
 							. "<th " . $style_border . " scope='col'>Изменить</th>"
 							. "<th " . $style_border . " scope='col'>Удалить</th>"
 						. "</tr>";
-				}
+				} else if($object == self::CAR_DVR) {
+					$html .= "<table class='table table-striped table-sm table-hover text-center fs-13' style='margin: 10px;'>"
+						. "<tr class='table-success'><th colspan='8' " . $style_border . " scope='col'>АРХИВ</th></tr>"
+						. "<tr class='table-info'>"
+						. "<th " . $style_border . " scope='col'>№ п/п</th>"
+						. "<th " . $style_border . " scope='col'>Номер</th>"
+						. "<th " . $style_border . " scope='col'>Марка</th>"
+						. "<th " . $style_border . " scope='col'>Модель</th>"
+						. "<th " . $style_border . " scope='col'>Дата установки</th>"
+						. "<th " . $style_border . " scope='col'>Изменить</th>"
+						. "<th " . $style_border . " scope='col'>Удалить</th>"
+					. "</tr>";
+			}
 				$html .= $list_archive . "</table>";
 			}
 		}
@@ -235,6 +268,7 @@ class Accessories extends Model {
 			return false;
 
 		$issued_date = $start_date = $end_date = $shelf_life = $type_battery = $number_battery = $producion_date = $firma_battery = $debit_date = $standart_term_battery = $standart_term_debit_battery = '';
+		$number_dvr = $marka_dvr = $model_dvr = $date_issued_dvr = '';
 		$data = [];
 		$id = addslashes($post['nsyst']);
 		if(addslashes($post['nsyst']) != -1) {
@@ -259,6 +293,11 @@ class Accessories extends Model {
 					$debit_date = Functions::convertToDate($data[0]['debit_date']);
 					$standart_term_battery = $data[0]['standart_term_battery'];
 					$standart_term_debit_battery = $data[0]['standart_term_debit_battery'];
+				} else if($post['object'] == self::CAR_DVR) {
+					$number_dvr = $data[0]['number_dvr'];
+					$marka_dvr = $data[0]['marka_dvr'];
+					$model_dvr = $data[0]['model_dvr'];
+					$date_issued_dvr = Functions::convertToDate($data[0]['date_issued_dvr']);
 				}
 			}
 		}
@@ -368,7 +407,54 @@ class Accessories extends Model {
 				. "</div>"
 				
 			. "</div></div>";
-		} else {
+		} else if(addslashes($post['object']) == self::CAR_DVR) {
+			$html = "<div class='col-12'>"
+				. "<div id='formAccessories'>"
+					. "<div class='form-row'>"
+						. "<div class='col-4 mb-1 text-right'>"
+							. "<label for='number_dvr' class='text-muted font-weight-bold fs-13'>Номер</label>"
+						. "</div>"
+						. "<div class='col-5 mb-1'>"
+							. "<input type='text' class='form-control form-control-sm black-text' id='number_dvr' maxlength='30' placeholder='Номер' data-mandatory='true' data-message-error='Заполните обязательное поле: Номер' data-datatype='char' value='" . $number_dvr . "'>"
+						. "</div>"
+					. "</div>"
+					
+					. "<div class='form-row'>"
+						. "<div class='col-4 mb-1 text-right'>"
+							. "<label for='marka_dvr' class='text-muted font-weight-bold fs-13'>Марка</label>"
+						. "</div>"
+						. "<div class='col-5 mb-1'>"
+							. "<input type='text' class='form-control form-control-sm black-text' id='marka_dvr' maxlength='50' placeholder='Марка' data-mandatory='true' data-message-error='Заполните обязательное поле:Марка' data-datatype='char' value='" . $marka_dvr . "'>"
+						. "</div>"
+					. "</div>"
+					
+					. "<div class='form-row'>"
+						. "<div class='col-4 mb-1 text-right'>"
+							. "<label for='model_dvr' class='text-muted font-weight-bold fs-13'>Модель</label>"
+						. "</div>"
+						. "<div class='col-5 mb-1'>"
+							. "<input type='text' class='form-control form-control-sm black-text' id='model_dvr' maxlength='50' placeholder='Модель' data-mandatory='true' data-message-error='Заполните обязательное поле: Модель' data-datatype='char' value='" . $model_dvr . "'>"
+						. "</div>"
+					. "</div>"
+
+					. "<div class='form-row'>"
+						. "<div class='col-4 mb-1 text-right'>"
+							. "<label for='date_issued_dvr' class='text-muted font-weight-bold fs-13'>Дата установки</label>"
+						. "</div>"
+						. "<div class='col-5 mb-1'>"
+							. "<input type='text' class='form-control form-control-sm black-text' id='date_issued_dvr' maxlength='10' placeholder='Дата установки' data-mandatory='true' data-message-error='Заполните обязательное поле: Дата установки' data-datatype='date' value='" . $date_issued_dvr . "'>"
+						. "</div>"
+					. "</div>"
+				
+				. "<div class='form-row'>"
+					. "<div class='col col-sm-12 mb-1'>"
+						. "<label class='form-check-label font-weight-bold fs-13' id='error-message' style='color: red;'></label>"
+					. "</div>"
+				. "</div>"
+				
+			. "</div></div>";
+		}
+		else {
 			$html = "<div class='col-12'>"
 				. "<div id='formAccessories'>"
 					. "<div class='form-row'>"
