@@ -3,6 +3,7 @@
 namespace IcKomiApp\core;
 
 use IcKomiApp\core\Logic;
+use IcKomiApp\core\Session;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
 use IcKomiApp\core\Registration;
@@ -187,6 +188,63 @@ class User extends UserBasic {
 			return [false, 'Ошибка при выполнении запроса'];
 
 		return true;
+	}
+
+	/*
+		Функция установки значений по умолчанию для массива
+	*/
+	private static function default_information_user() {
+		$session = new Session();
+		$session->start();
+		$session->set('login', '');
+		$session->set('fam', '');
+		$session->set('imj', '');
+		$session->set('otch', '');
+		$session->set('role', '');
+		$session->set('hash', '');
+		$session->set('id', '');
+		$session->commit();
+	}
+
+	/*
+		Функция для подгрузки актуальной информации о пользователе
+	*/
+	public static function load_actual_information_user() {
+		$id = self::get('id');
+		$hash = self::get('hash');
+		$login = self::get('login');
+
+		if((mb_strlen($id) == 0) || (mb_strlen($login) == 0) || (mb_strlen($hash) == 0)) {
+			self::default_information_user();
+			return;
+		}
+
+		$sql = "SELECT * FROM " . self::$table . " WHERE id=" . $id . " AND hash='" . $hash . "' AND login='" . $login . "'";
+		if(($data = DB::query($sql)) === false) {
+			self::default_information_user();
+			return;
+		}
+
+		if(count($data) == 0) {
+			self::default_information_user();
+			return;
+		}
+
+		if($data[0]['access'] != 1) {
+			self::default_information_user();
+			return;	
+		}
+
+		$session = new Session();
+		$session->start();
+		$session->set('login', ((empty($data[0]['login'])) ? '' : $data[0]['login'] ));
+		$session->set('fam', ((empty($data[0]['fam'])) ? '' : $data[0]['fam'] ));
+		$session->set('imj', ((empty($data[0]['imj'])) ? '' : $data[0]['imj'] ));
+		$session->set('otch', ((empty($data[0]['otch'])) ? '' : $data[0]['otch'] ));
+		$session->set('role', ((empty($data[0]['role'])) ? '' : $data[0]['role'] ));
+		$session->set('hash', ((empty($data[0]['hash'])) ? '' : $data[0]['hash'] ));
+		$session->set('id', ((empty($data[0]['id'])) ? '' : $data[0]['id'] ));
+		$session->commit();
 	}
 
 }

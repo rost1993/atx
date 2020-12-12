@@ -54,13 +54,6 @@ class Rights {
 		$page = trim($page, '/');
 
 		$acl = self::check_access_with_array($page, $role);
-
-		/*$sql = "SELECT * FROM rights WHERE role=" . $role . " AND page='" . $page . "'";
-		if(($data = DB::query($sql)) === false)
-			$acl = self::check_access_with_array($page, $role);
-		else
-			$acl = self::check_access_with_database($page, $role, $data);*/
-
 		return $acl;
 	}
 
