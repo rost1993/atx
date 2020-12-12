@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\models;
 
+use IcKomiApp\core\User;
 use IcKomiApp\core\Model;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
@@ -38,65 +39,10 @@ class Repair extends Model {
 	}
 
 	public function get_list($post = []) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
-
-		$sqlQuery = '';
-		if($role == 8 || $role == 9) {
-			$sqlQuery = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
-				. " x4.text as kodrai_ts, x5.text as slugba_ts, c.path_to_file, c.file_extension "
-				. " FROM car_repair a "
-				. " INNER JOIN cars b ON a.id_car=b.id "
-				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.kodrai AND x4.nomer=11 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=b.slugba AND x5.nomer=1 "
-				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
-		} else if($role == 4) {
-			$sqlQuery = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
-				. " x4.text as kodrai_ts, x5.text as slugba_ts, c.path_to_file, c.file_extension "
-				. " FROM car_repair a "
-				. " INNER JOIN cars b ON a.id_car=b.id AND b.slugba IN " . User::get_all_slugba()
-				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.kodrai AND x4.nomer=11 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=b.slugba AND x5.nomer=1 "
-				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
-		} else if($role == 3) {
-			$sqlQuery = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
-				. " x4.text as kodrai_ts, x5.text as slugba_ts, c.path_to_file, c.file_extension "
-				. " FROM car_repair a "
-				. " INNER JOIN cars b ON a.id_car=b.id "
-				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.kodrai AND x4.nomer=11 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=b.slugba AND x5.nomer=1 "
-				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
-		} else if($role == 2) {
-			$sqlQuery = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
-				. " x4.text as kodrai_ts, x5.text as slugba_ts, c.path_to_file, c.file_extension "
-				. " FROM car_repair a "
-				. " INNER JOIN cars b ON a.id_car=b.id AND b.kodrai=" . $kodrai
-				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
-				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
-				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.kodrai AND x4.nomer=11 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=b.slugba AND x5.nomer=1 "
-				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
-		} else {
-			return false;
-		}*/
+		$role = User::get('role');
 		
-		$this->sql_get_list = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
+		if($role == 9)
+			$this->sql_get_list = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
 				. " c.path_to_file, c.file_extension "
 				. " FROM car_repair a "
 				. " INNER JOIN cars b ON a.id_car=b.id "
@@ -105,6 +51,28 @@ class Repair extends Model {
 				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
 				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
+		else if($role == 2)
+			$this->sql_get_list = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
+				. " c.path_to_file, c.file_extension "
+				. " FROM car_repair a "
+				. " INNER JOIN cars b ON a.id_car=b.id AND b.dostup=1 "
+				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
+				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
+				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
+				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
+				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
+		else if($role == 1)
+			$this->sql_get_list = "SELECT a.id, a.id_car, x1.text as org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, b.gos_znak, x2.text as marka_ts, x3.text as model_ts, "
+				. " c.path_to_file, c.file_extension "
+				. " FROM car_repair a "
+				. " INNER JOIN cars b ON a.id_car=b.id AND b.dostup=1 "
+				. " LEFT JOIN files c ON a.id=c.id_object AND c.category_file=11 "
+				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.org_repair AND x1.nomer=18 "
+				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.marka AND x2.nomer=3 "
+				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.model AND x3.nomer=4 "
+				. " WHERE a.ibd_arx=1 ORDER BY a.date_start_repair DESC";
+		else
+			return false;
 
 		if(($data = parent::get_list()) === false)
 			return false;

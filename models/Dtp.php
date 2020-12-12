@@ -43,46 +43,34 @@ class Dtp extends Model {
 		$role = User::get('role');
 
 		if($role == 9)
-			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
 				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
+				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
 				. " FROM {table} a "
 				. " LEFT JOIN cars b ON b.id=a.id_car "
 				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
 				. " ORDER BY a.date_committing DESC ";
 		else if($role == 2)
-			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
 				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
+				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
 				. " FROM {table} a "
-				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
+				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
 				. " ORDER BY a.date_committing DESC ";
 		else if($role == 1)
-			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x1.text as kodrai_ts, x2.text as slugba_ts, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
+			$this->sql_get_list = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, b.n_reg, "
 				. " CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, "
-				. " x5.text as kodrai_driver, x6.text as slugba_driver, a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
+				. " a.date_committing, a.time_committing, a.place_committing, a.comment_committing, a.sum_committing, a.offender "
 				. " FROM {table} a "
-				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
-				. " LEFT JOIN s2i_klass x1 ON x1.kod=b.kodrai AND x1.nomer=11 "
-				. " LEFT JOIN s2i_klass x2 ON x2.kod=b.slugba AND x2.nomer=1 "
+				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 "
-				. " LEFT JOIN s2i_klass x5 ON x5.kod=c.kodrai AND x5.nomer=11 "
-				. " LEFT JOIN s2i_klass x6 ON x6.kod=c.slugba AND x6.nomer=1 "
 				. " ORDER BY a.date_committing DESC ";
 		else
 			return false;
@@ -164,8 +152,8 @@ class Dtp extends Model {
 			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, a.recovery_committing, "
 				. " a.date_committing, a.time_committing, a.place_committing, a.sum_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text, a.date_recovery_cars "
 				. " FROM dtp a "
-				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
+				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 " . $where
 				. " ORDER BY a.date_committing DESC";
@@ -173,8 +161,8 @@ class Dtp extends Model {
 			$sql = "SELECT a.id, c.id as id_driver, b.id as id_car, x3.text as marka_ts, x4.text as model_ts, b.gos_znak, CONCAT(c.fam, ' ', c.imj, ' ', c.otch) as  driver, a.recovery_committing, "
 				. " a.date_committing, a.time_committing, a.place_committing, a.sum_committing, a.comment_committing, a.offender, IF(a.offender = 1, 'ДА', 'НЕТ') as offender_text, a.date_recovery_cars "
 				. " FROM dtp a "
-				. " LEFT JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
-				. " LEFT JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
+				. " INNER JOIN cars b ON b.id=a.id_car AND b.dostup=1 "
+				. " INNER JOIN drivers c ON c.id=a.id_driver AND c.dostup=1 "
 				. " LEFT JOIN s2i_klass x3 ON x3.kod=b.marka AND x3.nomer=3 "
 				. " LEFT JOIN s2i_klass x4 ON x4.kod=b.model AND x4.nomer=4 " . $where
 				. " ORDER BY a.date_committing DESC";

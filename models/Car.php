@@ -64,10 +64,11 @@ class Car extends Model {
 
 		$where_archive1 = " WHERE a.ibd_arx <> 2 ";
 		$where_archive2 = " AND a.ibd_arx <> 2 ";
+
 		/*if($archive == 1) {
 			$where_archive1 = " WHERE a.ibd_arx <> 1 ";
 			$where_archive2 = " AND a.ibd_arx <> 1 ";
-		} else if($archive == 2){
+		} else if($archive == 2) {
 			$where_archive1 = " WHERE a.ibd_arx = 1 ";
 			$where_archive2 = " AND a.ibd_arx = 1 ";
 		} else {
@@ -75,89 +76,14 @@ class Car extends Model {
 			$where_archive2 = " AND a.ibd_arx <> 0 ";
 		}*/
 		
-		/*if($role == 9 || $role == 8)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
-					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
-					  . " FROM " . $this->table . " a "
-					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
-					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
-					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
-					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
-					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
-					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
-					  . $where_archive1
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
-		else if($role == 4)
-				$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
-					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
-					  . " FROM " . $this->table . " a "
-					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
-					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
-					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
-					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
-					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
-					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
-					  . " WHERE a.slugba IN " . User::get_all_slugba() . " AND a.dostup=1 " . $where_archive2
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
-		else if($role == 3)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
-					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
-					  . " FROM " . $this->table . " a "
-					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
-					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
-					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
-					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
-					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
-					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
-					  . " WHERE a.dostup=1 " . $where_archive2
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
-		else if($role == 2)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
-					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
-					  . " FROM " . $this->table . " a "
-					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
-					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
-					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
-					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
-					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
-					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
-					  . " WHERE a.kodrai=" . $kodrai . " AND a.dostup=1 " . $where_archive2
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
-		else if($role == 1)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
-					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
-					  . " FROM " . $this->table . " a "
-					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
-					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
-					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
-					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
-					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
-					  . " LEFT JOIN s2i_klass g ON a.kateg_ts=g.kod AND g.nomer=5 "
-					  . " WHERE a.dostup=1 " . $where_archive2
-					  . "ORDER BY a.kodrai, a.slugba, a.god_car";
-		else
-			return false;*/
-
 		$role = User::get('role');
 
 		if($role == 9)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
 					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
 					  . " FROM " . $this->table . " a "
 					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
 					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
 					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
 					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
 					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
@@ -165,13 +91,11 @@ class Car extends Model {
 					  . $where_archive1
 					  . "ORDER BY a.god_car";
 		else if($role == 2)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
 					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
 					  . " FROM " . $this->table . " a "
 					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
 					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
 					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
 					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
 					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
@@ -179,13 +103,11 @@ class Car extends Model {
 					  . " WHERE a.dostup=1 " . $where_archive2
 					  . "ORDER BY a.god_car";
 		else if($role == 1)
-			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, b.text AS kodrai, c.text AS slugba, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
+			$this->sql_get_list = "SELECT a.id, e.text AS marka, f.text AS model, a.gos_znak, d.text AS color, g.text AS kateg, a.god_car, a.dostup, a.ibd_arx, a.mileage, a.write_off, "
 					  . " DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate "
 					  . " FROM " . $this->table . " a "
 					  . " LEFT JOIN osago ON osago.id_car=a.id AND osago.ibd_arx=1 "
 					  . " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 "
-					  . " LEFT JOIN s2i_klass b ON a.kodrai=b.kod AND b.nomer=11 "
-					  . " LEFT JOIN s2i_klass c ON a.slugba=c.kod AND c.nomer=1 "
 					  . " LEFT JOIN s2i_klass d ON a.color=d.kod AND d.nomer=12 "
 					  . " LEFT JOIN s2i_klass e ON a.marka=e.kod AND e.nomer=3 "
 					  . " LEFT JOIN s2i_klass f ON a.model=f.kod AND f.nomer=4 "
@@ -223,14 +145,8 @@ class Car extends Model {
 		// Если уровень прав пользователя меньше чем 2, то ставим ограничение, что ищем только открытые ТС
 		$where = '';
 		
-	/*	if(!User::check_level_user(8))
-			$where = " a.dostup=1 ";*/
-		
-		// Ограничение по коду района
-		/*if($role == 2)
-			$where .= (mb_strlen($where) == 0) ? " a.kodrai=" . $kodrai : " AND a.kodrai=" . $kodrai;
-		else if($role == 4)
-			$where .= (mb_strlen($where) == 0) ? " a.slugba IN " . User::get_all_slugba() : " AND a.slugba IN " . User::get_all_slugba();*/
+		if($role <= 2)
+			$where = " a.dostup=1 ";
 
 		$end_dt_osago1 = $end_dt_osago2 = ''; // Поля для хранения даты полиса ОСАГО
 		$end_date_certificate1 = $end_date_certificate2 = ''; // Поля для хранения даты окончания тех. осмотра

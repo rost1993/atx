@@ -29,48 +29,6 @@ class Driver extends Model {
 			. " WHERE {table}.id={id} ";
 
 	public function get_list($post = []) {
-		/*Session::start();
-		$role = Session::get('role');
-		$kodrai = Session::get('slugba');
-		Session::commit();
-		
-		$where_archive1 = $where_archive2 = "";
-		if($archive == 1) {
-			$where_archive1 = " WHERE a.ibd_arx <> 1 ";
-			$where_archive2 = " AND a.ibd_arx <> 1 ";
-		} else if($archive == 2){
-			$where_archive1 = " WHERE a.ibd_arx = 1 ";
-			$where_archive2 = " AND a.ibd_arx = 1 ";
-		} else {
-			$where_archive1 = " WHERE a.ibd_arx <> 0 ";
-			$where_archive2 = " AND a.ibd_arx <> 0 ";
-		}*/
-
-		/*if($role == 9 || $role == 8)
-			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, b.text as slugba, c.text as kodrai, a.dostup, a.ibd_arx FROM {table} a "
-					  . " LEFT JOIN s2i_klass b ON a.slugba = b.kod AND b.nomer=1 "
-					  . " LEFT JOIN s2i_klass c ON a.kodrai = c.kod AND c.nomer=11 "
-					  . $where_archive1
-					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";
-		else if($role == 2)
-			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, b.text as slugba, c.text as kodrai, a.dostup, a.ibd_arx FROM {table} a "
-					  . " LEFT JOIN s2i_klass b ON a.slugba = b.kod AND b.nomer=1 "
-					  . " LEFT JOIN s2i_klass c ON a.kodrai = c.kod AND c.nomer=11 "
-					  . " WHERE a.dostup=1 " . $where_archive2
-					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";
-		else if($role == 4)
-			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, b.text as slugba, c.text as kodrai, a.dostup, a.ibd_arx FROM {table} a "
-					  . " LEFT JOIN s2i_klass b ON a.slugba = b.kod AND b.nomer=1 "
-					  . " LEFT JOIN s2i_klass c ON a.kodrai = c.kod AND c.nomer=11 "
-					  . " WHERE a.dostup=1 " . $where_archive2 . " AND a.slugba IN " . User::get_all_slugba()
-					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";
-		else
-			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, b.text as slugba, c.text as kodrai, a.dostup, a.ibd_arx FROM {table} a "
-					  . " LEFT JOIN s2i_klass b ON a.slugba = b.kod AND b.nomer=1 "
-					  . " LEFT JOIN s2i_klass c ON a.kodrai = c.kod AND c.nomer=11 "
-					  . " WHERE a.dostup=1 " . $where_archive2
-					  . " ORDER BY a.kodrai, a.slugba, a.fam, a.imj, a.otch";*/
-
 		$role = User::get('role');
 		if($role == 9)
 			$this->sql_get_list = "SELECT a.id, a.fam, a.imj, a.otch, a.mob_phone, a.dostup, a.ibd_arx FROM {table} a "
@@ -107,16 +65,6 @@ class Driver extends Model {
 		$role = User::get('role');
 		if($role <= 2)
 			$where = ' a.dostup=1 ';
-
-		/*if(!User::check_level_user(8))
-			$where = " a.dostup=1 ";*/
-
-		// Ограничение по коду района
-		/*if($role == 2)
-			$where .= (mb_strlen($where) == 0) ? " a.kodrai IN " . $kodrai : " AND a.kodrai IN " . $kodrai;
-
-		if($role == 4)
-			$where .= (mb_strlen($where) == 0) ? " a.slugba IN " . User::get_all_slugba() : " AND a.slugba IN " . User::get_all_slugba();*/
 
 		foreach($array_data_decode as $field => $array_value) {
 			$array_value_decode = (array)$array_value;
