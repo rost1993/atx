@@ -175,4 +175,9 @@ return [
 		'controller' => 'main',
 		'action' => 'downloadFile'
 	],
+
+	'car_glonass' => [
+		'controller' => 'glonass',
+		'action' => 'glonass'
+	],
 ];

@@ -174,6 +174,10 @@ $(document).ready(function() {
 			scripts = 'car_tachograph';
 			titleForm = 'Список тахографов';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 20) {
+			scripts = 'car_glonass';
+			titleForm = 'Список ГЛОНАСС';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		} else {
 			return;
 		}
@@ -297,6 +301,11 @@ $(document).ready(function() {
 			scripts = 'car_tachograph';
 			action = 19;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 20) {
+			titleForm = 'ГЛОНАСС';
+			scripts = 'car_glonass';
+			action = 20;
+			query = 'option=get_window&nsyst=-1';
 		} else {
 			return;
 		}
@@ -393,6 +402,10 @@ $(document).ready(function() {
 		} else if(item == 19) {
 			scripts = 'car_tachograph';
 			titleForm = 'Тахограф';
+			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 20) {
+			scripts = 'car_glonass';
+			titleForm = 'ГЛОНАСС';
 			query = 'option=get_window&nsyst=' + id;
 		} else {
 			return;
@@ -642,6 +655,18 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'car_tachograph';
+		} else if($(this).data('action') == 20) {
+			var resultCollectionsItems = getArrayItemsForms('#formGlonass input, #formGlonass select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'car_glonass';
 		} else {
 			return;
 		}
@@ -678,7 +703,6 @@ $(document).ready(function() {
 	});
 
 	// Общий обработчик нажатия на кнопку удалить объект
-	//$('#ContextOutputInterface').on('click', '#btnRemoveItem', function() {
 	$('.modal-ic-komi-view').on('click', '#btnRemoveItem', function() {
 		var obj = $(this).closest('tr');
 		var item = $(this).data('item');
@@ -730,6 +754,9 @@ $(document).ready(function() {
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 19) {
 			scripts = 'car_tachograph';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 20) {
+			scripts = 'car_glonass';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else {
 			return;

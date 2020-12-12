@@ -140,6 +140,9 @@ $(function () {
 				case 20:
 					script = 'car_tachograph';
 					break;
+				case 21:
+					script = 'car_glonass';
+					break;
 			}
 
 			showDownloader(true);

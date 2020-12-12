@@ -28,6 +28,7 @@ class FileUpload {
 	const CLASS_DTP = 'IcKomiApp\models\Dtp';
 	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
 	const CLASS_CAR_TACHOGRAPH = 'IcKomiApp\models\Tachograph';
+	const CLASS_CAR_GLONASS = 'IcKomiApp\models\Glonass';
 
 	const CLASS_VU_DOCUMENT = 'IcKomiApp\models\Vu';
 	const CLASS_VU_DOCUMENT_TRACTOR = 'IcKomiApp\models\TractorVu';
@@ -147,6 +148,10 @@ class FileUpload {
 			
 			case self::CLASS_CAR_TACHOGRAPH:
 				$path_to_file .= 'cars/' . $id_main_object . '/tachograph/' . $id_object . '/';
+				break;
+
+			case self::CLASS_CAR_GLONASS:
+				$path_to_file .= 'cars/' . $id_main_object . '/glonass/' . $id_object . '/';
 				break;
 			
 			case self::CLASS_ADM_OFFENSE:
@@ -320,6 +325,10 @@ class FileUpload {
 
 			case self::CLASS_CAR_TACHOGRAPH:
 				$table = 'car_tachograph';
+				break;
+
+			case self::CLASS_CAR_GLONASS:
+				$table = 'car_glonass';
 				break;
 
 			default:

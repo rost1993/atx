@@ -102,6 +102,12 @@
 	$marka_dvr = (empty($marka_dvr)) ? '' : $marka_dvr;
 	$model_dvr = (empty($model_dvr)) ? '' : $model_dvr;
 
+	$number_glonass = (empty($number_glonass)) ? '' : $number_glonass;
+	$date_glonass = (empty($date_glonass)) ? '' : $date_glonass;
+	$number_dut_glonass_1 = (empty($number_dut_glonass_1)) ? '' : $number_dut_glonass_1;
+	$number_dut_glonass_2 = (empty($number_dut_glonass_2)) ? '' : $number_dut_glonass_2;
+	$file_glonass = (empty($file_glonass)) ? '' : IcKomiApp\core\Functions::rendering_icon_file($file_glonass, $ext_file_glonass);
+
 	$ibd_arx = (empty($ibd_arx)) ? 1 : $ibd_arx;
 	$text_btn_archive = $badge_archive = '';
 	if($ibd_arx == 1) {
@@ -563,13 +569,13 @@
 						<div class="collapse show" id="collapseNine" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="s_pts"><strong>Серия ПТС</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Серия ПТС</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="s_pts" placeholder="Серия" value="<?= $s_pts; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="n_pts"><strong>Номер ПТС</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Номер ПТС</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="n_pts" placeholder="Номер" value="<?= $n_pts; ?>" disabled>
@@ -577,13 +583,13 @@
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="date_pts"><strong>Дата выдачи</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Дата выдачи</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="date_pts" placeholder="Дата выдачи ПТС" value="<?= $date_pts; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="type_ts_pts"><strong>Тип ТС по ПТС</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Тип ТС по ПТС</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="type_ts_pts" placeholder="Тип ТС по ПТС" value="<?= $type_ts_pts; ?>" disabled>
@@ -591,7 +597,7 @@
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="firma_pts"><strong>Орган, выдавший ПТС</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Орган, выдавший ПТС</label>
 								</div>
 								<div class="col col-sm-8 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="firma_pts" placeholder="Орган, выдавший ПТС" value="<?= $firma_pts; ?>" disabled>
@@ -614,19 +620,19 @@
 						<div class="collapse show" id="collapseTen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="s_osago"><strong>Серия и номер</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Серия и номер</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="n_osago" value="<?= $n_osago; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $n_osago; ?>" disabled>
 								</div>
 								
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="start_date_osago"><strong>Дата окончания полиса</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Дата окончания полиса</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='end_date_osago'>по</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="end_date_osago" value="<?= $end_dt_osago; ?>" disabled>
+										<div class='input-group-prepend'><label class='input-group-text'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $end_dt_osago; ?>" disabled>
 									</div>
 								</div>
 								
@@ -634,10 +640,10 @@
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="firma_osago"><strong>Страховая компания</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Страховая компания</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="firma_osago" value="<?= $firma_osago; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $firma_osago; ?>" disabled>
 								</div>
 							</div>
 						</div>
@@ -657,36 +663,36 @@
 						<div class="collapse show" id="collapseEleven" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="number_certificate"><strong>Номер сертификата</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Номер сертификата</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="number_certificate" value="<?= $number_certificate; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="date_certificate"><strong>Срок действия</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Срок действия</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='date_certificate'>с</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="date_certificate" value="<?= $date_certificate; ?>" disabled>
+										<div class='input-group-prepend'><label class='input-group-text'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $date_certificate; ?>" disabled>
 									</div>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='end_date_certificate'>по</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="end_date_certificate" value="<?= $end_date_certificate; ?>" disabled>
+										<div class='input-group-prepend'><label class='input-group-text'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $end_date_certificate; ?>" disabled>
 									</div>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="firma_technical_inspection"><strong>Организация</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Организация</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="firma_technical_inspection" value="<?= $firma_technical_inspection; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="address_technical_inspection"><strong>Адрес прохождения</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Адрес прохождения</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="address_technical_inspection" value="<?= $address_technical_inspection; ?>" disabled>
@@ -709,33 +715,33 @@
 						<div class="collapse show" id="collapseTwelve" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="number_dopog"><strong>Номер свидетельства</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Номер свидетельства</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="number_dopog" value="<?= $number_dopog; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $number_dopog; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="date_start_dopog"><strong>Срок действия</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Срок действия</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='date_start_dopog'>с</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="date_start_dopog" value="<?= $date_start_dopog; ?>" disabled>
+										<div class='input-group-prepend'><label class='input-group-text'>с</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $date_start_dopog; ?>" disabled>
 									</div>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='date_end_dopog'>по</label></div>
-										<input type="text" class="form-control form-control-sm black-text" id="date_end_dopog" value="<?= $date_end_dopog; ?>" disabled>
+										<div class='input-group-prepend'><label class='input-group-text'>по</label></div>
+										<input type="text" class="form-control form-control-sm black-text" value="<?= $date_end_dopog; ?>" disabled>
 									</div>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted" style="font-size: 13px;" for="firma_dopog_text"><strong>Организация</strong></label>
+									<label class="text-muted font-weight-bold fs-13">Организация</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="firma_dopog_text" value="<?= $firma_dopog_text; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $firma_dopog_text; ?>" disabled>
 								</div>
 							</div>
 						</div>
@@ -755,24 +761,24 @@
 						<div class="collapse show" id="collapseThirteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted font-weight-bold fs-13" for="date_calibration">Дата клибровки</label>
+									<label class="text-muted font-weight-bold fs-13">Дата клибровки</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="date_calibration" value="<?= $date_calibration; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $date_calibration; ?>" disabled>
 								</div>
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted font-weight-bold fs-13" for="date_next_calibration">Дата следующей килбровки</label>
+									<label class="text-muted font-weight-bold fs-13">Дата следующей килбровки</label>
 								</div>
-								<div class="col col-sm-2 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="date_next_calibration" value="<?= $date_next_calibration; ?>" disabled>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $date_next_calibration; ?>" disabled>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted font-weight-bold fs-13" for="firma_calibration_text">Организация</label>
+									<label class="text-muted font-weight-bold fs-13">Организация</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
-									<input type="text" class="form-control form-control-sm black-text" id="firma_calibration_text" value="<?= $firma_calibration_text; ?>" disabled>
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $firma_calibration_text; ?>" disabled>
 								</div>
 							</div>
 						</div>
@@ -806,7 +812,7 @@
 							</div>
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
-									<label class="text-muted font-weight-bold fs-13">Срое действия блока СКЗИ</label>
+									<label class="text-muted font-weight-bold fs-13">Срок действия блока СКЗИ</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
@@ -823,11 +829,56 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="col-sm-12 atx-cars-block">	
+						<div class="form-row">
+							<div class="col col-sm-3 mb-1 text-left">
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>15. ГЛОНАСС</a></h5></p>
+							</div>
+							<div class="col col-sm-9 mb-1 text-left" id='groupButtonNine'>
+								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='20' title="Список всех ГЛОНАСС"><span class="fa fa-search"></span>&nbsp;История</button>
+								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info btnAddItem' data-item='20' title='Добавить ГЛОНАСС'><span class='fa fa-plus'></span>&nbsp;Добавить</button>" : "";?>
+								<?= $file_glonass; ?>
+							</div>
+						</div>
+						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Номер модулятора</label>
+								</div>
+								<div class="col col-sm-4 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $number_glonass; ?>" disabled>
+								</div>
+								<div class="col col-sm-1 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Дата установки</label>
+								</div>
+								<div class="col col-sm-3 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $date_glonass; ?>" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Датчик уровня топлива 1</label>
+								</div>
+								<div class="col col-sm-4 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $number_dut_glonass_1; ?>" disabled>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col col-sm-2 mb-1 text-right">
+									<label class="text-muted font-weight-bold fs-13">Датчик уровня топлива 2</label>
+								</div>
+								<div class="col col-sm-4 mb-1">
+									<input type="text" class="form-control form-control-sm black-text" value="<?= $number_dut_glonass_2; ?>" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
 					
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFourteen" aria-controls="collapseFourteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>14. ПРОБЕГ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>16. ПРОБЕГ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='4' title="Развернуть список всех показаний спидометра"><span class="fa fa-search">&nbsp;</span>История спидометра</button>
@@ -851,7 +902,7 @@
 									?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseFourteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 mb-1 text-right">
 									<label class="text-muted" style="font-size: 13px;" for="mileage"><strong>Пробег, км</strong></label>
@@ -866,14 +917,14 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseFiveteen" aria-controls="collapseFiveteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>15. ВОДИТЕЛИ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeventeen" aria-controls="collapseSeventeen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>17. ВОДИТЕЛИ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success" id="btnShowListFixDriverForCar" data-mode-show="2" title="Открыть историю закреплений"><span class="fa fa-search"></span>&nbsp;История закреплений</button>
 								<?php echo ($role >= 2) ? "<button type='button' class='btn btn-sm btn-outline-info' id='btnFixDriverForCar' data-mode-show='2' data-operation='1' title='Закрепить нового водителя за транспортным средством'><span class='fa fa-plus'></span>&nbspДобавить водителя</button>" : "";?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseFiveteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">
 							<div class="form-row" id="listDrivers">
 								<div class="col col-sm-12 mb-1" id="list-drivers-for-car"><?= $list_driver; ?></div>
 							</div>
@@ -883,7 +934,7 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSixteen" aria-controls="collapseSixteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>16. РЕМОНТ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEighteen" aria-controls="collapseEighteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>18. РЕМОНТ</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='7' title="Открыть список всех ремонтов"><span class="fa fa-search">&nbsp;</span>Список ремонтов</button>
@@ -894,7 +945,7 @@
 								?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseSixteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseEighteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-repairs-for-car"><?= $list_repair; ?></div>
 							</div>
@@ -904,7 +955,7 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-3 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseSeventeen" aria-controls="collapseSeventeen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>17. ДТП</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseNineteen" aria-controls="collapseNineteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>19. ДТП</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='9' data-type='1' title="Открыть список всех ДТП"><span class="fa fa-search">&nbsp;</span>Список ДТП</button>
@@ -915,7 +966,7 @@
 								?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseSeventeen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseNineteen" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-dtp-for-car"><?= $list_dtp; ?></div>
 							</div>
@@ -925,7 +976,7 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseEighteen" aria-controls="collapseEighteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>18. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwenty" aria-controls="collapseTwenty" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp</span>20. АДМИНИСТРАТИВНЫЕ ПРАВОНАРУШЕНИЯ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='11' data-type='1' title=""><span class="fa fa-search">&nbsp;</span>Список адм. правонарушений</button>
@@ -936,7 +987,7 @@
 								?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseEighteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseTwenty" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-adm"><?= $list_adm; ?></div>
 							</div>
@@ -946,12 +997,12 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-4 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseNineteen" aria-controls="collapseNineteen" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>19. ТОВАРНО-МАТЕРИАЛЬНЫЕ ЦЕННОСТИ</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwentyone" aria-controls="collapseTwentyone" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>21. ТОВАРНО-МАТЕРИАЛЬНЫЕ ЦЕННОСТИ</a></h5></p>
 							</div>
 							<div class="col col-sm-7 mb-1 text-left">
 							</div>
 						</div>
-						<div class="collapse show" id="collapseNineteen" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseTwentyone" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-2 text-right">
 									<label class="blockquote font-weight-bold fs-13">Огнетушитель</label>
@@ -1118,7 +1169,7 @@
 					<div class="col-sm-12 atx-cars-block">	
 						<div class="form-row">
 							<div class="col col-sm-2 mb-1 text-left">
-								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwenty" aria-controls="collapseTwenty" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>20. УЧЕТ ШИН</a></h5></p>
+								<p style="margin: 0px;"><h5><a class="black-text-atx show-block" href="#collapseTwentytwo" aria-controls="collapseTwentytwo" data-toggle="collapse" title="Скрыть/раскрыть блок"><span class="fa fa-caret-down">&nbsp;</span>22. УЧЕТ ШИН</a></h5></p>
 							</div>
 							<div class="col col-sm-9 mb-1 text-left">
 								<button type="button" class="btn btn-sm btn-outline-success btnShowList" data-item='13' title="Развернуть список всех шин"><span class="fa fa-search"></span>&nbsp;Список шин</button>
@@ -1128,7 +1179,7 @@
 								?>
 							</div>
 						</div>
-						<div class="collapse show" id="collapseTwenty" aria-labelledby="headingOne">
+						<div class="collapse show" id="collapseTwentytwo" aria-labelledby="headingOne">
 							<div class="form-row">
 								<div class="col col-sm-12 mb-1" id="list-wheels"><?= $list_wheels; ?></div>
 							</div>
