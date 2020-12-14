@@ -43,10 +43,6 @@ class Router {
 	}
 
 	public function run() {
-
-		// Подгрузка актуальных пользовательских данных
-		User::load_actual_information_user();
-		
 		if(!$this->match())
 			View::errorCode(404);
 
@@ -58,7 +54,8 @@ class Router {
 		if(!method_exists($class_controller, $action))
 			View::errorCode(404);
 
-		
+		// Подгрузка актуальных пользовательских данных
+		User::load_actual_information_user();
 
 		if(!Rights::check_access_page($this->url))
 			View::errorCode(403);
