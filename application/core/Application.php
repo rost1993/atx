@@ -17,6 +17,7 @@ class Application {
 	// Constructor class
 	public function __construct() {
 		ini_set('display_errors', 1);
+		ini_set('max_execution_time', 600);
 		error_reporting(E_ALL);
 
 		if(file_exists(self::PATH_CONFIG_FILE))

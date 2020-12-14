@@ -2,6 +2,7 @@
 
 namespace IcKomiApp\controllers;
 
+use IcKomiApp\models\Install;
 use IcKomiApp\core\Functions; 
 use IcKomiApp\core\Controller;
 
@@ -47,5 +48,15 @@ class MainController extends Controller {
 			}
 		}
 		exit();
+	}
+
+	public function installAction() {
+		if(empty($_POST))
+			$this->view->render();
+		else {
+			if($_POST['action'] == 'install') {
+				echo json_encode((new Install())->install_database($_POST));
+			}
+		}
 	}
 }

@@ -1226,4 +1226,13 @@ $(document).ready(function() {
 		alert(2);
 	});
 
+	$('#btnInstallDatabase').click(function() {
+		var query = 'action=install&login=' + $('#login_user').val() + '&password=' + $('#password_user').val();
+		showDownloader(true);
+		AjaxQuery('POST', 'install', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, 'База данных установлена!');
+		});
+	});
 });

@@ -180,4 +180,9 @@ return [
 		'controller' => 'glonass',
 		'action' => 'glonass'
 	],
+
+	'install' => [
+		'controller' => 'main',
+		'action' => 'install'
+	],
 ];
