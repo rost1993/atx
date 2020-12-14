@@ -1,13 +1,8 @@
 <?php
-	use IcKomiApp\widgets\Directory;
-
-	$SERVICE_SELECT = Directory::get_directory(5);
-	$REGION_SELECT = Directory::get_directory(4);
-
 ?>
 <div class="row">
-		<div class="col-sm-3"></div>
-		<div class='col-sm-6'>
+		<div class="col-sm-2"></div>
+		<div class='col-sm-8'>
 			<div class='card text-center border-dark' style='margin-top: 70px; background: #f5f5f5; min-width: 620px;'>
 				<div class='card-header'>
 					<ul class="nav nav-pills card-header-pills justify-content-center">
@@ -161,5 +156,5 @@
 				</div>
 			</div>
 		</div>
-		<div class='col-sm-3'></div>
+		<div class='col-sm-2'></div>
 	</div>
