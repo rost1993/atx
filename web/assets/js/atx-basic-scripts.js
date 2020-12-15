@@ -1231,7 +1231,6 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'install', query, function(result) {
 			showDownloader(false);
-			alert(result);
 			handlerAjaxResult(result, 'База данных установлена!');
 		});
 	});

@@ -72,6 +72,7 @@ class Install {
 
 		$this->create_index($link);
 		$this->create_auto_increment($link);
+		$this->create_procedure($link);
 
 		$this->disconnect($link);
 
@@ -1422,6 +1423,9 @@ END;";
 		mysqli_query($link, $sql);
 	}
 
+	/*
+		Функция создания процедур
+	*/
 	private function create_procedure($link) {
 		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `add_testimony_speedometer` (IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `polz` INT, IN `type_operation` INT)  NO SQL
 BEGIN
@@ -1456,7 +1460,7 @@ END IF;
 
 CALL move_to_archive(car, 3);
 END;";
-	}
+		mysqli_query($link, $sql);
 
 		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `move_to_archive` (IN `id_item` INT, IN `ind` INT)  NO SQL
 BEGIN
@@ -1594,6 +1598,581 @@ IF(ind = 20) THEN
 END IF;
 
 END;";
+		mysqli_query($link, $sql);
 
-		$sql = "";
+		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `get_notice_drivers` ()  NO SQL
+BEGIN
+DECLARE dd DATE;
+DECLARE id INTEGER DEFAULT 0;
+DECLARE fio VARCHAR(100);
+DECLARE param1 VARCHAR(17);
+DECLARE dostup INTEGER DEFAULT 0;
+DECLARE done INTEGER DEFAULT FALSE;
+
+
+DECLARE cur1 CURSOR FOR SELECT drivers_document.doc_end_date, drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_document
+	INNER JOIN drivers ON drivers.id = drivers_document.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_document.ibd_arx = 1 AND drivers_document.doc_end_date < CURDATE();
+
+DECLARE cur2 CURSOR FOR SELECT drivers_document.doc_end_date, drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_document
+	INNER JOIN drivers ON drivers.id = drivers_document.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_document.ibd_arx = 1 AND (drivers_document.doc_end_date BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+	
+DECLARE cur3 CURSOR FOR SELECT drivers_card.date_end_card, drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_card
+	INNER JOIN drivers ON drivers.id = drivers_card.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_card.ibd_arx = 1 AND drivers_card.date_end_card < CURDATE();
+
+DECLARE cur4 CURSOR FOR SELECT drivers_card.date_end_card , drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_card
+	INNER JOIN drivers ON drivers.id = drivers_card.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_card.ibd_arx = 1 AND (drivers_card.date_end_card  BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur5 CURSOR FOR SELECT drivers_document_tractor.doc_end_date, drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_document_tractor
+	INNER JOIN drivers ON drivers.id = drivers_document_tractor.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_document_tractor.ibd_arx = 1 AND drivers_document_tractor.doc_end_date < CURDATE();
+
+DECLARE cur6 CURSOR FOR SELECT drivers_document_tractor.doc_end_date  , drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_document_tractor
+	INNER JOIN drivers ON drivers.id = drivers_document_tractor.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_document_tractor.ibd_arx = 1 AND (drivers_document_tractor.doc_end_date   BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur7 CURSOR FOR SELECT drivers_dopog.date_end_dopog , drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_dopog
+	INNER JOIN drivers ON drivers.id = drivers_dopog.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_dopog.ibd_arx = 1 AND drivers_dopog.date_end_dopog  < CURDATE();
+
+DECLARE cur8 CURSOR FOR SELECT drivers_dopog.date_end_dopog   , drivers.id, CONCAT(drivers.fam, ' ', drivers.imj, ' ', drivers.otch), drivers.dostup FROM drivers_dopog
+	INNER JOIN drivers ON drivers.id = drivers_dopog.id_driver AND drivers.ibd_arx=1
+	WHERE drivers_dopog.ibd_arx = 1 AND (drivers_dopog.date_end_dopog    BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+	
+OPEN cur1;
+read_loop: LOOP
+	FETCH cur1 INTO dd, id, fio, dostup;
+    
+    IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. ВОДИТЕЛЬСКИЕ УДОСТОВЕРЕНИЯ.', CONCAT('истек срок водительского удостоверения ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'driver', dostup, 1, NOW());
+    
+END LOOP;
+CLOSE cur1;
+
+SET done = FALSE;
+
+OPEN cur2;
+read_loop: LOOP
+	FETCH cur2 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. ВОДИТЕЛЬСКИЕ УДОСТОВЕРЕНИЯ.', CONCAT('истекает срок водительского удостоверения ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'driver', dostup, 1, NOW());
+    
+END LOOP;
+CLOSE cur2;
+
+SET done = FALSE;
+
+OPEN cur3;
+read_loop: LOOP
+	FETCH cur3 INTO dd, id, fio, dostup;
+    
+    IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. КАРТА ВОДИТЕЛЯ.', CONCAT('истек срок карты водителя ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'driver', dostup, 2, NOW());
+    
+END LOOP;
+CLOSE cur3;
+
+SET done = FALSE;
+
+OPEN cur4;
+read_loop: LOOP
+	FETCH cur4 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. КАРТА ВОДИТЕЛЯ.', CONCAT('истекает срок карты водителя ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'driver', dostup, 2, NOW());
+    
+END LOOP;
+CLOSE cur4;
+
+SET done = FALSE;
+
+OPEN cur5;
+read_loop: LOOP
+	FETCH cur5 INTO dd, id, fio, dostup;
+    
+    IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. УДОСТОВЕРЕНИЕ ТРАКТОРИСТА-МАШИНИСТА.', CONCAT('истек срок удостоверения тракториста-машиниста ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'driver', dostup, 3, NOW());
+    
+END LOOP;
+CLOSE cur5;
+
+SET done = FALSE;
+
+OPEN cur6;
+read_loop: LOOP
+	FETCH cur6 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. УДОСТОВЕРЕНИЕ ТРАКТОРИСТА-МАШИНИСТА.', CONCAT('истекает срок удостоверения тракториста-машиниста ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'driver', dostup, 3, NOW());
+    
+END LOOP;
+CLOSE cur6;
+
+SET done = FALSE;
+
+OPEN cur7;
+read_loop: LOOP
+	FETCH cur7 INTO dd, id, fio, dostup;
+    
+    IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. УДОСТОВЕРЕНИЕ ДОПОГ.', CONCAT('истек срок удостоверения ДОПОГ ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'driver', dostup, 4, NOW());
+    
+END LOOP;
+CLOSE cur7;
+
+SET done = FALSE;
+
+OPEN cur8;
+read_loop: LOOP
+	FETCH cur8 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ВОДИТЕЛИ. УДОСТОВЕРЕНИЕ ДОПОГ.', CONCAT('истекает срок удостоверения ДОПОГ ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'driver', dostup, 4, NOW());
+    
+END LOOP;
+CLOSE cur8;
+
+END;";
+		mysqli_query($link, $sql);
+
+		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `get_notice_cars` ()  NO SQL
+BEGIN
+DECLARE dd DATE;
+DECLARE id INTEGER DEFAULT 0;
+DECLARE fio VARCHAR(100);
+DECLARE param1 VARCHAR(17);
+DECLARE kodrai INTEGER DEFAULT 0;
+DECLARE slugba INTEGER DEFAULT 0;
+DECLARE dostup INTEGER DEFAULT 0;
+DECLARE done INTEGER DEFAULT FALSE;
+
+DECLARE cur1 CURSOR FOR SELECT osago.end_date_osago, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM osago 
+	INNER JOIN cars ON cars.id=osago.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE osago.ibd_arx=1 AND osago.end_date_osago < CURDATE();
+	
+DECLARE cur2 CURSOR FOR SELECT osago.end_date_osago, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM osago 
+	INNER JOIN cars ON cars.id=osago.id_car  AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE osago.ibd_arx=1 AND (osago.end_date_osago BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur3 CURSOR FOR SELECT technical_inspection.end_date_certificate, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM technical_inspection 
+	INNER JOIN cars ON cars.id=technical_inspection.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE technical_inspection.ibd_arx=1 AND technical_inspection.end_date_certificate < CURDATE();
+
+DECLARE cur4 CURSOR FOR SELECT technical_inspection.end_date_certificate, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM technical_inspection 
+	INNER JOIN cars ON cars.id=technical_inspection.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE technical_inspection.ibd_arx=1 AND (technical_inspection.end_date_certificate BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur5 CURSOR FOR SELECT car_first_aid_kid.end_date, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup
+	FROM car_first_aid_kid 
+	INNER JOIN cars ON cars.id=car_first_aid_kid.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_first_aid_kid.ibd_arx=1 AND car_first_aid_kid.end_date < CURDATE();
+
+DECLARE cur6 CURSOR FOR SELECT car_first_aid_kid.end_date, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup
+	FROM car_first_aid_kid 
+	INNER JOIN cars ON cars.id=car_first_aid_kid.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_first_aid_kid.ibd_arx=1 AND (car_first_aid_kid.end_date BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur7 CURSOR FOR SELECT car_fire_extinguisher.end_date, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup
+	FROM car_fire_extinguisher 
+	INNER JOIN cars ON cars.id=car_fire_extinguisher.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_fire_extinguisher.ibd_arx=1 AND car_fire_extinguisher.end_date < CURDATE();
+
+DECLARE cur8 CURSOR FOR SELECT car_fire_extinguisher.end_date, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup
+	FROM car_fire_extinguisher 
+	INNER JOIN cars ON cars.id=car_fire_extinguisher.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_fire_extinguisher.ibd_arx=1 AND (car_fire_extinguisher.end_date BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+	
+DECLARE cur9 CURSOR FOR SELECT c.date_start_repair, a.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', a.gos_znak), a.dostup FROM cars a
+	INNER JOIN (SELECT id_car, MAX(car_mileage) as car_mileage FROM car_repair
+	WHERE change_oil = 1 GROUP BY id_car) b ON a.id = b.id_car
+	INNER JOIN car_repair c ON c.id_car = b.id_car AND c.car_mileage = b.car_mileage AND c.change_oil = 1
+	LEFT JOIN s2i_klass x1 ON x1.kod=a.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=a.model AND x2.nomer=4
+	WHERE (a.mileage - b.car_mileage) > a.mileage_oil AND a.exception_notice_events = 0;
+
+DECLARE cur10 CURSOR FOR SELECT cars_dopog.date_end_dopog, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM cars_dopog 
+	INNER JOIN cars ON cars.id=cars_dopog.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE cars_dopog.ibd_arx=1 AND cars_dopog.date_end_dopog  < CURDATE();
+	
+DECLARE cur11 CURSOR FOR SELECT cars_dopog.date_end_dopog, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM cars_dopog 
+	INNER JOIN cars ON cars.id=cars_dopog.id_car  AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE cars_dopog.ibd_arx=1 AND (cars_dopog.date_end_dopog  BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur12 CURSOR FOR SELECT car_calibration.date_next_calibration, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM car_calibration 
+	INNER JOIN cars ON cars.id=car_calibration.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_calibration.ibd_arx=1 AND car_calibration.date_next_calibration  < CURDATE();
+	
+DECLARE cur13 CURSOR FOR SELECT car_calibration.date_next_calibration, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM car_calibration 
+	INNER JOIN cars ON cars.id=car_calibration.id_car  AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_calibration.ibd_arx=1 AND (car_calibration.date_next_calibration  BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE cur14 CURSOR FOR SELECT car_tachograph.date_end_skzi, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM car_tachograph 
+	INNER JOIN cars ON cars.id=car_tachograph.id_car AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_tachograph.ibd_arx=1 AND car_tachograph.date_end_skzi   < CURDATE();
+	
+DECLARE cur15 CURSOR FOR SELECT car_tachograph.date_end_skzi, cars.id, CONCAT(x1.text, ' ', x2.text, ' г.р.з. ', cars.gos_znak), cars.dostup FROM car_tachograph 
+	INNER JOIN cars ON cars.id=car_tachograph.id_car  AND cars.ibd_arx=1 AND cars.exception_notice_events = 0
+	LEFT JOIN s2i_klass x1 ON x1.kod=cars.marka AND x1.nomer=3
+	LEFT JOIN s2i_klass x2 ON x2.kod=cars.model AND x2.nomer=4
+	WHERE car_tachograph.ibd_arx=1 AND (car_tachograph.date_end_skzi   BETWEEN CURDATE() AND CURDATE() + INTERVAL 15 DAY);
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+SET done = FALSE;
+
+OPEN cur1;
+read_loop: LOOP
+	FETCH cur1 INTO dd, id, fio, dostup;
+    
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+	
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ПОЛИС ОСАГО.', CONCAT('истек срок действия полиса ОСАГО ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 5, NOW());
+    
+END LOOP;
+CLOSE cur1;
+
+SET done = FALSE;
+
+OPEN cur2;
+read_loop: LOOP
+	FETCH cur2 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ПОЛИС ОСАГО.', CONCAT('истекает срок действия полиса ОСАГО ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 5, NOW());
+    
+END LOOP;
+CLOSE cur2;
+
+SET done = FALSE;
+
+OPEN cur3;
+read_loop: LOOP
+	FETCH cur3 INTO dd, id, fio, dostup;
+    
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+	
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ТЕХНИЧЕСКИЙ ОСМОТР.', CONCAT('истек срок действия сертификата прохождения ТЕХНИЧЕСКОГО ОСМОТРА ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 6, NOW());
+    
+END LOOP;
+CLOSE cur3;
+
+SET done = FALSE;
+
+OPEN cur4;
+read_loop: LOOP
+	FETCH cur4 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ТЕХНИЧЕСКИЙ ОСМОТР.', CONCAT('истекает срок действия сертификата прохождения ТЕХНИЧЕСКОГО ОСМОТРА ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 6, NOW());
+    
+END LOOP;
+CLOSE cur4;
+
+SET done = FALSE;
+
+OPEN cur5;
+read_loop: LOOP
+	FETCH cur5 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. АПТЕЧКИ.', CONCAT('истек срок годности аптечки ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 7, NOW());
+    
+END LOOP;
+CLOSE cur5;
+
+SET done = FALSE;
+
+OPEN cur6;
+read_loop: LOOP
+	FETCH cur6 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. АПТЕЧКИ.', CONCAT('истекает срок годности аптечки ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 7, NOW());
+    
+END LOOP;
+CLOSE cur6;
+
+SET done = FALSE;
+
+OPEN cur7;
+read_loop: LOOP
+	FETCH cur7 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ОГНЕТУШИТЕЛИ.', CONCAT('истек срок годности огнетушителя ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 8, NOW());
+    
+END LOOP;
+CLOSE cur7;
+
+SET done = FALSE;
+
+OPEN cur8;
+read_loop: LOOP
+	FETCH cur8 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ОГНЕТУШИТЕЛИ.', CONCAT('истекает срок годности огнетушителя ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 8, NOW());
+    
+END LOOP;
+CLOSE cur8;
+
+SET done = FALSE;
+
+OPEN cur9;
+read_loop: LOOP
+	FETCH cur9 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ЗАМЕНА МАСЛА.', CONCAT('требуется замена масла. Последняя замена масла была осуществлена ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 9, NOW());
+    
+END LOOP;
+CLOSE cur9;
+
+SET done = FALSE;
+
+OPEN cur10;
+read_loop: LOOP
+	FETCH cur10 INTO dd, id, fio, dostup;
+    
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+	
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. УДОСТОВЕРЕНИЕ ДОПОГ.', CONCAT('истек срок действия удостоверения ДОПОГ ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 10, NOW());
+    
+END LOOP;
+CLOSE cur10;
+
+SET done = FALSE;
+
+OPEN cur11;
+read_loop: LOOP
+	FETCH cur11 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. УДОСТОВЕРЕНИЕ ДОПОГ.', CONCAT('истекает срок действия удостоверения ДОПОГ ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 10, NOW());
+    
+END LOOP;
+CLOSE cur11;
+
+SET done = FALSE;
+
+OPEN cur12;
+read_loop: LOOP
+	FETCH cur12 INTO dd, id, fio, dostup;
+    
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+	
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. КАЛИБРОВКА (ЭКСПЕРТИЗА).', CONCAT('истек срок действия калибровки (экспертизы) ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 11, NOW());
+    
+END LOOP;
+CLOSE cur12;
+
+SET done = FALSE;
+
+OPEN cur13;
+read_loop: LOOP
+	FETCH cur13 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. КАЛИБРОВКА (ЭКСПЕРТИЗА).', CONCAT('истекает срок действия калибровки (экспертизы) ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 11, NOW());
+    
+END LOOP;
+CLOSE cur13;
+
+SET done = FALSE;
+
+OPEN cur14;
+read_loop: LOOP
+	FETCH cur14 INTO dd, id, fio, dostup;
+    
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+	
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ТАХОГРАФ.', CONCAT('истек срок действия тахографа ', DATE_FORMAT(dd, '%d.%m.%Y')), 1, fio, id, 'car', dostup, 12, NOW());
+    
+END LOOP;
+CLOSE cur14;
+
+SET done = FALSE;
+
+OPEN cur15;
+read_loop: LOOP
+	FETCH cur15 INTO dd, id, fio, dostup;
+	
+	IF done THEN 
+    	LEAVE read_loop;
+     END IF;
+    
+    INSERT INTO notice_events (notice_subsystem, notice_text, notice_status, notice_object, notice_id_object, notice_table_object, notice_dostup, notice_code_subsystem, dt_reg)
+		VALUES
+		('ТРАНСПОРТНЫЕ СРЕДСТВА. ТАХОГРАФ.', CONCAT('истекает срок действия тахографа ', DATE_FORMAT(dd, '%d.%m.%Y')), 2, fio, id, 'car', dostup, 12, NOW());
+    
+END LOOP;
+CLOSE cur15;
+
+END;";
+		mysqli_query($link, $sql);
+
+		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `get_users_notice` ()  NO SQL
+		BEGIN
+
+UPDATE users SET notice_events = (SELECT CONCAT(IFNULL(COUNT(*), 0), '-', IFNULL(BB.warning, 0), '-', IFNULL(CC.info, 0)) FROM notice_events AA
+	LEFT JOIN (SELECT COUNT(*) as warning, '1' as tt FROM notice_events WHERE notice_status = 2 GROUP BY tt) BB ON BB.tt = 1
+	LEFT JOIN (SELECT COUNT(*) as info, '1' as tt FROM notice_events WHERE notice_status = 3 GROUP BY tt) CC ON CC.tt = 1
+	WHERE notice_status = 1) WHERE role >= 2;
+
+UPDATE users SET notice_events = (SELECT CONCAT(IFNULL(COUNT(*), 0), '-', IFNULL(BB.warning, 0), '-', IFNULL(CC.info, 0)) FROM notice_events AA
+	LEFT JOIN (SELECT COUNT(*) as warning, '1' as tt FROM notice_events WHERE notice_status = 2 AND notice_dostup = 1 GROUP BY tt) BB ON BB.tt = 1
+	LEFT JOIN (SELECT COUNT(*) as info, '1' as tt FROM notice_events WHERE notice_status = 3 AND notice_dostup = 1 GROUP BY tt) CC ON CC.tt = 1
+	WHERE notice_status = 1 AND notice_dostup = 1) WHERE role < 2;
+
+END;";
+		mysqli_query($link, $sql);
+
+		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `get_notice` ()  NO SQL
+		BEGIN
+	DELETE FROM notice_events;
+    ALTER TABLE notice_events AUTO_INCREMENT = 1;
+    
+    CALL get_notice_cars();
+    CALL get_notice_drivers();
+    CALL get_users_notice();
+END;";
+		mysqli_query($link, $sql);
+	}
 }
