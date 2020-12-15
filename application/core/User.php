@@ -220,10 +220,6 @@ class User extends UserBasic {
 		}
 
 		$sql = "SELECT * FROM " . self::$table . " WHERE id=" . $id . " AND hash='" . $hash . "' AND login='" . $login . "'";
-
-		Functions::debug($sql);
-
-
 		if(($data = DB::query($sql)) === false) {
 			self::default_information_user();
 			return;
