@@ -73,14 +73,12 @@ class Install {
 		$this->create_index($link);
 		$this->create_auto_increment($link);
 		$this->create_procedure($link);
+		$this->create_tasks($link);
 
 		$this->disconnect($link);
 
 		return [1];
 	}
-
-
-
 
 	/*
 		Функция создания базы данных
@@ -2173,6 +2171,14 @@ END;";
     CALL get_notice_drivers();
     CALL get_users_notice();
 END;";
+		mysqli_query($link, $sql);
+	}
+
+	/*
+		Функция загрузки событий
+	*/
+	private function create_tasks($link) {
+		$sql = "CREATE EVENT `generate_notice_events` ON SCHEDULE EVERY 2 HOUR ON COMPLETION NOT PRESERVE ENABLE DO BEGIN CALL get_notice(); END;";
 		mysqli_query($link, $sql);
 	}
 }

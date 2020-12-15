@@ -18,7 +18,7 @@ class Speedometer extends Model {
 				. " a.ibd_arx, x1.text as reason_speedometer "
 				. " FROM {table} a "
 				. " LEFT JOIN s2i_klass x1 ON x1.kod=a.reason_speedometer AND x1.nomer=17 "
-				. " WHERE a.id_car={id} ORDER BY a.id_speedometer DESC, a.date_speedometer DESC, a.testimony_speedometer DESC";
+				. " WHERE a.id_car={id} ORDER BY a.id_speedometer DESC, a.date_speedometer DESC, a.testimony_speedometer DESC LIMIT 100";
 
 	// Функция отрисовки списка ПТС
 	function rendering_list($post) {
