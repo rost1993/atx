@@ -42,7 +42,7 @@
 								</div>
 								<div class="col col-sm-4 mb-1">
 									<button type="button" class="btn btn-sm btn-outline-success" id="btnFilterNotice" title="Применить фильтр"><span class="fa fa-search">&nbsp;</span>Применить</button>
-									<button type="button" class="btn btn-sm btn-outline-info" id="btnNoticeExcel" title="Выгрузить в Excel"><span class="fa fa-file-excel-o">&nbsp;</span>Выгрузить в Excel</button>
+									<!--<button type="button" class="btn btn-sm btn-outline-info" id="btnNoticeExcel" title="Выгрузить в Excel"><span class="fa fa-file-excel-o">&nbsp;</span>Выгрузить в Excel</button>-->
 								</div>
 							</div>
 						</div>

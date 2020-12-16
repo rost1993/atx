@@ -244,6 +244,7 @@ class User extends UserBasic {
 		$session->set('role', ((empty($data[0]['role'])) ? '' : $data[0]['role'] ));
 		$session->set('hash', ((empty($data[0]['hash'])) ? '' : $data[0]['hash'] ));
 		$session->set('id', ((empty($data[0]['id'])) ? '' : $data[0]['id'] ));
+		$session->set('notice', ((empty($data[0]['notice_events'])) ? '' : $data[0]['notice_events'] ));
 		$session->commit();
 	}
 

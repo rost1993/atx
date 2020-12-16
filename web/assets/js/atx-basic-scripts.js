@@ -36,6 +36,15 @@ $(document).ready(function() {
 		trigger: 'focus'
 	});
 
+	$('#btnNoticeEvents').popover({
+		trigger: 'focus'
+	});
+
+	// Закрытие окошка popover навсегда для сессии
+	$('#btnNoticeEvents').on('hidden.bs.popover', function() {
+		$(this).remove();
+	});
+
 	$('.starter-template').on('click', '.btn-list-cars,.btn-search-cars', function() {
 		var query;
 		if($(this).hasClass('btn-list-cars')) {

@@ -67,6 +67,7 @@ class FooterTop {
 		$left_menu = self::get_left_menu();
 		$right_menu = self::get_dropdown_menu(self::$array_right_menu);
 		$login = self::get_user_label();
+		$notice_events_html = self::get_notice_events();
 		require_once(self::$footer_top_path);
 	}
 
@@ -132,6 +133,46 @@ class FooterTop {
 
 		$login = '(' . $login . ')';
 		return $login;
+	}
+
+	private static function get_notice_events() {
+		$notice_events = User::get('notice');
+
+		$notice_events_html = '';
+
+		// Отрисовываем колокольчик для уведомлений
+		if(mb_strlen(trim($notice_events)) != 0) {
+		
+			$array_notice = explode('-', $notice_events);
+		
+			$all_notice_events = $notice_critical_events = $notice_warning_events = $notice_info_events = 0;
+			if(array_key_exists(0, $array_notice)) {
+				$notice_critical_events = $array_notice[0];
+				$all_notice_events += $array_notice[0];
+			}
+		
+			if(array_key_exists(1, $array_notice)) {
+				$notice_warning_events = $array_notice[1];
+				$all_notice_events += $array_notice[1];
+			}
+		
+			if(array_key_exists(2, $array_notice)) {
+				$notice_info_events =  $array_notice[2];
+				$all_notice_events += $array_notice[2];
+			}
+
+			$notice_info_class = " class-info-circle ";
+			$notice_text = "<span class=\"fa fa-info-circle text-danger\">&nbsp;</span>Просрочен срок: <a href=\"notice_events\" target=\"_blank\">" . $notice_critical_events . "</a><br>"
+			. "<span class=\"fa fa-info-circle text-warning\">&nbsp;</span>Предупреждений: <a href=\"notice_events\" target=\"_blank\">" . $notice_warning_events . "</a><br>"
+			. "<span class=\"fa fa-info-circle text-primary\">&nbsp;</span>Уведомлений: <a href=\"notice_events\" target=\"_blank\">" . $notice_info_events . "</a>";
+
+			$notice_events_html = "<li class='navbar-brand'>"
+				. "<button type='button' class='btn class-bell' id='btnNoticeEvents' data-toggle='popover' title='Уведомления (" . $all_notice_events . ")' data-html='true' data-content='" . $notice_text . "' style='padding: 0px 5px;'>
+				<span class='fa fa-bell class-bell'></span>
+				<span class='badge badge-pill class-bell' style='padding: 0px;'>" . $all_notice_events . "</span>
+				</button>";
+		}
+		return $notice_events_html;
 	}
 	
 }

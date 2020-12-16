@@ -12,6 +12,7 @@
 			<?= $left_menu; ?>
 		</ul>
 		<ul class="navbar-nav navbar-right">
+			<?= $notice_events_html; ?>
 			<li class="nav-item dropdown">
 				<a class="text-white nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Меню <?= $login; ?></a>
 				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user">
