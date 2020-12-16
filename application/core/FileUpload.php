@@ -540,7 +540,7 @@ class FileUpload {
 	private function image_reduction_quality($source_file, $dest_file, $quality = self::QUALITY_IMAGE) {
 		$info = getimagesize($source_file);
 		if($info['mime'] == 'image/jpeg') {
-			$image = imagecreatefromjpeg($source_file);
+			$image = @imagecreatefromjpeg($source_file);
 			imagejpeg($image, $dest_file, $quality);
 		} else if($info['mime'] == 'image/gif') {
 			$image = imagecreatefromgif($source_file);
@@ -557,7 +557,7 @@ class FileUpload {
 	private function image_reduction_size($source_file, $dest_file, $coefficient) {
 		$info = getimagesize($source_file);
 		if($info['mime'] == 'image/jpeg') {
-			$image_src = imagecreatefromjpeg($source_file);
+			$image_src = @imagecreatefromjpeg($source_file);
 			$image_dst = imagecreatetruecolor(round($info[0] / $coefficient), round($info[1] / $coefficient));
 			imagecopyresampled($image_dst, $image_src, 0, 0, 0, 0, round($info[0] / $coefficient), round($info[1] / $coefficient), $info[0], $info[1]);
 			imagejpeg($image_dst, $dest_file);

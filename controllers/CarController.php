@@ -89,7 +89,10 @@ class CarController extends Controller {
 		Remove card
 	*/
 	public function removeCard() {
-		echo json_encode(array((new TicketCard())->delete($_POST)));
+		if((new Car())->remove($_POST) === false)
+			echo json_encode([-1]);
+		else
+			echo json_encode([1]);
 	}
 
 	/*

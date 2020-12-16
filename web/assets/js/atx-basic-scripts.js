@@ -1231,16 +1231,26 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#btnNoticeExcel').click(function() {
-		alert(2);
-	});
-
 	$('#btnInstallDatabase').click(function() {
 		var query = 'action=install&login=' + $('#login_user').val() + '&password=' + $('#password_user').val();
 		showDownloader(true);
 		AjaxQuery('POST', 'install', query, function(result) {
 			showDownloader(false);
 			handlerAjaxResult(result, 'База данных установлена!');
+		});
+	});
+
+	$('#deleteCars').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'car', 'option=remove&nsyst=' + $('#nsyst').html().trim(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				window.location = 'car';
+			});
 		});
 	});
 });

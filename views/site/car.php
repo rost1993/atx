@@ -459,7 +459,10 @@
 				</div>
 					
 									
-				<div class='card-footer card-header'><?php
+				<div class='card-footer card-header'>
+					<div class="test"></div>
+
+					<?php
 						if($role >= 2) {
 							echo "<button type='button' class='btn btn-success' id='saveInfoForCars' title='Сохранить информацию о транспортном средстве' style='margin: 2px;'><span class='fa fa-check'>&nbsp;</span>Сохранить ТС</button>";
 

@@ -860,7 +860,29 @@ CREATE TRIGGER `table_update_cars` BEFORE UPDATE ON `cars` FOR EACH ROW BEGIN
     END IF;
 END;
 CREATE TRIGGER `trigger_delete_cars` BEFORE DELETE ON `cars` FOR EACH ROW BEGIN
-	DELETE FROM car_link_document WHERE id_car = old.id;
+	DELETE FROM cars_dopog WHERE id_car = OLD.id;
+  DELETE FROM cars_old_gos_znak WHERE id_car = OLD.id;
+  DELETE FROM cars_wheels WHERE id_car = OLD.id;
+  DELETE FROM car_battery WHERE id_car = OLD.id;
+  DELETE FROM car_calibration WHERE id_car = OLD.id;
+  DELETE FROM car_dvr WHERE id_car = OLD.id;
+  DELETE FROM car_fire_extinguisher WHERE id_car = OLD.id;
+  DELETE FROM car_first_aid_kid WHERE id_car = OLD.id;
+  DELETE FROM car_for_driver WHERE car_id = OLD.id;
+  DELETE FROM car_glonass WHERE id_car = OLD.id;
+  DELETE FROM car_link_document WHERE id_car = OLD.id;
+  DELETE FROM car_tachograph WHERE id_car = OLD.id;
+  DELETE FROM car_warning_triangle WHERE id_car = OLD.id;
+  DELETE FROM certificate_registration WHERE id_car = OLD.id;
+  DELETE FROM osago WHERE id_car = OLD.id;
+  DELETE FROM pts WHERE id_car = OLD.id;
+  DELETE FROM speedometer WHERE id_car = OLD.id;
+  DELETE FROM speedometer_first_testimony WHERE id_car = OLD.id;
+  DELETE FROM technical_inspection WHERE id_car = OLD.id;
+  DELETE FROM files WHERE category_file = 13 AND id_object = OLD.id;
+  UPDATE dtp SET id_car = 0 WHERE id_car = OLD.id;
+  UPDATE adm_offense SET id_car = 0 WHERE id_car = OLD.id;
+  UPDATE car_repair SET id_car = 0 WHERE id_car = OLD.id;
 END;";
 
 		if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров cars!'))
@@ -1029,11 +1051,12 @@ END;";
 				DROP TRIGGER IF EXISTS table_drivers_insert;
 				DROP TRIGGER IF EXISTS table_drivers_update;
 CREATE TRIGGER `table_drivers_delete` BEFORE DELETE ON `drivers` FOR EACH ROW BEGIN
-	DELETE FROM drivers_document WHERE id_driver = OLD.id;
-    DELETE FROM car_for_driver WHERE id_driver = OLD.id;
-   DELETE FROM drivers_document_cran WHERE id_driver = OLD.id;
+	  DELETE FROM drivers_card WHERE id_driver = OLD.id;
+    DELETE FROM drivers_document WHERE id_driver = OLD.id;
+    DELETE FROM drivers_document_cran WHERE id_driver = OLD.id;
     DELETE FROM drivers_document_tractor WHERE id_driver = OLD.id;
     DELETE FROM drivers_dopog WHERE id_driver = OLD.id;
+    DELETE FROM car_for_driver WHERE id_driver = OLD.id;
     UPDATE dtp SET id_driver = 0 WHERE id_driver = OLD.id;
     UPDATE adm_offense SET id_driver = 0 WHERE id_driver = OLD.id;
 END;

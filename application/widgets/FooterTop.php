@@ -135,6 +135,9 @@ class FooterTop {
 		return $login;
 	}
 
+	/*
+		Отрисовываем колокольчик с уведомлением
+	*/
 	private static function get_notice_events() {
 		$notice_events = User::get('notice');
 
