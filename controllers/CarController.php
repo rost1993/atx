@@ -29,6 +29,8 @@ class CarController extends Controller {
 					echo json_encode([-1]);
 				else
 					echo json_encode([1]);
+			} else if($_POST['option'] == 'pdf') {
+				$this->generate_pdf();
 			}
 		} else {
 			$this->view->render();
@@ -127,6 +129,15 @@ class CarController extends Controller {
 			echo json_encode([-1]);
 		} else {
 			echo json_encode([1]);
+		}
+	}
+
+	public function generate_pdf() {
+		$data = [];
+		if(($data = (new Car())->generate_reference_car($_POST)) === false) {
+			echo json_encode([-1]);
+		} else {
+			echo json_encode([1, $data]);
 		}
 	}
 }

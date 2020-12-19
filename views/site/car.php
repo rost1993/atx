@@ -464,15 +464,18 @@
 
 					<?php
 						if($role >= 2) {
-							echo "<button type='button' class='btn btn-success' id='saveInfoForCars' title='Сохранить информацию о транспортном средстве' style='margin: 2px;'><span class='fa fa-check'>&nbsp;</span>Сохранить ТС</button>";
+							echo "<button type='button' class='btn btn-success mr-1' id='saveInfoForCars' title='Сохранить информацию о транспортном средстве'><span class='fa fa-check'>&nbsp;</span>Сохранить ТС</button>";
 
 							if($role > 2)
-								echo "<button type='button' class='btn btn-primary' id='lockCars' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-lock'>&nbsp;</span>" . $text_btn_dostup . "</button>";
+								echo "<button type='button' class='btn btn-primary mr-1' id='lockCars' title='Изменить уровень видимости транспортного средства'><span class='fa fa-lock'>&nbsp;</span>" . $text_btn_dostup . "</button>";
 
-							echo "<button type='button' class='btn btn-warning' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' style='margin: 2px;' data-type='1'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive . "</button>";
-							echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownDeleteCars' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Изменить уровень видимости транспортного средства' style='margin: 2px;'><span class='fa fa-remove'></span>&nbspУдалить ТС</button>
+							echo "<button type='button' class='btn btn-warning mr-1' id='btnMoveArchive' title='Перевести в архив/восстановить из архива' data-type='1'><span class='fa fa-folder'>&nbsp;</span>" . $text_btn_archive . "</button>";
+
+							echo "<button class='btn btn-info mr-1' id='btnGeneratePdf' title='Сформировать справку'><span class='fa fa-file-pdf-o'>&nbsp;</span>Справка</button>";
+
+							echo "<button type='button' class='btn btn-danger dropdown-toggle' id='dropdownDeleteCars' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Удалить транспортное средство'><span class='fa fa-remove'>&nbsp;</span>Удалить ТС</button>
 							<div class='dropdown-menu' aria-labelledby='dropdownDeleteCars'>
-								<button class='dropdown-item' id='deleteCars'><span class='fa fa-check text-success'>&nbsp;</span>Подтверждаю удаление</button>
+							<button class='dropdown-item' id='deleteCars'><span class='fa fa-check text-success'>&nbsp;</span>Подтверждаю удаление</button>
 							</div>";
 						}
 					?></div>

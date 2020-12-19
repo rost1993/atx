@@ -252,7 +252,7 @@ class Car extends Model {
 			$inner_join_technical_inspection = " LEFT JOIN technical_inspection ON technical_inspection.id_car=a.id AND technical_inspection.ibd_arx=1 ";
 		
 		if($flg_excel == -1)
-			$sql = "SELECT a.id, x1.text AS marka, x2.text AS model, x3.text AS color, a.gos_znak, a.n_reg, a.god_car, a.ibd_arx, x4.text AS kodrai, x5.text AS slugba, x6.text AS kateg_ts, "
+			$sql = "SELECT a.id, x1.text AS marka, x2.text AS model, x3.text AS color, a.gos_znak, a.n_reg, a.god_car, a.ibd_arx, x6.text AS kateg_ts, "
 					. " a.basic_fuel, a.summer_fuel, a.winter_fuel, a.inventory_n, a.prim, a.vin, a.n_dvig, a.shassi, a.kuzov, a.mass_max, a.mass_min, a.car_vat, a.car_v, CAST(a.mileage AS CHAR) + 0 as mileage, DATE_FORMAT(osago.end_date_osago, '%d.%m.%Y') as end_date_osago, "
 					. " DATE_FORMAT(technical_inspection.end_date_certificate, '%d.%m.%Y') as end_date_certificate, a.write_off "
 					. " FROM " . $this->table . " a "
@@ -261,8 +261,6 @@ class Car extends Model {
 					. " LEFT JOIN s2i_klass x1 ON a.marka = x1.kod AND x1.nomer = 3 "
 					. " LEFT JOIN s2i_klass x2 ON a.model = x2.kod AND x2.nomer = 4 "
 					. " LEFT JOIN s2i_klass x3 ON a.color = x3.kod AND x3.nomer = 12 "
-					. " LEFT JOIN s2i_klass x4 ON a.kodrai = x4.kod AND x4.nomer = 11 "
-					. " LEFT JOIN s2i_klass x5 ON a.slugba = x5.kod AND x5.nomer = 1 "
 					. " LEFT JOIN s2i_klass x6 ON a.kateg_ts = x6.kod AND x6.nomer = 5 ";
 		else
 			$sql = "SELECT a.id, x1.text AS marka, x2.text AS model, x3.text AS color, a.gos_znak, a.n_reg, a.god_car, a.ibd_arx, x9.text AS kateg_ts, "
@@ -808,5 +806,174 @@ class Car extends Model {
 		if(DB::query($sql, DB::INSERT_OR_UPDATE) === false)
 			return false;
 		return true;
+	}
+
+	public function generate_reference_car($post) {
+		if(empty($post['nsyst']))
+			return false;
+
+		$id = addslashes($post['nsyst']);
+		$role = User::get('role');
+		$sql = '';
+
+		if($role >= 2) {
+			$sql = "SELECT cars.*,
+					 x10.text as marka_text, x11.text as model_text, x12.text as color_text, x13.text as tip_strah_text, x14.text as kateg_gost_text, x15.text as kateg_ts_text,
+					 x1.text as firma_osago, b.n_osago, CAST(cars.mileage AS CHAR) + 0 as mileage,
+					 DATE_FORMAT(b.start_date_osago, '%d.%m.%Y') as start_dt_osago, DATE_FORMAT(b.end_date_osago, '%d.%m.%Y') as end_dt_osago, 
+					 c.number_certificate, x2.text as firma_technical_inspection, c.address_technical_inspection,
+					 DATE_FORMAT(c.date_certificate, '%d.%m.%Y') as date_certificate, DATE_FORMAT(c.end_date_certificate, '%d.%m.%Y') as end_date_certificate, 
+					 g.s_pts, g.n_pts, DATE_FORMAT(g.date_pts, '%d.%m.%Y') as date_pts, x3.text as type_ts_pts, x4.text as firma_pts, 
+					 h.s_certificate_reg, h.n_certificate_reg, DATE_FORMAT(h.date_certificate_reg, '%d.%m.%Y') as date_certificate_reg,
+					 h.comment_certificate_reg, x5.text as org_certificate_reg, 
+					 DATE_FORMAT(i.start_date, '%d.%m.%Y') as start_date_fire_extinguisher, DATE_FORMAT(i.end_date, '%d.%m.%Y') as end_date_fire_extinguisher, DATE_FORMAT(i.issued_date, '%d.%m.%Y') as issued_date_fire_extinguisher,
+					 DATE_FORMAT(j.start_date, '%d.%m.%Y') as start_date_first_aid_kid, DATE_FORMAT(j.end_date, '%d.%m.%Y') as end_date_first_aid_kid, DATE_FORMAT(j.issued_date, '%d.%m.%Y') as issued_date_first_aid_kid,
+					 DATE_FORMAT(k.issued_date, '%d.%m.%Y') as issued_date_warning_triangle, DATE_FORMAT(l.start_date, '%d.%m.%Y') as start_date_car_battery, l.type_battery, l.firma_battery,
+					 m.number_dopog, DATE_FORMAT(m.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(m.date_end_dopog, '%d.%m.%Y') as date_end_dopog, x6.text as firma_dopog_text,
+					 DATE_FORMAT(n.date_calibration, '%d.%m.%Y') as date_calibration, DATE_FORMAT(n.date_next_calibration, '%d.%m.%Y') as date_next_calibration, x7.text as firma_calibration_text,
+					 o.number_tachograph, DATE_FORMAT(o.date_start_skzi, '%d.%m.%Y') as date_start_skzi, DATE_FORMAT(o.date_end_skzi, '%d.%m.%Y') as date_end_skzi, x8.text as model_tachograph_text,
+					 p.number_dvr, p.marka_dvr, p.model_dvr,
+					 q.number_glonass, DATE_FORMAT(q.date_glonass, '%d.%m.%Y') as date_glonass, q.number_dut_glonass_1, q.number_dut_glonass_2
+					 FROM " . $this->table
+			     . " LEFT JOIN osago b ON b.id_car=cars.id AND b.ibd_arx=1 
+					 LEFT JOIN technical_inspection c ON c.id_car=cars.id AND c.ibd_arx=1 
+					 LEFT JOIN pts g ON g.id_car=cars.id AND g.ibd_arx=1 
+					 LEFT JOIN certificate_registration h ON h.id_car=cars.id AND h.ibd_arx=1
+					 LEFT JOIN car_fire_extinguisher i ON i.id_car=cars.id AND i.ibd_arx=1
+					 LEFT JOIN car_first_aid_kid j ON j.id_car=cars.id AND j.ibd_arx=1
+					 LEFT JOIN car_warning_triangle k ON k.id_car=cars.id AND k.ibd_arx=1
+					 LEFT JOIN car_battery l ON l.id_car=cars.id AND l.ibd_arx=1
+					 LEFT JOIN cars_dopog m ON m.id_car=cars.id AND m.ibd_arx=1
+					 LEFT JOIN car_calibration n ON n.id_car=cars.id AND n.ibd_arx=1
+					 LEFT JOIN car_tachograph o ON o.id_car=cars.id AND o.ibd_arx=1
+					 LEFT JOIN car_dvr p ON p.id_car=cars.id AND p.ibd_arx=1
+					 LEFT JOIN car_glonass q ON q.id_car=cars.id AND q.ibd_arx=1
+					 LEFT JOIN s2i_klass x1 ON x1.kod=b.firma_osago AND x1.nomer=15 
+					 LEFT JOIN s2i_klass x2 ON x2.kod=c.firma_technical_inspection AND x2.nomer=16 
+					 LEFT JOIN s2i_klass x3 ON x3.kod=g.type_ts_pts AND x3.nomer=6 
+					 LEFT JOIN s2i_klass x4 ON x4.kod=g.firma_pts AND x4.nomer=10 
+					 LEFT JOIN s2i_klass x5 ON x5.kod=h.org_certificate_reg AND x5.nomer=22
+					 LEFT JOIN s2i_klass x6 ON x6.kod=m.firma_dopog AND x6.nomer=34
+					 LEFT JOIN s2i_klass x7 ON x7.kod=n.firma_calibration AND x7.nomer=37
+					 LEFT JOIN s2i_klass x8 ON x8.kod=o.model_tachograph AND x8.nomer=39
+
+					 LEFT JOIN s2i_klass x10 ON cars.marka = x10.kod AND x10.nomer = 3 
+					 LEFT JOIN s2i_klass x11 ON cars.model = x11.kod AND x11.nomer = 4 
+					 LEFT JOIN s2i_klass x12 ON cars.color = x12.kod AND x12.nomer = 12 
+					 LEFT JOIN s2i_klass x13 ON cars.tip_strah = x13.kod AND x13.nomer = 7 
+					 LEFT JOIN s2i_klass x14 ON cars.kateg_gost = x14.kod AND x14.nomer = 9
+					 LEFT JOIN s2i_klass x15 ON cars.kateg_ts = x15.kod AND x15.nomer = 5 
+
+					 WHERE cars.id=" . $id;
+		} else {
+			$sql = '';
+		}
+
+		if(($data = DB::query($sql)) === false)
+			return false;
+
+		return ['data:application/pdf;base64,' . $this->generate_pdf($data)];
+	}
+
+	private function generate_pdf($data) {
+		setlocale(LC_CTYPE, 'ru_RU.UTF8');
+
+		$mpdf = new \Mpdf\Mpdf(['default_font' => 'dejavusanscondensed']);
+		$mpdf->autoScriptToLang = true;
+		$mpdf->baseScript = 1;
+		$mpdf->autoLangToFont = true;
+
+		$mpdf->SetDocTemplate('template/car_template.pdf', 0);
+		$mpdf->AddPage();
+
+		$mpdf->SetFontSize(9);
+		$mpdf->setFont('dejavusanscondensed', 'N');
+		$mpdf->WriteText(40, 35, $data[0]['marka_text']);
+		$mpdf->WriteText(40, 40, $data[0]['model_text']);
+		$mpdf->WriteText(45, 45, $data[0]['gos_znak'] . ' ' . $data[0]['n_reg']);
+		$mpdf->WriteText(30, 50, $data[0]['color_text']);
+		$mpdf->WriteText(50, 56, $data[0]['god_car']);
+		$mpdf->WriteText(50, 61, $data[0]['kateg_ts_text']);
+		$mpdf->WriteText(55, 67, $data[0]['kateg_gost_text']);
+		$mpdf->WriteText(60, 72, $data[0]['tip_strah_text']);
+		$mpdf->WriteText(80, 77, $data[0]['vin']);
+		$mpdf->WriteText(70, 83, $data[0]['shassi']);
+		$mpdf->WriteText(55, 88, $data[0]['mass_max']);
+		$mpdf->WriteText(50, 94, $data[0]['car_vat']);
+		$mpdf->WriteText(45, 99, $data[0]['n_dvig']);
+		$mpdf->WriteText(90, 104, $data[0]['kuzov']);
+		$mpdf->WriteText(60, 110, $data[0]['mass_min']);
+		$mpdf->WriteText(77, 115, $data[0]['car_v']);
+		$mpdf->WriteText(68, 121, $data[0]['mileage_oil']);
+		$mpdf->WriteText(50, 126, $data[0]['basic_fuel']);
+		$mpdf->WriteText(90, 131.5, $data[0]['summer_fuel']);
+		$mpdf->WriteText(90, 136.5, $data[0]['winter_fuel']);
+		$mpdf->WriteText(65, 142, $data[0]['inventory_n']);
+		$mpdf->WriteText(100, 147.5, empty($data[0]['balance_price']) ? '' : $data[0]['balance_price']);
+
+
+		/*$mpdf->SetFontSize(9);
+		$mpdf->setFont('dejavusanscondensed', 'N');
+		$mpdf->WriteText(70, 21.5, $this->service_field['PAYEEINN']['value']);
+		$mpdf->WriteText(105, 21.5, $this->service_field['KPP']['value']);
+		$mpdf->WriteText(75, 26.5, $this->service_field['PERSONALACC']['value']);
+		$mpdf->WriteText(60, 32.5, $this->service_field['NAME']['value']);
+		$mpdf->WriteText(60, 39.5, $this->service_field['BANKNAME']['value']);
+		$mpdf->WriteText(70, 46, $this->service_field['BIC']['value']);
+		$mpdf->WriteText(135, 46, $this->service_field['CORRESPACC']['value']);
+		$mpdf->WriteText(70, 52, $this->get_val($data, 'CBC'));
+		$mpdf->WriteText(135, 52, $this->get_val($data, 'OKTMO'));
+
+		$mpdf->WriteText(85, 57.5, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
+		$mpdf->WriteText(60, 62.5, $purpose);
+		$mpdf->WriteText(160, 68, $this->get_val($data, 'SUM'));
+		$mpdf->WriteText(85, 76, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
+		$mpdf->WriteText(95, 83.5, $this->get_val($data, 'PAYERINN'));
+		$mpdf->WriteText(95, 91, $payer_address);
+
+		$mpdf->WriteText(70, 115.7, $this->service_field['PAYEEINN']['value']);
+		$mpdf->WriteText(105, 115.7, $this->service_field['KPP']['value']);
+		$mpdf->WriteText(75, 120.5, $this->service_field['PERSONALACC']['value']);
+		$mpdf->WriteText(60, 127, $this->service_field['NAME']['value']);
+		$mpdf->WriteText(60, 134, $this->service_field['BANKNAME']['value']);
+		$mpdf->WriteText(70, 141, $this->service_field['BIC']['value']);
+		$mpdf->WriteText(135, 141, $this->service_field['CORRESPACC']['value']);
+		$mpdf->WriteText(70, 146.7, $this->get_val($data, 'CBC'));
+		$mpdf->WriteText(135, 147, $this->get_val($data, 'OKTMO'));
+
+		$mpdf->WriteText(85, 152.5, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
+		$mpdf->WriteText(60, 157.5, $purpose);
+		$mpdf->WriteText(160, 163, $this->get_val($data, 'SUM'));
+		$mpdf->WriteText(85, 171, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
+		$mpdf->WriteText(95, 179, $this->get_val($data, 'PAYERINN'));
+		$mpdf->WriteText(95, 186.5, $payer_address);
+
+		$qrcode_image = $this->generate_qr_code($data);
+		$mpdf->Image($qrcode_image, 10, 19, 45);
+		$mpdf->Image($qrcode_image, 10, 115, 45);
+
+		$mpdf->SetFontSize(6);
+		$barcode_image = $this->generate_barcode($data);
+		$mpdf->Image($barcode_image, 135, 19, 60, 8);
+		$mpdf->WriteText(145, 29, 'УИН: ' . $this->get_val($data, 'UIN'));
+		$mpdf->Image($barcode_image, 135, 113, 60, 8);
+		$mpdf->WriteText(145, 123.5, 'УИН: ' . $this->get_val($data, 'UIN'));*/
+
+		$temp_file = tempnam(sys_get_temp_dir(), 'car-');
+		$mpdf->Output($temp_file);
+		$base64_str = base64_encode(file_get_contents($temp_file));
+
+		self::remove_file($temp_file);
+
+		return $base64_str;
+	}
+
+	/*
+		Удаление файла
+		$path_file - файл, который необходимо удалить
+	*/
+	public function remove_file($path_file) {
+		if(file_exists($path_file))
+			unlink($path_file);
 	}
 }

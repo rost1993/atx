@@ -1253,4 +1253,18 @@ $(document).ready(function() {
 			});
 		});
 	});
+
+	$('#btnGeneratePdf').click(function() {
+		if($('#nsyst').html().trim().length == 0) {
+			$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Сначала сохраните транспортное средство!', 'method' : 'show' });
+			return;
+		}
+		showDownloader(true);
+		AjaxQuery('POST', 'car', 'option=pdf&nsyst=' + $('#nsyst').html().trim(), function(result) {
+			showDownloader(false);
+			handlerAjaxResult(result, null, function(res) {
+				$('.modal-ic-komi-document-view').ModalDocumentViewIcKomi({ 'textBody' : res[1], 'method' : 'show' });
+			});
+		});
+	});
 });
