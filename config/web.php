@@ -9,10 +9,10 @@ return [
 	'database' => [
 		'db_type' => 'mysql',
 		'db_host' => 'localhost',
-		'db_username' => 'atx',
-		'db_password' => 'AtxDatabase2020',
+		'db_username' => 'root',
+		'db_password' => '',
 		'db_name' => 'atx',
-		'charset' => 'utf-8',
+		'charset' => 'utf8',
 	],
 
 	'session' => [

@@ -828,7 +828,7 @@ class Car extends Model {
 					 h.comment_certificate_reg, x5.text as org_certificate_reg, 
 					 DATE_FORMAT(i.start_date, '%d.%m.%Y') as start_date_fire_extinguisher, DATE_FORMAT(i.end_date, '%d.%m.%Y') as end_date_fire_extinguisher, DATE_FORMAT(i.issued_date, '%d.%m.%Y') as issued_date_fire_extinguisher,
 					 DATE_FORMAT(j.start_date, '%d.%m.%Y') as start_date_first_aid_kid, DATE_FORMAT(j.end_date, '%d.%m.%Y') as end_date_first_aid_kid, DATE_FORMAT(j.issued_date, '%d.%m.%Y') as issued_date_first_aid_kid,
-					 DATE_FORMAT(k.issued_date, '%d.%m.%Y') as issued_date_warning_triangle, DATE_FORMAT(l.start_date, '%d.%m.%Y') as start_date_car_battery, l.type_battery, l.firma_battery,
+					 DATE_FORMAT(k.issued_date, '%d.%m.%Y') as issued_date_warning_triangle, DATE_FORMAT(l.start_date, '%d.%m.%Y') as start_date_car_battery, l.type_battery, l.firma_battery, l.number_battery, DATE_FORMAT(l.producion_date, '%d.%m.%Y') as producion_date_car_battery, DATE_FORMAT(l.debit_date, '%d.%m.%Y') as debit_date_car_battery, l.standart_term_battery, l.standart_term_debit_battery,
 					 m.number_dopog, DATE_FORMAT(m.date_start_dopog, '%d.%m.%Y') as date_start_dopog, DATE_FORMAT(m.date_end_dopog, '%d.%m.%Y') as date_end_dopog, x6.text as firma_dopog_text,
 					 DATE_FORMAT(n.date_calibration, '%d.%m.%Y') as date_calibration, DATE_FORMAT(n.date_next_calibration, '%d.%m.%Y') as date_next_calibration, x7.text as firma_calibration_text,
 					 o.number_tachograph, DATE_FORMAT(o.date_start_skzi, '%d.%m.%Y') as date_start_skzi, DATE_FORMAT(o.date_end_skzi, '%d.%m.%Y') as date_end_skzi, x8.text as model_tachograph_text,
@@ -876,6 +876,9 @@ class Car extends Model {
 	}
 
 	private function generate_pdf($data) {
+		if(count($data) == 0)
+			return false;
+
 		setlocale(LC_CTYPE, 'ru_RU.UTF8');
 
 		$mpdf = new \Mpdf\Mpdf(['default_font' => 'dejavusanscondensed']);
@@ -887,77 +890,89 @@ class Car extends Model {
 		$mpdf->AddPage();
 
 		$mpdf->SetFontSize(9);
-		$mpdf->setFont('dejavusanscondensed', 'N');
-		$mpdf->WriteText(40, 35, $data[0]['marka_text']);
-		$mpdf->WriteText(40, 40, $data[0]['model_text']);
-		$mpdf->WriteText(45, 45, $data[0]['gos_znak'] . ' ' . $data[0]['n_reg']);
-		$mpdf->WriteText(30, 50, $data[0]['color_text']);
-		$mpdf->WriteText(50, 56, $data[0]['god_car']);
-		$mpdf->WriteText(50, 61, $data[0]['kateg_ts_text']);
-		$mpdf->WriteText(55, 67, $data[0]['kateg_gost_text']);
-		$mpdf->WriteText(60, 72, $data[0]['tip_strah_text']);
-		$mpdf->WriteText(80, 77, $data[0]['vin']);
-		$mpdf->WriteText(70, 83, $data[0]['shassi']);
-		$mpdf->WriteText(55, 88, $data[0]['mass_max']);
-		$mpdf->WriteText(50, 94, $data[0]['car_vat']);
-		$mpdf->WriteText(45, 99, $data[0]['n_dvig']);
-		$mpdf->WriteText(90, 104, $data[0]['kuzov']);
-		$mpdf->WriteText(60, 110, $data[0]['mass_min']);
-		$mpdf->WriteText(77, 115, $data[0]['car_v']);
-		$mpdf->WriteText(68, 121, $data[0]['mileage_oil']);
-		$mpdf->WriteText(50, 126, $data[0]['basic_fuel']);
-		$mpdf->WriteText(90, 131.5, $data[0]['summer_fuel']);
-		$mpdf->WriteText(90, 136.5, $data[0]['winter_fuel']);
-		$mpdf->WriteText(65, 142, $data[0]['inventory_n']);
-		$mpdf->WriteText(100, 147.5, empty($data[0]['balance_price']) ? '' : $data[0]['balance_price']);
+		$mpdf->setFont('dejavusanscondensed', 'B');
+		$mpdf->WriteText(37, 25.5, empty($data[0]['marka_text']) ? '' : $data[0]['marka_text']);
+		$mpdf->WriteText(40, 31, empty($data[0]['model_text']) ? '' : $data[0]['model_text']);
+		$mpdf->WriteText(48, 36.5, (empty($data[0]['gos_znak']) ? '' : $data[0]['gos_znak']) . ' ' . (empty($data[0]['n_reg']) ? '' : $data[0]['n_reg']));
+		$mpdf->WriteText(34, 41.5, empty($data[0]['color_text']) ? '' : $data[0]['color_text']);
+		$mpdf->WriteText(50, 47, empty($data[0]['god_car']) ? '' : $data[0]['god_car']);
+		$mpdf->WriteText(52, 52.5, empty($data[0]['kateg_ts_text']) ? '' : $data[0]['kateg_ts_text']);
+		$mpdf->WriteText(57, 58, empty($data[0]['kateg_gost_text']) ? '' : $data[0]['kateg_gost_text']);
+		$mpdf->WriteText(62, 63, empty($data[0]['tip_strah_text']) ? '' : $data[0]['tip_strah_text']);
+		$mpdf->WriteText(81, 68.5, empty($data[0]['vin']) ? '' : $data[0]['vin']);
+		$mpdf->WriteText(43, 73.5, empty($data[0]['n_dvig']) ? '' : $data[0]['n_dvig']);
+		$mpdf->WriteText(73, 79, empty($data[0]['shassi']) ? '' : $data[0]['shassi']);
+		$mpdf->WriteText(92, 84.5, empty($data[0]['kuzov']) ? '' : $data[0]['kuzov']);
+		$mpdf->WriteText(59, 90, empty($data[0]['mass_max']) ? '' : $data[0]['mass_max']);
+		$mpdf->WriteText(62, 95.5, empty($data[0]['mass_min']) ? '' : $data[0]['mass_min']);
+		$mpdf->WriteText(52, 101, empty($data[0]['car_vat']) ? '' : $data[0]['car_vat']);
+		$mpdf->WriteText(81, 106.5, empty($data[0]['car_v']) ? '' : $data[0]['car_v']);
+		$mpdf->WriteText(70, 111.5, empty($data[0]['mileage_oil']) ? '' : $data[0]['mileage_oil']);
+		
+		$mpdf->WriteText(52, 117, empty($data[0]['basic_fuel']) ? '' : $data[0]['basic_fuel']);
+		$mpdf->WriteText(90, 122, empty($data[0]['summer_fuel']) ? '' : $data[0]['summer_fuel']);
+		$mpdf->WriteText(90, 127.5, empty($data[0]['winter_fuel']) ? '' : $data[0]['winter_fuel']);
+		$mpdf->WriteText(67, 133.2, empty($data[0]['inventory_n']) ? '' : $data[0]['inventory_n']);
+		$mpdf->WriteText(104, 138.5, empty($data[0]['balance_price']) ? '' : $data[0]['balance_price']);
+		$mpdf->WriteText(57, 143.5, empty($data[0]['mileage']) ? '' : $data[0]['mileage']);
 
+		$mpdf->WriteText(82, 159.5, (empty($data[0]['s_certificate_reg']) ? '' : $data[0]['s_certificate_reg']) . ' ' . (empty($data[0]['n_certificate_reg']) ? '' : $data[0]['n_certificate_reg']));
+		$mpdf->WriteText(52, 165, empty($data[0]['date_certificate_reg']) ? '' : $data[0]['date_certificate_reg']);
+		$mpdf->WriteText(49, 170.5, empty($data[0]['org_certificate_reg']) ? '' : $data[0]['org_certificate_reg']);
 
-		/*$mpdf->SetFontSize(9);
-		$mpdf->setFont('dejavusanscondensed', 'N');
-		$mpdf->WriteText(70, 21.5, $this->service_field['PAYEEINN']['value']);
-		$mpdf->WriteText(105, 21.5, $this->service_field['KPP']['value']);
-		$mpdf->WriteText(75, 26.5, $this->service_field['PERSONALACC']['value']);
-		$mpdf->WriteText(60, 32.5, $this->service_field['NAME']['value']);
-		$mpdf->WriteText(60, 39.5, $this->service_field['BANKNAME']['value']);
-		$mpdf->WriteText(70, 46, $this->service_field['BIC']['value']);
-		$mpdf->WriteText(135, 46, $this->service_field['CORRESPACC']['value']);
-		$mpdf->WriteText(70, 52, $this->get_val($data, 'CBC'));
-		$mpdf->WriteText(135, 52, $this->get_val($data, 'OKTMO'));
+		$mpdf->WriteText(60, 187, (empty($data[0]['s_pts']) ? '' : $data[0]['s_pts']) . ' ' . (empty($data[0]['n_pts']) ? '' : $data[0]['n_pts']));
+		$mpdf->WriteText(52, 192.5, empty($data[0]['date_pts']) ? '' : $data[0]['date_pts']);
+		$mpdf->WriteText(55, 197.5, empty($data[0]['type_ts_pts']) ? '' : $data[0]['type_ts_pts']);
+		$mpdf->WriteText(70, 203, empty($data[0]['firma_pts']) ? '' : $data[0]['firma_pts']);
 
-		$mpdf->WriteText(85, 57.5, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
-		$mpdf->WriteText(60, 62.5, $purpose);
-		$mpdf->WriteText(160, 68, $this->get_val($data, 'SUM'));
-		$mpdf->WriteText(85, 76, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
-		$mpdf->WriteText(95, 83.5, $this->get_val($data, 'PAYERINN'));
-		$mpdf->WriteText(95, 91, $payer_address);
+		$mpdf->WriteText(57, 219, empty($data[0]['n_osago']) ? '' : $data[0]['n_osago']);
+		$mpdf->WriteText(69, 224.5, empty($data[0]['end_dt_osago']) ? '' : $data[0]['end_dt_osago']);
+		$mpdf->WriteText(68, 230, empty($data[0]['firma_osago']) ? '' : $data[0]['firma_osago']);
 
-		$mpdf->WriteText(70, 115.7, $this->service_field['PAYEEINN']['value']);
-		$mpdf->WriteText(105, 115.7, $this->service_field['KPP']['value']);
-		$mpdf->WriteText(75, 120.5, $this->service_field['PERSONALACC']['value']);
-		$mpdf->WriteText(60, 127, $this->service_field['NAME']['value']);
-		$mpdf->WriteText(60, 134, $this->service_field['BANKNAME']['value']);
-		$mpdf->WriteText(70, 141, $this->service_field['BIC']['value']);
-		$mpdf->WriteText(135, 141, $this->service_field['CORRESPACC']['value']);
-		$mpdf->WriteText(70, 146.7, $this->get_val($data, 'CBC'));
-		$mpdf->WriteText(135, 147, $this->get_val($data, 'OKTMO'));
+		$mpdf->WriteText(62, 246, empty($data[0]['number_certificate']) ? '' : $data[0]['number_certificate']);
+		$mpdf->WriteText(55, 251.5, (empty($data[0]['date_certificate']) ? '' : $data[0]['date_certificate']) . ' - ' . (empty($data[0]['end_date_certificate']) ? '' : $data[0]['end_date_certificate']));
+		$mpdf->WriteText(53, 257, empty($data[0]['firma_technical_inspection']) ? '' : $data[0]['firma_technical_inspection']);
+		$mpdf->WriteText(63, 262, empty($data[0]['address_technical_inspection']) ? '' : $data[0]['address_technical_inspection']);
 
-		$mpdf->WriteText(85, 152.5, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
-		$mpdf->WriteText(60, 157.5, $purpose);
-		$mpdf->WriteText(160, 163, $this->get_val($data, 'SUM'));
-		$mpdf->WriteText(85, 171, mb_strtoupper($this->get_val($data, 'LASTNAME') . ' ' . $this->get_val($data, 'FIRSTNAME') . ' ' . $this->get_val($data, 'MIDDLENAME')));
-		$mpdf->WriteText(95, 179, $this->get_val($data, 'PAYERINN'));
-		$mpdf->WriteText(95, 186.5, $payer_address);
+		$mpdf->AddPage();
 
-		$qrcode_image = $this->generate_qr_code($data);
-		$mpdf->Image($qrcode_image, 10, 19, 45);
-		$mpdf->Image($qrcode_image, 10, 115, 45);
+		$mpdf->WriteText(67, 19, empty($data[0]['number_dopog']) ? '' : $data[0]['number_dopog']);
+		$mpdf->WriteText(55, 24.5, (empty($data[0]['date_start_dopog']) ? '' : $data[0]['date_start_dopog']) . ' - ' . (empty($data[0]['date_end_dopog']) ? '' : $data[0]['date_end_dopog']));
+		$mpdf->WriteText(52, 30, empty($data[0]['firma_dopog_text']) ? '' : $data[0]['firma_dopog_text']);
 
-		$mpdf->SetFontSize(6);
-		$barcode_image = $this->generate_barcode($data);
-		$mpdf->Image($barcode_image, 135, 19, 60, 8);
-		$mpdf->WriteText(145, 29, 'УИН: ' . $this->get_val($data, 'UIN'));
-		$mpdf->Image($barcode_image, 135, 113, 60, 8);
-		$mpdf->WriteText(145, 123.5, 'УИН: ' . $this->get_val($data, 'UIN'));*/
+		$mpdf->WriteText(85, 46, empty($data[0]['date_calibration']) ? '' : $data[0]['date_calibration']);
+		$mpdf->WriteText(107, 51, empty($data[0]['date_next_calibration']) ? '' : $data[0]['date_next_calibration']);
+		$mpdf->WriteText(52, 57, empty($data[0]['firma_calibration_text']) ? '' : $data[0]['firma_calibration_text']);
+
+		$mpdf->WriteText(38, 73, empty($data[0]['number_tachograph']) ? '' : $data[0]['number_tachograph']);
+		$mpdf->WriteText(40, 78, (empty($data[0]['date_start_skzi']) ? '' : $data[0]['date_start_skzi']) . ' - ' . (empty($data[0]['date_end_skzi']) ? '' : $data[0]['date_end_skzi']));
+		$mpdf->WriteText(75, 83.5, empty($data[0]['model_tachograph_text']) ? '' : $data[0]['model_tachograph_text']);
+
+		$mpdf->WriteText(63, 100, empty($data[0]['number_glonass']) ? '' : $data[0]['number_glonass']);
+		$mpdf->WriteText(55, 105, empty($data[0]['date_glonass']) ? '' : $data[0]['date_glonass']);
+		$mpdf->WriteText(73, 110.5, empty($data[0]['number_dut_glonass_1']) ? '' : $data[0]['number_dut_glonass_1']);
+		$mpdf->WriteText(73, 116, empty($data[0]['number_dut_glonass_2']) ? '' : $data[0]['number_dut_glonass_2']);
+
+		$mpdf->WriteText(37, 137.5, empty($data[0]['issued_date_fire_extinguisher']) ? '' : $data[0]['issued_date_fire_extinguisher']);
+		$mpdf->WriteText(55, 143, (empty($data[0]['start_date_fire_extinguisher']) ? '' : $data[0]['start_date_fire_extinguisher']) . ' - ' . (empty($data[0]['end_date_fire_extinguisher']) ? '' : $data[0]['end_date_fire_extinguisher']));
+
+		$mpdf->WriteText(40, 159, empty($data[0]['issued_date_first_aid_kid']) ? '' : $data[0]['issued_date_first_aid_kid']);
+		$mpdf->WriteText(55, 164, (empty($data[0]['start_date_first_aid_kid']) ? '' : $data[0]['start_date_first_aid_kid']) . ' - ' . (empty($data[0]['end_date_first_aid_kid']) ? '' : $data[0]['end_date_first_aid_kid']));
+
+		$mpdf->WriteText(37, 180.5, empty($data[0]['issued_date_warning_triangle']) ? '' : $data[0]['issued_date_warning_triangle']);
+
+		$mpdf->WriteText(32, 196.5, empty($data[0]['type_battery']) ? '' : $data[0]['type_battery']);
+		$mpdf->WriteText(37, 202, empty($data[0]['number_battery']) ? '' : $data[0]['number_battery']);
+		$mpdf->WriteText(52, 207.5, empty($data[0]['firma_battery']) ? '' : $data[0]['firma_battery']);
+		$mpdf->WriteText(63, 212.5, empty($data[0]['producion_date_car_battery']) ? '' : $data[0]['producion_date_car_battery']);
+		$mpdf->WriteText(56, 218, empty($data[0]['start_date_car_battery']) ? '' : $data[0]['start_date_car_battery']);
+		$mpdf->WriteText(88, 223.5, empty($data[0]['standart_term_battery']) ? '' : $data[0]['standart_term_battery']);
+		$mpdf->WriteText(107, 229, empty($data[0]['standart_term_debit_battery']) ? '' : $data[0]['standart_term_debit_battery']);
+		$mpdf->WriteText(55, 234.5, empty($data[0]['debit_date_car_battery']) ? '' : $data[0]['debit_date_car_battery']);
+
+		$mpdf->WriteText(37, 250.5, empty($data[0]['number_dvr']) ? '' : $data[0]['number_dvr']);
+		$mpdf->WriteText(37, 256, empty($data[0]['marka_dvr']) ? '' : $data[0]['marka_dvr']);
+		$mpdf->WriteText(41, 261, empty($data[0]['model_dvr']) ? '' : $data[0]['model_dvr']);
 
 		$temp_file = tempnam(sys_get_temp_dir(), 'car-');
 		$mpdf->Output($temp_file);
