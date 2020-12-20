@@ -12,33 +12,27 @@ class Registration extends RegistrationBasic {
 
 	const BLACK_MAGIC_CONSTANT = 'IamSuperRost1993';
 
-	protected $name_field_login = 'login';
-	protected $name_field_password = 'password';
-	protected $name_field_password2 = 'password2';
+	protected $name_field_login = 'LOGIN';
+	protected $name_field_password = 'PASSWORD';
+	protected $name_field_password2 = 'PASSWORD2';
 
-	protected $fields = ['LASTNAME' =>
+	protected $fields = ['FAM' =>
 							['type' => 'char', 'form' => 'LASTNAME'],
-						 'FIRSTNAME' =>
+						 'IMJ' =>
 						 	['type' => 'char', 'form' => 'FIRSTNAME'],
-						 'MIDDLENAME' =>
+						 'OTCH' =>
 						 	['type' => 'char', 'form' => 'MIDDLENAME'],
 						 'LOGIN' =>
 						 	['type' => 'char', 'form' => 'LOGIN'],
-						 'REGION' =>
-						 	['type' => 'number', 'form' => 'REGION'],
-						 'SERVICE' =>
-						 	['type' => 'number', 'form' => 'SERVICE'],
 						 'PASSWD_HASH' =>
 						 	['type' => 'char', 'form' => null, 'action' => 'generate_hash_password'],
-						 'UNIQ_HASH' =>
+						 'HASH' =>
 						 	['type' => 'char', 'form' => null, 'action' => 'generate_hash'],
-						 'EMAIL_ADDRESS' =>
-						 	['type' => 'char', 'form' => null, 'action' => 'generate_email_address'],
-						 'ID_GROUP' =>
+						 'ACCESS' =>
 						 	['type' => 'number', 'form' => null, 'default' => '0'],
-						 'FLG_ACCESS' =>
+						 'BLOCK' =>
 						 	['type' => 'number', 'form' => null, 'default' => '0'],
-						 'IBD_ARX' =>
+						 'ROLE' =>
 						 	['type' => 'number', 'form' => null, 'default' => '1']
 						];
 

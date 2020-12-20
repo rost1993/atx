@@ -4,6 +4,7 @@ namespace IcKomiApp\core;
 
 use IcKomiApp\lib\Database\DB;
 use IcKomiApp\core\Logic;
+use IcKomiApp\core\Functions;
 
 /*
 	RegistrationBasic - абстрактный класс для регистрации пользователя.
@@ -70,10 +71,10 @@ abstract class RegistrationBasic {
 	const NAME_FIELD_LOGIN = 'login';
 
 	// Название поля для проверки пароля
-	const NAME_FIELD_PASSWORD = 'password';
+	const NAME_FIELD_PASSWORD = 'PASSWORD';
 
 	// Название поля для подтверждения пароля
-	const NAME_FIELD_PASSWORD2 = 'password2';
+	const NAME_FIELD_PASSWORD2 = 'PASSWORD2';
 
 	// Набор полей по умолчанию
 	const FIELDS = [];
