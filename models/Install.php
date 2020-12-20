@@ -1039,7 +1039,7 @@ END;";
 
 		$sql = "DROP TRIGGER IF EXISTS table_insert_certificate_registration;
 				DROP TRIGGER IF EXISTS table_update_certificate_registration;
-CREATE TRIGGER `table_insert_certificate_registration` BEFORE INSERT ON `certificate_registration` FOR EACH ROW BEGIN
+CREATE TRIGGER `table_insert_`` BEFORE INSERT ON `certificate_registration` FOR EACH ROW BEGIN
 SET NEW.dt_reg = NOW();
 SET NEW.dt_izm = NOW();
 END;
@@ -1280,6 +1280,9 @@ END;";
 
 		$sql = "ALTER TABLE `car_link_document` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `certificate_registration` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
 
 		$sql = "ALTER TABLE `car_repair` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ремонта', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
