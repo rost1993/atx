@@ -4,6 +4,7 @@ namespace IcKomiApp\widgets;
 
 use IcKomiApp\core\User;
 use IcKomiApp\core\Rights;
+use IcKomiApp\core\Functions;
 
 class FooterTop {
 
@@ -139,7 +140,11 @@ class FooterTop {
 		Отрисовываем колокольчик с уведомлением
 	*/
 	private static function get_notice_events() {
+		$role = User::get('role');
 		$notice_events = User::get('notice');
+
+		if((mb_strlen($role) == 0) || ($role == 0) || ($role === null))
+			return "";
 
 		$notice_events_html = '';
 
