@@ -1284,6 +1284,18 @@ END;";
     $sql = "ALTER TABLE `certificate_registration` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
     mysqli_query($link, $sql);
 
+    $sql = "ALTER TABLE `car_fire_extinguisher` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `car_first_aid_kid` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `car_warning_triangle` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `osago` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
+
 		$sql = "ALTER TABLE `car_repair` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ремонта', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
 
