@@ -25,12 +25,14 @@
 	$kateg_ts = (empty($kateg_ts)) ? '' : $kateg_ts;
 	$tip_strah = (empty($tip_strah)) ? '' : $tip_strah;
 	$kateg_gost = (empty($kateg_gost)) ? '' : $kateg_gost;
+	$owner_car = (empty($owner_car)) ? '' : $owner_car;
 
-	$array_directory = IcKomiApp\widgets\Directory::get_multiple_directory([3, 4, 12, 5, 7, 9], ['3' => $marka, '4' => $model, '12' => $color, '5' => $kateg_ts, '7' => $tip_strah, '9' => $kateg_gost]);
+	$array_directory = IcKomiApp\widgets\Directory::get_multiple_directory([3, 4, 12, 5, 7, 9, 40], ['3' => $marka, '4' => $model, '12' => $color, '5' => $kateg_ts, '7' => $tip_strah, '9' => $kateg_gost, '40' => $owner_car]);
 
 	$marka_select = (empty($array_directory[3])) ? '' : $array_directory[3];
 	$model_select = (empty($array_directory[4])) ? '' : $array_directory[4];
 	$color_select = (empty($array_directory[12])) ? '' : $array_directory[12];
+	$owner_car_select = (empty($array_directory[40])) ? '' : $array_directory[40];
 
 	$kateg_ts_select = (empty($array_directory[5])) ? '' : $array_directory[5];
 	$tip_strah_select = (empty($array_directory[7])) ? '' : $array_directory[7];
@@ -244,6 +246,14 @@
 										<input type="text" class="form-control form-control-sm black-text datepicker-here" id="god_car" data-min-view="years" data-view="years" data-date-format="yyyy" data-mandatory="true" data-message-error="Заполните обязательное поле: Год выпуска" maxlength="4" placeholder="Год" data-datatype="number" value="<?= $god_car; ?>">
 									</div>
 									<div class="col col-sm-2 mb-1 cars-old-gos-znak"><?= $list_old_gos_znak; ?></div>
+									<div class="col col-sm-2 mb-1 text-right">
+										<label class="text-muted font-weight-bold fs-13" for="owner_car">Собственник</label>
+									</div>
+									<div class="col col-sm-3 mb-1">
+										<select class="custom-select custom-select-sm black-text" id="owner_car" data-datatype="number">
+										<?= $owner_car_select; ?>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>

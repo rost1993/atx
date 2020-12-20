@@ -163,6 +163,7 @@ class Install {
   `balance_price` decimal(10,2) DEFAULT NULL COMMENT 'Первоначальная балансовая стоимость',
   `exception_notice_events` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Исключения для сверок. 0 - не исключать, 1 - исключать',
   `write_off` int(11) NOT NULL DEFAULT 0 COMMENT 'ТС готовится к списанию: 0 - нет, 1 - да',
+  `owner_car` int(11) NOT NULL DEFAULT 0 COMMENT 'Владелец ТС. Спр. 40',
   `sh_polz` int(11) NOT NULL DEFAULT 0 COMMENT 'Шифр пользователя, сделавшего изменения',
   `dt_reg` datetime DEFAULT NULL COMMENT 'Дата ввода',
   `dt_izm` datetime DEFAULT NULL COMMENT 'Дата корректировки'

@@ -33,8 +33,8 @@ class EditDirectory extends Model {
 	}
 
 	public function save_value_directory($post) {
-		if(!is_array($post) || empty($post['directory']))
-			return false;
+		/*if(!is_array($post) || empty($post['directory']))
+			return false;*/
 
 		$number_directory = $post['directory'];
 		$old_value = (empty($post['value'])) ? '' : $post['value'];
@@ -45,7 +45,7 @@ class EditDirectory extends Model {
 			return false;
 		
 		if(mb_strlen($old_value) == 0) {
-			$sql = "SELECT MAX(kod)+1 as max_code FROM " . $this->table . " WHERE nomer=" . $number_directory;
+			$sql = "SELECT IFNULL(MAX(kod), 0)+1 as max_code FROM " . $this->table . " WHERE nomer=" . $number_directory;
 			if(($data = DB::query($sql)) === false)
 				return false;
 
