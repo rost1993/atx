@@ -978,7 +978,7 @@ class Car extends Model {
 		$mpdf->Output($temp_file);
 		$base64_str = base64_encode(file_get_contents($temp_file));
 
-		self::remove_file($temp_file);
+		self::remove_file_pdf($temp_file);
 
 		return $base64_str;
 	}
@@ -987,7 +987,7 @@ class Car extends Model {
 		Удаление файла
 		$path_file - файл, который необходимо удалить
 	*/
-	public function remove_file($path_file) {
+	public function remove_file_pdf($path_file) {
 		if(file_exists($path_file))
 			unlink($path_file);
 	}

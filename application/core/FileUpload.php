@@ -39,10 +39,18 @@ class FileUpload {
 	
 	// Функция очистки содержимого директорий от файлов
 	private function clearPath($path) {
-		if(is_dir($path)) {
+		/*if(is_dir($path)) {
 			foreach(glob($path . '*') as $file)
 				unlink($file);
-		}
+		}*/
+		if (is_file($path))
+			return unlink($path);
+  		if (is_dir($path)) {
+    		foreach(scandir($path) as $p) if (($p!='.') && ($p!='..'))
+      			$this->clearPath($path . DIRECTORY_SEPARATOR . $p);
+    		return rmdir($path); 
+    	}
+  		return false;
 	}
 	
 	// Функция создания директории куда необходимо сохранить файл
@@ -414,7 +422,7 @@ class FileUpload {
 			return false;
 		
 		$this->clearPath($path_to_directory);
-		return rmdir($path_to_directory);
+		return true;
 	}
 	
 	public function remove_file($class_name, $id_object) {
