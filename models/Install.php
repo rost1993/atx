@@ -59,6 +59,9 @@ class Install {
 		if(($link = $this->connect()) === null)
 			return [-2, 'Ошибка при подключении к MySQL!'];
 
+    if(!$this->check_database($link))
+      return [-2, $this->message_error];
+
 		if(!$this->create_database($link))
 			return [-2, $this->message_error];
 
@@ -67,8 +70,8 @@ class Install {
 
 		if(!$this->create_trigger($link))
 			return [-2, $this->message_error];
-
-		if(!$this->create_user($link))
+    
+    if(!$this->create_user($link))
 			return [-2, $this->message_error];
 
 		$this->create_index($link);
@@ -81,6 +84,26 @@ class Install {
 
 		return [1];
 	}
+
+  private function check_database($link) {
+    $sql = "show databases like '" . $this->create_db_name . "';";
+    if(($result = mysqli_query($link, $sql)) === false) {
+      $this->message_error = 'Ошибка при проверке базы данных!';
+      return false;
+    }
+
+    $data = [];
+    while($temp = mysqli_fetch_assoc($result))
+        array_push($data, $temp);
+      mysqli_free_result($result);
+
+    if(count($data) > 0) {
+      $this->message_error = 'База данных уже существует!';
+      return false;
+    }
+
+    return true;
+  }
 
 	/*
 		Функция создания базы данных
@@ -3133,10 +3156,7 @@ END;";
     $sql = "INSERT INTO `role` (`id`, `category`, `text`) VALUES
 (1, 1, 'Пользователь (режим просмотра)'),
 (2, 2, 'Оператор'),
-(3, 3, 'Оператор АТХ'),
-(4, 8, 'Администратор'),
-(5, 9, 'Системный администратор'),
-(6, 4, 'Оператор (урезанный)');";
+(5, 9, 'Администратор')";
     mysqli_query($link, $sql);
 
     $sql = "INSERT INTO `spr_list` (`id`, `nomer`, `text`, `type`) VALUES
