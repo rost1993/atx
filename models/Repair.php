@@ -12,12 +12,8 @@ class Repair extends Model {
 	protected $table = 'car_repair';
 	protected $remove_directory = 1;
 
-	protected $sql_get_record = "SELECT a.id, a.id_car, b.id_goods, a.car_mileage, a.org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, a.change_oil, "
-			. " b.cost_repair, x1.text as operation, b.operation as kod_operation, b.comment, c.name_goods, c.article_goods, d.kodrai as kodrai_ts "
+	protected $sql_get_record = "SELECT a.id, a.id_car, a.car_mileage, a.org_repair, a.date_start_repair, a.date_end_repair, a.prim_repair, a.price_repair, a.change_oil, d.kodrai as kodrai_ts "
 			. " FROM {table} a "
-			. " LEFT JOIN car_repair_details b ON b.id_repair=a.id "
-			. " LEFT JOIN s2i_klass x1 ON x1.kod=b.operation AND x1.nomer=21 "
-			. " LEFT JOIN goods c ON c.id=b.id_goods "
 			. " LEFT JOIN cars d ON d.id=a.id_car "
 			. " WHERE a.id={id}";
 

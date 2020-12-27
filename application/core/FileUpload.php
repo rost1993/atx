@@ -29,13 +29,14 @@ class FileUpload {
 	const CLASS_ADM_OFFENSE = 'IcKomiApp\models\Adm';
 	const CLASS_CAR_TACHOGRAPH = 'IcKomiApp\models\Tachograph';
 	const CLASS_CAR_GLONASS = 'IcKomiApp\models\Glonass';
+	const CLASS_CARS_CALIBRATION = 'IcKomiApp\models\Calibration';
+	const CLASS_CAR_MAINTENANCE = 'IcKomiApp\models\Maintenance';
 
 	const CLASS_VU_DOCUMENT = 'IcKomiApp\models\Vu';
 	const CLASS_VU_DOCUMENT_TRACTOR = 'IcKomiApp\models\TractorVu';
 	const CLASS_VU_DOCUMENT_CRAN = 'IcKomiApp\models\CranVu';
 	const CLASS_DRIVERS_CARD = 'IcKomiApp\models\DriversCard';
 	const CLASS_DRIVERS_DOPOG = 'IcKomiApp\models\DriversDopog';
-	const CLASS_CARS_CALIBRATION = 'IcKomiApp\models\Calibration';
 	
 	// Функция очистки содержимого директорий от файлов
 	private function clearPath($path) {
@@ -160,6 +161,10 @@ class FileUpload {
 
 			case self::CLASS_CAR_GLONASS:
 				$path_to_file .= 'cars/' . $id_main_object . '/glonass/' . $id_object . '/';
+				break;
+
+			case self::CLASS_CAR_MAINTENANCE:
+				$path_to_file .= 'cars/' . $id_main_object . '/maintenance/' . $id_object . '/';
 				break;
 			
 			case self::CLASS_ADM_OFFENSE:
@@ -337,6 +342,10 @@ class FileUpload {
 
 			case self::CLASS_CAR_GLONASS:
 				$table = 'car_glonass';
+				break;
+
+			case self::CLASS_CAR_MAINTENANCE:
+				$table = 'car_maintenance';
 				break;
 
 			default:

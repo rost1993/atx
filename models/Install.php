@@ -833,6 +833,24 @@ class Install {
 			return false;
 		}
 
+    $sql = "CREATE TABLE `car_maintenance` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'Уникальный ID ТС',
+  `id_car` int(11) NOT NULL DEFAULT '0' COMMENT 'ID ТС',
+  `date_maintenance` date DEFAULT NULL COMMENT 'Дата тех. обслуживания',
+  `mileage_maintenance` double(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Пробег тех. обслуживания',
+  `path_to_file` varchar(100) DEFAULT NULL COMMENT 'Путь к файлу',
+  `file_extension` varchar(50) DEFAULT NULL COMMENT 'Расширение файла',
+  `ibd_arx` int(11) NOT NULL DEFAULT '1' COMMENT 'Архив',
+  `sh_polz` int(11) NOT NULL DEFAULT '0' COMMENT 'Шифр пользователя',
+  `dt_reg` int(11) DEFAULT NULL COMMENT 'Дата ввода',
+  `dt_izm` int(11) DEFAULT NULL COMMENT 'Дата корректировки'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Техническое обслуживание ТС';";
+
+    if(!mysqli_query($link, $sql)) {
+      $this->message_error = 'Ошибка при создании таблицы car_maintenance!';
+      return false;
+    }
+
 		$sql = "CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'Системный номер пользователя',
   `fam` varchar(100) NOT NULL COMMENT 'Фамилия',
@@ -905,6 +923,7 @@ CREATE TRIGGER `trigger_delete_cars` BEFORE DELETE ON `cars` FOR EACH ROW BEGIN
   DELETE FROM speedometer WHERE id_car = OLD.id;
   DELETE FROM speedometer_first_testimony WHERE id_car = OLD.id;
   DELETE FROM technical_inspection WHERE id_car = OLD.id;
+  DELETE FROM car_maintenance WHERE id_car = OLD.id;
   DELETE FROM files WHERE category_file = 13 AND id_object = OLD.id;
   UPDATE dtp SET id_car = 0 WHERE id_car = OLD.id;
   UPDATE adm_offense SET id_car = 0 WHERE id_car = OLD.id;
@@ -1022,12 +1041,12 @@ END;";
 CREATE TRIGGER `insert_table_car_repair` BEFORE INSERT ON `car_repair` FOR EACH ROW BEGIN
 SET new.dt_reg=now();
 SET new.dt_izm=now();
-CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_start_repair, new.sh_polz, 1);
+CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_start_repair, null, new.sh_polz, 1);
 END;
 CREATE TRIGGER `update_table_car_repair` BEFORE UPDATE ON `car_repair` FOR EACH ROW BEGIN
 SET new.dt_izm=now();
-     IF(new.car_mileage <> old.car_mileage) THEN
-    	 CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_start_repair, new.sh_polz, 1);
+     IF(new.car_mileage <> old.car_mileage OR new.date_start_repair <> old.date_start_repair) THEN
+    	 CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_start_repair, old.date_start_repair, new.sh_polz, 1);
     END IF;
 END;";
 
@@ -1238,17 +1257,34 @@ END;";
 CREATE TRIGGER `insert_table_technical_inspection` BEFORE INSERT ON `technical_inspection` FOR EACH ROW BEGIN
 SET new.dt_reg=now();
 SET new.dt_izm=now();
-CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_certificate, new.sh_polz, 2);
+CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_certificate, null, new.sh_polz, 2);
 END;
 CREATE TRIGGER `update_table_technical_inspection` BEFORE UPDATE ON `technical_inspection` FOR EACH ROW BEGIN
 SET new.dt_izm=now();
-IF(new.car_mileage <> old.car_mileage) THEN
-    CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_certificate, new.sh_polz, 2);
+IF(new.car_mileage <> old.car_mileage OR new.date_certificate <> old.date_certificate) THEN
+    CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_certificate, old.date_certificate, new.sh_polz, 2);
     END IF;
 END;";
 
 		if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров technical_inspection!'))
 			return false;
+
+    $sql = "DROP TRIGGER IF EXISTS ins_car_maintenance;
+    DROP TRIGGER IF EXISTS upd_car_maintenance;
+    CREATE TRIGGER `ins_car_maintenance` BEFORE INSERT ON `car_maintenance` FOR EACH ROW BEGIN
+SET new.dt_reg = NOW();
+SET new.dt_izm = NOW();
+CALL add_testimony_speedometer(1, new.id_car, new.mileage_maintenance, 0, new.date_maintenance, NULL, new.sh_polz, 3);
+END;
+CREATE TRIGGER `upd_car_maintenance` BEFORE UPDATE ON `car_maintenance` FOR EACH ROW BEGIN
+SET new.dt_izm = NOW();
+IF(new.mileage_maintenance <> old.mileage_maintenance OR new.date_maintenance <> old.date_maintenance) THEN
+  CALL add_testimony_speedometer(2, new.id_car, new.mileage_maintenance, old.mileage_maintenance, new.date_maintenance, old.date_maintenance, new.sh_polz, 3);
+END IF;
+END;";
+
+    if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров car_maintenance!'))
+      return false;
 
 		return true;
 	}
@@ -1366,6 +1402,12 @@ END;";
 
 		$sql = "ALTER TABLE `users` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Системный номер пользователя', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
+
+    $sql = "ALTER TABLE `car_maintenance` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ТС', AUTO_INCREMENT=1;";
+    mysqli_query($link, $sql);
 	}
 
 	private function create_index($link) {
@@ -1478,7 +1520,7 @@ END;";
 		$sql = "ALTER TABLE `technical_inspection` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_IND_TECHNICAL_SERTIFICATE` (`id_car`,`date_certificate`), ADD KEY `IND_TECHNICAL_SERTIFICATE` (`ibd_arx`,`end_date_certificate`);";
 		mysqli_query($link, $sql);
 
-		$sql = "ALTER TABLE `test` ADD PRIMARY KEY (`id`);";
+		$sql = "ALTER TABLE `car_maintenance` ADD PRIMARY KEY (`id`), ADD KEY `ind_car_maintenance` (`id_car`,`date_maintenance`,`ibd_arx`);";
 		mysqli_query($link, $sql);
 
 		$sql = "ALTER TABLE `users` ADD PRIMARY KEY (`id`);";
@@ -1489,34 +1531,34 @@ END;";
 		Функция создания процедур
 	*/
 	private function create_procedure($link) {
-		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `add_testimony_speedometer` (IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `polz` INT, IN `type_operation` INT)  NO SQL
+		$sql = "CREATE DEFINER=`root`@`localhost` PROCEDURE `add_testimony_speedometer` (IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `old_date_testimony` DATE, IN `polz` INT, IN `type_operation` INT)  NO SQL
 BEGIN
 DECLARE num_speed INT;
 DECLARE reason INT;
 DECLARE id_speed INT;
 
 IF(type_operation = 1) THEN
-	SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%РЕМОНТ%' LIMIT 1;
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%РЕМОНТ%' LIMIT 1;
+ELSEIF(type_operation = 2) THEN
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%ТЕХНИЧЕСКИЙ ОСМОТР%' LIMIT 1;
 ELSE
-	SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%ТЕХНИЧЕСКИЙ ОСМОТР%' LIMIT 1;
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ%' LIMIT 1;
 END IF;
-
 
 IF (ind = 1) THEN
-	SELECT num_speedometer INTO num_speed FROM cars WHERE id=car;
-	INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+  SELECT num_speedometer INTO num_speed FROM cars WHERE id=car;
+  INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
 END IF;
 
-
 IF(ind = 2) THEN
-	SELECT IFNULL(id, 0), IFNULL(id_speedometer, 0) INTO id_speed, num_speed FROM speedometer WHERE id_car=car AND testimony_speedometer=old_testimony LIMIT 1;
+  SELECT IFNULL(id, 0), IFNULL(id_speedometer, 0) INTO id_speed, num_speed FROM speedometer WHERE id_car=car AND testimony_speedometer=old_testimony AND date_speedometer = old_date_testimony LIMIT 1;
 
-	IF(id_speed IS NULL) THEN
-		SELECT num_speedometer INTO num_speed FROM cars WHERE id=car LIMIT 1;
-		INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
-	ELSE
-		UPDATE speedometer SET id_speedometer=num_speed, testimony_speedometer=testimony, reason_speedometer=reason, date_speedometer=date_testimony, sh_polz=polz WHERE id=id_speed;
-	END IF;
+  IF(id_speed IS NULL) THEN
+    SELECT num_speedometer INTO num_speed FROM cars WHERE id=car LIMIT 1;
+    INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+  ELSE
+    UPDATE speedometer SET id_speedometer=num_speed, testimony_speedometer=testimony, reason_speedometer=reason, date_speedometer=date_testimony, sh_polz=polz WHERE id=id_speed;
+  END IF;
 
 END IF;
 
@@ -2833,6 +2875,7 @@ END;";
 (17, 'ТЕХНИЧЕСКИЙ ОСМОТР ТРАНСПОРТНОГО СРЕДСТВА', 1),
 (17, 'ПЛАНОВОЕ СНЯТИЕ ПОКАЗАНИЙ СО СПИДОМЕТРА', 2),
 (17, 'РЕМОНТ ТРАНСПОРТНОГО СРЕДСТВА', 3),
+(17, 'ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ ТРАНСПОРТНОГО СРЕДСТВА', 4),
 (18, 'ООО \"БОШ СЕРВИС ВЕГО\" (Г. СЫКТЫВКАР, УЛ. ПЕЧОРСКАЯ, 67/11)', 4),
 (18, 'ООО \"АТП-ТОРГОВЛИ\" (Г. СЫКТЫВКАР, УЛ. ИНДУСТРИАЛЬНАЯ, 10)', 5),
 (18, 'ООО \"АВТОГАРАНТСЕРВИС\" (Г. СЫКТЫВКАР, УЛ. ЗАВОДСКАЯ, 84)', 6),

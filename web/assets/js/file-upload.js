@@ -143,6 +143,9 @@ $(function () {
 				case 21:
 					script = 'car_glonass';
 					break;
+				case 22:
+					script = 'car_maintenance';
+					break;
 			}
 
 			showDownloader(true);

@@ -123,19 +123,19 @@ $(document).ready(function() {
 			scripts = 'speedometer';
 			titleForm = 'Информационная карточка со списком показаний спидометра';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
-		} else if(item == 5){
+		} else if(item == 5) {
 			scripts = 'pts';
 			titleForm = 'Информационная карточка со списком ПТС';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
-		} else if(item == 6){
+		} else if(item == 6) {
 			scripts = 'certificate_registration';
 			titleForm = 'Информационная карточка со списком свидетельств о регистрации ТС';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
-		} else if(item == 7){
+		} else if(item == 7) {
 			scripts = 'repair';
 			titleForm = 'Информационная карточка со списком ремонтов ТС';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
-		} else if(item == 8){
+		} else if(item == 8) {
 			scripts = 'car-documents-events.php';
 			titleForm = 'Информационная карточка со списком документов на ТС';
 			query = 'option=3&nsyst=' + $('#nsyst').html().trim();
@@ -186,6 +186,10 @@ $(document).ready(function() {
 		} else if(item == 20) {
 			scripts = 'car_glonass';
 			titleForm = 'Список ГЛОНАСС';
+			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
+		} else if(item == 21) {
+			scripts = 'car_maintenance';
+			titleForm = 'Список технических обслуживаний';
 			query = 'option=get_list&nsyst=' + $('#nsyst').html().trim();
 		} else {
 			return;
@@ -315,6 +319,11 @@ $(document).ready(function() {
 			scripts = 'car_glonass';
 			action = 20;
 			query = 'option=get_window&nsyst=-1';
+		} else if(item == 21) {
+			titleForm = 'Техническое обслуживание';
+			scripts = 'car_maintenance';
+			action = 21;
+			query = 'option=get_window&nsyst=-1';
 		} else {
 			return;
 		}
@@ -363,11 +372,11 @@ $(document).ready(function() {
 			scripts = 'speedometer';
 			titleForm = 'Показания спидометра';
 			query = 'option=get_window&nsyst=' + id + '&car=' + $(this).data('car');
-		} else if(item == 5){
+		} else if(item == 5) {
 			scripts = 'pts';
 			titleForm = 'Паспорт технического средства';
 			query = 'option=get_window&nsyst=' + id;
-		} else if(item == 6){
+		} else if(item == 6) {
 			scripts = 'certificate_registration';
 			titleForm = 'Свидетельство о регистрации';
 			query = 'option=get_window&nsyst=' + id;
@@ -415,6 +424,10 @@ $(document).ready(function() {
 		} else if(item == 20) {
 			scripts = 'car_glonass';
 			titleForm = 'ГЛОНАСС';
+			query = 'option=get_window&nsyst=' + id;
+		} else if(item == 21) {
+			scripts = 'car_maintenance';
+			titleForm = 'Техническое обслуживание';
 			query = 'option=get_window&nsyst=' + id;
 		} else {
 			return;
@@ -676,6 +689,18 @@ $(document).ready(function() {
 			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
 			query.append('option', 'save');
 			script = 'car_glonass';
+		} else if($(this).data('action') == 21) {
+			var resultCollectionsItems = getArrayItemsForms('#formMaintenance input, #formMaintenance select');
+			if(resultCollectionsItems[0]) {
+				arrayData = resultCollectionsItems[1];
+			} else {
+				$('#error-message').empty();
+				$('#error-message').html(resultCollectionsItems[1]);
+				return;
+			}
+			arrayData['id_car'] = {'value' : $(this).data('id'), 'type' : 'number'};
+			query.append('option', 'save');
+			script = 'car_maintenance';
 		} else {
 			return;
 		}
@@ -766,6 +791,9 @@ $(document).ready(function() {
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else if(item == 20) {
 			scripts = 'car_glonass';
+			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
+		} else if(item == 21) {
+			scripts = 'car_maintenance';
 			query = 'option=remove&nsyst=' + $(this).data('nsyst') + '&object=' + $(this).data('object');
 		} else {
 			return;

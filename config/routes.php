@@ -181,6 +181,11 @@ return [
 		'action' => 'glonass'
 	],
 
+	'car_maintenance' => [
+		'controller' => 'maintenance',
+		'action' => 'maintenance'
+	],
+
 	'install' => [
 		'controller' => 'main',
 		'action' => 'install'
