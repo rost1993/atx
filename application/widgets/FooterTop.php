@@ -20,6 +20,8 @@ class FooterTop {
 		['name' => 'Редактор справочников', 'href' => '/edit_directory', 'icon' => 'fa fa-edit'],
 		['name' => 'Уведомления', 'href' => '/notice_events', 'icon' => 'fa fa-info-circle'],
 		['class' => 'dropdown-divider'],
+		['name' => 'Обновление компонентов', 'href' => '/updater', 'icon' => 'fa fa-refresh'],
+		['class' => 'dropdown-divider'],
 		['name' => 'Войти на веб-ресурс', 'href' => '/login', 'icon' => 'fa fa-power-off'],
 		['name' => 'Выход', 'href' => '/logout', 'icon' => 'fa fa-close'],
 	];

@@ -3,6 +3,7 @@
 namespace IcKomiApp\controllers;
 
 use IcKomiApp\models\Install;
+use IcKomiApp\models\Updater;
 use IcKomiApp\core\Functions; 
 use IcKomiApp\core\Controller;
 
@@ -50,12 +51,28 @@ class MainController extends Controller {
 		exit();
 	}
 
+	/*
+		Controller install function
+	*/
 	public function installAction() {
 		if(empty($_POST))
 			$this->view->render();
 		else {
 			if($_POST['action'] == 'install') {
 				echo json_encode((new Install())->install_database($_POST));
+			}
+		}
+	}
+
+	/*
+		Controller updater function
+	*/
+	public function updaterAction() {
+		if(empty($_POST) || empty($_POST['action']))
+			$this->view->render();
+		else {
+			if($_POST['action'] == 'update') {
+				echo json_encode((new Updater())->update_database($_FILES));
 			}
 		}
 	}

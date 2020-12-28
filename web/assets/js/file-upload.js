@@ -14,12 +14,12 @@ $(function () {
     'use strict';
 	
 	// Обработчик выбора файла для модальных окон
-	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view,#CarBlockImages').on('change', '#btnAddFileModalWindow', function() {
+	$('.modal-ic-komi-service-interface,#cardDtp,#cardAdm,#cardRepair,#cardDocument,.modal-ic-komi-view,#CarBlockImages,#formUpdater').on('change', '#btnAddFileModalWindow', function() {
 		// Запрещаем/разрешаем прикрепление более одного документа
 		if(!$(this).prop('multiple')) {
 			if($(this).closest('.form-row').find('#uploadFileContainer').find('.badge').length > 0) {
 				if($(this).data('showError') == 'window') {
-					showModal('ModalWindow', 'Запрещено прикреплять более одного документа!');
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Запрещено прикреплять более одного документа!', 'method' : 'show' });
 				} else {
 					$('#error-message').empty();
 					$('#error-message').html('Запрещено прикреплять более одного документа!');
@@ -40,7 +40,7 @@ $(function () {
 			var fileExtension = fileNameSplit[fileNameSplit.length - 1];
 			if(!regExp.test(fileExtension)) {
 				if($(this).data('showError') == 'window') {
-					showModal('ModalWindow', 'Запрещено прикреплять электронный образ документа с таким расширением! Возможна загрузка только PDF документов!');
+					$('.modal-ic-komi-basic').ModalBasicIcKomi({ 'textHeader' : 'Запрещено прикреплять электронный образ документа с таким расширением!', 'method' : 'show' });
 				} else {
 					$('#error-message').empty();
 					$('#error-message').html('Запрещено прикреплять электронный образ документа с таким расширением! Возможна загрузка только PDF документов!');

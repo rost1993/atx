@@ -1295,4 +1295,20 @@ $(document).ready(function() {
 			});
 		});
 	});
+
+	$('#btnUpdateDatabase').click(function() {
+		var query = new FormData();
+		$.each(filesList, function(key, value) {
+			query.append(key, value);
+		});
+
+		query.append('action', 'update');
+		filesList = [];
+		showDownloader(true);
+		AjaxQuery('POST', 'updater', query, function(result) {
+			showDownloader(false);
+			alert(result);
+			handlerAjaxResult(result, 'Комопненты базы данных обновлены!');
+		}, true);
+	});
 });

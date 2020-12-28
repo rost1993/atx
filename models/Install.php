@@ -833,7 +833,7 @@ class Install {
 			return false;
 		}
 
-    $sql = "CREATE TABLE `car_maintenance` (
+    $sql = "CREATE TABLE IF NOT EXISTS `car_maintenance` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'Уникальный ID ТС',
   `id_car` int(11) NOT NULL DEFAULT '0' COMMENT 'ID ТС',
   `date_maintenance` date DEFAULT NULL COMMENT 'Дата тех. обслуживания',

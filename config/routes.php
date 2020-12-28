@@ -190,4 +190,9 @@ return [
 		'controller' => 'main',
 		'action' => 'install'
 	],
+
+	'updater' => [
+		'controller' => 'main',
+		'action' => 'updater'
+	],
 ];
