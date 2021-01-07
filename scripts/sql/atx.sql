@@ -71,3 +71,186 @@ CREATE TRIGGER `trigger_delete_cars` BEFORE DELETE ON `cars` FOR EACH ROW BEGIN
   UPDATE adm_offense SET id_car = 0 WHERE id_car = OLD.id;
   UPDATE car_repair SET id_car = 0 WHERE id_car = OLD.id;
 END;
+
+$$
+DROP PROCEDURE IF EXISTS move_to_archive;
+
+$$
+CREATE PROCEDURE `move_to_archive` (IN `id_item` INT, IN `ind` INT)  NO SQL
+BEGIN
+DECLARE dd DATE;
+DECLARE tt INT;
+DECLARE ttt DECIMAL(10,2);
+DECLARE done INTEGER DEFAULT FALSE;
+
+DECLARE cur CURSOR FOR SELECT id FROM drivers_permission_spec_signals WHERE (end_date_permission, category) IN (SELECT MAX(end_date_permission), category from drivers_permission_spec_signals WHERE id_driver = id_item GROUP BY category); 
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+IF(ind = 1) THEN
+	SELECT MAX(end_date_osago) INTO dd FROM osago WHERE id_car = id_item;
+	UPDATE osago SET ibd_arx=1 WHERE id_car = id_item AND end_date_osago = dd;
+	UPDATE osago SET ibd_arx=2 WHERE id_car = id_item AND end_date_osago < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 2) THEN
+	SELECT MAX(date_certificate) INTO dd FROM technical_inspection  WHERE id_car = id_item;
+	UPDATE technical_inspection  SET ibd_arx=1 WHERE id_car = id_item AND date_certificate = dd;
+	UPDATE technical_inspection  SET ibd_arx=2 WHERE id_car = id_item AND date_certificate < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 3) THEN   
+	SELECT IFNULL(SUM(x.dist), 0) INTO ttt FROM (SELECT MAX(testimony_speedometer - IFNULL(speedometer_first_testimony.testimony, 0)) as dist, speedometer.id_speedometer FROM speedometer
+	LEFT JOIN speedometer_first_testimony ON speedometer_first_testimony.id_car=speedometer.id_car and speedometer_first_testimony.id_speedometer=speedometer.id_speedometer
+	WHERE speedometer.id_car = id_item GROUP BY speedometer.id_speedometer) x;
+	
+    UPDATE cars SET mileage = ttt WHERE id = id_item;
+    
+    SELECT MAX(id_speedometer) INTO tt FROM speedometer WHERE id_car = id_item;
+    SELECT MAX(date_speedometer) INTO dd FROM speedometer WHERE id_car = id_item AND id_speedometer = tt;
+	SELECT MAX(testimony_speedometer) INTO ttt FROM speedometer WHERE id_car = id_item AND date_speedometer = dd;
+    
+	UPDATE speedometer SET ibd_arx=2 WHERE id_car = id_item AND ibd_arx=1;
+	UPDATE speedometer SET ibd_arx=1 WHERE id_car = id_item AND date_speedometer = dd AND testimony_speedometer = ttt;
+END IF;
+
+
+IF(ind = 4) THEN
+	SELECT MAX(doc_date) INTO dd FROM drivers_document WHERE id_driver = id_item;
+	UPDATE drivers_document SET ibd_arx=1 WHERE id_driver = id_item AND doc_date = dd;
+	UPDATE drivers_document SET ibd_arx=2 WHERE id_driver = id_item AND doc_date < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 44) THEN
+	SELECT MAX(doc_date) INTO dd FROM drivers_document_tractor WHERE id_driver = id_item;
+	UPDATE drivers_document_tractor SET ibd_arx=1 WHERE id_driver = id_item AND doc_date = dd;
+	UPDATE drivers_document_tractor SET ibd_arx=2 WHERE id_driver = id_item AND doc_date < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 5) THEN
+	SELECT MAX(date_pts) INTO dd FROM pts WHERE id_car = id_item;
+	UPDATE pts SET ibd_arx=1 WHERE id_car = id_item AND date_pts = dd;
+	UPDATE pts SET ibd_arx=2 WHERE id_car = id_item AND IFNULL(date_pts, '1900-01-01') < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 6) THEN
+	SELECT MAX(date_certificate_reg) INTO dd FROM certificate_registration WHERE id_car = id_item;
+	UPDATE certificate_registration SET ibd_arx=1 WHERE id_car = id_item AND date_certificate_reg = dd;
+	UPDATE certificate_registration SET ibd_arx=2 WHERE id_car = id_item AND IFNULL(date_certificate_reg, '1900-01-01') < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 12) THEN
+	SELECT MAX(end_date) INTO dd FROM car_first_aid_kid WHERE id_car = id_item;
+	UPDATE car_first_aid_kid SET ibd_arx=1 WHERE id_car = id_item AND end_date = dd;
+	UPDATE car_first_aid_kid SET ibd_arx=2 WHERE id_car = id_item AND end_date < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 122) THEN
+	SELECT MAX(end_date) INTO dd FROM car_fire_extinguisher WHERE id_car = id_item;
+	UPDATE car_fire_extinguisher SET ibd_arx=1 WHERE id_car = id_item AND end_date = dd;
+	UPDATE car_fire_extinguisher SET ibd_arx=2 WHERE id_car = id_item AND end_date < dd AND ibd_arx=1;
+END IF;
+
+
+IF(ind = 1222) THEN
+	SELECT MAX(issued_date) INTO dd FROM car_warning_triangle WHERE id_car = id_item;
+	UPDATE car_warning_triangle SET ibd_arx=1 WHERE id_car = id_item AND issued_date = dd;
+	UPDATE car_warning_triangle SET ibd_arx=2 WHERE id_car = id_item AND issued_date < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 12222) THEN
+	SELECT MAX(start_date) INTO dd FROM car_battery WHERE id_car = id_item;
+	UPDATE car_battery SET ibd_arx=1 WHERE id_car = id_item AND start_date = dd;
+	UPDATE car_battery SET ibd_arx=2 WHERE id_car = id_item AND start_date < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 122222) THEN
+	SELECT MAX(date_issued_dvr) INTO dd FROM car_dvr WHERE id_car = id_item;
+	UPDATE car_dvr SET ibd_arx=1 WHERE id_car = id_item AND date_issued_dvr = dd;
+	UPDATE car_dvr SET ibd_arx=2 WHERE id_car = id_item AND date_issued_dvr < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 15) THEN
+	SELECT MAX(date_end_dopog) INTO dd FROM drivers_dopog WHERE id_car = id_item;
+	UPDATE drivers_dopog SET ibd_arx=1 WHERE id_car = id_item AND date_end_dopog  = dd;
+	UPDATE drivers_dopog SET ibd_arx=2 WHERE id_car = id_item AND date_end_dopog  < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 16) THEN
+	SELECT MAX(date_end_dopog) INTO dd FROM cars_dopog WHERE id_car = id_item;
+	UPDATE cars_dopog SET ibd_arx=1 WHERE id_car = id_item AND date_end_dopog  = dd;
+	UPDATE cars_dopog SET ibd_arx=2 WHERE id_car = id_item AND date_end_dopog  < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 17) THEN
+	SELECT MAX(date_next_calibration) INTO dd FROM car_calibration WHERE id_car = id_item;
+	UPDATE car_calibration SET ibd_arx=1 WHERE id_car = id_item AND date_next_calibration = dd;
+	UPDATE car_calibration SET ibd_arx=2 WHERE id_car = id_item AND date_next_calibration < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 18) THEN
+	SELECT MAX(date_end_card) INTO dd FROM drivers_card WHERE id_car = id_item;
+	UPDATE drivers_card SET ibd_arx=1 WHERE id_car = id_item AND date_end_card  = dd;
+	UPDATE drivers_card SET ibd_arx=2 WHERE id_car = id_item AND date_end_card  < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 19) THEN
+	SELECT MAX(date_end_skzi) INTO dd FROM car_tachograph WHERE id_car = id_item;
+	UPDATE car_tachograph SET ibd_arx=1 WHERE id_car = id_item AND date_end_skzi = dd;
+	UPDATE car_tachograph SET ibd_arx=2 WHERE id_car = id_item AND date_end_skzi < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 20) THEN
+	SELECT MAX(date_glonass) INTO dd FROM car_glonass WHERE id_car = id_item;
+	UPDATE car_glonass SET ibd_arx=1 WHERE id_car = id_item AND date_glonass = dd;
+	UPDATE car_glonass SET ibd_arx=2 WHERE id_car = id_item AND date_glonass  < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 21) THEN
+	SELECT MAX(date_maintenance) INTO dd FROM car_maintenance WHERE id_car = id_item;
+	UPDATE car_maintenance SET ibd_arx=1 WHERE id_car = id_item AND date_maintenance = dd;
+	UPDATE car_maintenance SET ibd_arx=2 WHERE id_car = id_item AND date_maintenance  < dd AND ibd_arx=1;
+END IF;
+END;
+
+$$
+DROP PROCEDURE IF EXISTS `add_testimony_speedometer`;
+
+$$
+CREATE PROCEDURE `add_testimony_speedometer`(IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `old_date_testimony` DATE, IN `polz` INT, IN `type_operation` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN
+DECLARE num_speed INT;
+DECLARE reason INT;
+DECLARE id_speed INT;
+
+IF(type_operation = 1) THEN
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%РЕМОНТ%' LIMIT 1;
+ELSEIF(type_operation = 2) THEN
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%ТЕХНИЧЕСКИЙ ОСМОТР%' LIMIT 1;
+ELSE
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ%' LIMIT 1;
+END IF;
+
+IF (ind = 1) THEN
+  SELECT num_speedometer INTO num_speed FROM cars WHERE id=car;
+  INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+END IF;
+
+IF(ind = 2) THEN
+  SELECT IFNULL(id, 0), IFNULL(id_speedometer, 0) INTO id_speed, num_speed FROM speedometer WHERE id_car=car AND testimony_speedometer=old_testimony AND date_speedometer = old_date_testimony LIMIT 1;
+
+  IF(id_speed IS NULL) THEN
+    SELECT num_speedometer INTO num_speed FROM cars WHERE id=car LIMIT 1;
+    INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+  ELSE
+    UPDATE speedometer SET id_speedometer=num_speed, testimony_speedometer=testimony, reason_speedometer=reason, date_speedometer=date_testimony, sh_polz=polz WHERE id=id_speed;
+  END IF;
+
+END IF;
+
+CALL move_to_archive(car, 3);
+END

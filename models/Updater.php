@@ -78,7 +78,8 @@ class Updater extends Model {
 
 		$sql = '';
 		while (!feof($fp)) {
-  			$buffer = trim(fgets($fp, 4096));
+  			//$buffer = trim(fgets($fp, 4096));
+  			$buffer = fgets($fp, 4096);
 
     		if(preg_match('/\$\$/ui', $buffer)) {
 
