@@ -34,7 +34,7 @@ $(function () {
 			regExp = new RegExp($(this).prop('accept').replace(/\./g, '').replace(/\,/g, '|'), 'i');
 
 		var files = this.files;
-		
+
 		for(var i = 0; i < files.length; i++) {
 			var fileNameSplit = files[i].name.split('.');
 			var fileExtension = fileNameSplit[fileNameSplit.length - 1];
@@ -72,6 +72,7 @@ $(function () {
 			// Ищем ID элемента, который является хранилищем для файлов
 			var uploadContainer = ($(this).data('uploadContainer') === undefined) ? 'uploadFileContainer' : $(this).data('uploadContainer');
 			$('#' + uploadContainer).append(html);
+			$(this).val('');
 		}
 	});
 

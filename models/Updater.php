@@ -7,48 +7,22 @@ use IcKomiApp\core\Model;
 use IcKomiApp\core\Functions;
 use IcKomiApp\lib\Database\DB;
 
+/*
+	Класс обновлений компонентов базы данных.
+	Необходимо передать файл в формате .sql, который должен содержать строки с SQL кодом
+	Каждый новый SQL-запрос должен разделяться знаками $$ для программы это будет сигналом того что следует обработать новый SQL-запрос.
+
+	Рекомендуется помещать файлы для обновления компонентов базы данных в директорию sql, которая находится в корне движка.
+
+	Rostislav Gashin (rost1993), 2021
+*/
 class Updater extends Model {
 
+	// Глобальная переменная с тектом ошибки
 	private $message_error = '';
+
+	// Глобальный массив с перечислением 
 	protected $array_file_extension = ['sql'];
-
-
-	private $db_name = 'atx';
-	private $host = 'localhost';
-	private $login = 'atx';
-	private $password = 'AtxDatabase2020';
-	private $charset = 'utf8mb4';
-
-
-	private function connect() {
-		$link = mysqli_connect($this->host, $this->login, $this->password, $this->db_name);
-		
-		if(!$link)
-			return null;
-		
-		mysqli_query($link, "SET NAMES '" . $this->charset . "'");
-		return $link;
-	}
-
-	private function disconnect($link) {
-		return mysqli_close($link);
-	}
-
-	private function multi_query($link, $sql, $error) {
-		if(!mysqli_multi_query($link, $sql)) {
-			$this->message_error = $error;
-			return false;
-		}
-
-		do {
-        	if ($result = mysqli_store_result($link))
-            	mysqli_free_result($result);
-            if(!mysqli_more_results($link))
-            	break;
-    	} while (mysqli_next_result($link));
-    	return true;
-	}
-
 
 	/*
 		Функция загрузки файла обновления базы данных
@@ -61,19 +35,16 @@ class Updater extends Model {
 		if(empty($files))
 			return [-2, 'Не передан файл обновления базы данных!'];
 
-		if(($link = $this->connect()) === null)
-			return [-2, 'Ошибка при подключении к MySQL!'];
-
 		foreach ($files as $file) {
 			if(!$this->check_file($file))
 				return [-2, $this->message_error];
 
 
-			if(!$this->processing_file($link, $file))
+			if(!$this->processing_file($file))
 				return [-2, $this->message_error];
 		}
 
-		return true;
+		return [1];
 	}
 
 	/*
@@ -89,16 +60,21 @@ class Updater extends Model {
 			$this->message_error = 'Файл с таким расширением запрещено загружать на сервер!';
 			return false;
 		}
-
 		return true;
 	}
 
 	/*
-		Обработка файла
+		Построчная обработка файла
+		$file - массив с файлом, в котором содержится вся служебная информация о файле. По сути это один из элементов глобального массива $_FILES
+		Возвращаемые значения:
+			TRUE - в случае успешного выполения
+			FALSE - в случае любой ошибки при этом будет установления переменная $this->message_error с текстом ошибки
 	*/
-	private function processing_file($link, $file) {
-
-		$fp = fopen($file['tmp_name'], 'r');
+	private function processing_file($file) {
+		if(($fp = fopen($file['tmp_name'], 'r')) === false) {
+			$this->message_error = "Ошибка при открытии файла!";
+			return false;
+		}
 
 		$sql = '';
 		while (!feof($fp)) {
@@ -106,24 +82,26 @@ class Updater extends Model {
 
     		if(preg_match('/\$\$/ui', $buffer)) {
 
-    			if(!$this->query_database($link, $sql))
+    			if(!$this->query_database($sql))
     				return false;
 
     			$sql = '';
     			continue;
     		}
     		
-    		$sql .= $buffer;
+    		$sql .= ' ' . $buffer;
 		}
 
-		if(!$this->query_database($link, $sql))
+		if(!$this->query_database($sql))
     		return false;
 
+    	// Close file
 		fclose($fp);
 
-		$this->message_error = $sql;
-		return false;
-		//return true;
+		// Remove temp file
+		unlink($file['tmp_name']);
+
+		return true;
 	}
 
 	/*
@@ -133,25 +111,22 @@ class Updater extends Model {
 			TRUE - в случае успешного выполнения
 			FALSE - в случае ошибки, будет установлена переменная message_error
 	*/
-	private function query_database($link, $sql) {
+	private function query_database($sql) {
 		if(empty($sql))
 			return true;
 
 		if(mb_strlen(trim($sql)) == 0)
 			return true;
 
-		if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров adm_offense!'))
-			return false;
-
-		//try {
-			/*if(DB::query($sql, DB::OTHER) === false) {
+		try {
+			if(DB::query($sql, DB::OTHER) === false) {
 				$this->message_error = "Ошибка при выполнении запроса к базе данных: " . $sql;
 				return false;
-			}*/
-		/*} catch(Exception $error) {
+			}
+		} catch(Exception $error) {
 			$this->message_error = $error;
 			return false;
-		}*/
+		}
 
 		return true;
 	}

@@ -15,7 +15,7 @@
 					<div class='form-row'>
 				
 						<div class='col-4 mb-1 text-right'>
-							<label for='comment_certificate_reg' class='font-weight-bold fs-13'>Файл обновлений с расширением .sql (пример example.sql)</label>
+							<label for='comment_certificate_reg' class='font-weight-bold fs-13'>Файл обновлений с расширением <span class="text-danger">.sql</span> (пример <span class="text-danger">example.sql</span>)</label>
 						</div>
 					
 						<div class='col-2 mb-1 text-center'>

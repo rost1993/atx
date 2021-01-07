@@ -1307,7 +1307,7 @@ $(document).ready(function() {
 		showDownloader(true);
 		AjaxQuery('POST', 'updater', query, function(result) {
 			showDownloader(false);
-			alert(result);
+			$('#uploadFileContainer').html('');
 			handlerAjaxResult(result, 'Комопненты базы данных обновлены!');
 		}, true);
 	});
