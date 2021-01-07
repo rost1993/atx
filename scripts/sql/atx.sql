@@ -1,3 +1,83 @@
+$$
+DROP PROCEDURE IF EXISTS `add_testimony_speedometer`;
+
+$$
+CREATE PROCEDURE `add_testimony_speedometer`(IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `old_date_testimony` DATE, IN `polz` INT, IN `type_operation` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN
+DECLARE num_speed INT;
+DECLARE reason INT;
+DECLARE id_speed INT;
+
+IF(type_operation = 1) THEN
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%РЕМОНТ%' LIMIT 1;
+ELSEIF(type_operation = 2) THEN
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%ТЕХНИЧЕСКИЙ ОСМОТР%' LIMIT 1;
+ELSE
+  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ%' LIMIT 1;
+END IF;
+
+IF (ind = 1) THEN
+  SELECT num_speedometer INTO num_speed FROM cars WHERE id=car;
+  INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+END IF;
+
+IF(ind = 2) THEN
+  SELECT IFNULL(id, 0), IFNULL(id_speedometer, 0) INTO id_speed, num_speed FROM speedometer WHERE id_car=car AND testimony_speedometer=old_testimony AND date_speedometer = old_date_testimony LIMIT 1;
+
+  IF(id_speed IS NULL) THEN
+    SELECT num_speedometer INTO num_speed FROM cars WHERE id=car LIMIT 1;
+    INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
+  ELSE
+    UPDATE speedometer SET id_speedometer=num_speed, testimony_speedometer=testimony, reason_speedometer=reason, date_speedometer=date_testimony, sh_polz=polz WHERE id=id_speed;
+  END IF;
+
+END IF;
+
+CALL move_to_archive(car, 3);
+END
+
+$$
+INSERT INTO `s2i_klass` (`nomer`, `text`, `kod`) SELECT '17', 'ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ ТРАНСПОРТНОГО СРЕДСТВА', IFNULL(MAX(kod), 0)+1 FROM `s2i_klass` WHERE nomer=17;
+
+$$
+ALTER TABLE `technical_inspection` MODIFY id INT NOT NULL;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `PRIMARY`;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `UNIQ_IND_TECHNICAL_SERTIFICATE`;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `IND_TECHNICAL_SERTIFICATE`;
+
+$$
+ALTER TABLE `technical_inspection` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_IND_TECHNICAL_SERTIFICATE` (`id_car`,`date_certificate`), ADD KEY `IND_TECHNICAL_SERTIFICATE` (`ibd_arx`,`end_date_certificate`);
+
+$$
+ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;
+
+$$
+DROP TRIGGER IF EXISTS insert_table_technical_inspection;
+
+$$
+DROP TRIGGER IF EXISTS update_table_technical_inspection;
+
+$$
+CREATE TRIGGER `insert_table_technical_inspection` BEFORE INSERT ON `technical_inspection` FOR EACH ROW BEGIN
+SET new.dt_reg=now();
+SET new.dt_izm=now();
+CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_certificate, null, new.sh_polz, 2);
+END;
+
+$$
+CREATE TRIGGER `update_table_technical_inspection` BEFORE UPDATE ON `technical_inspection` FOR EACH ROW BEGIN
+SET new.dt_izm=now();
+IF(new.car_mileage <> old.car_mileage OR new.date_certificate <> old.date_certificate) THEN
+    CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_certificate, old.date_certificate, new.sh_polz, 2);
+    END IF;
+END;
+
+$$
 CREATE TABLE IF NOT EXISTS `car_maintenance` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'Уникальный ID ТС',
   `id_car` int(11) NOT NULL DEFAULT '0' COMMENT 'ID ТС',
@@ -219,38 +299,22 @@ END IF;
 END;
 
 $$
-DROP PROCEDURE IF EXISTS `add_testimony_speedometer`;
+ALTER TABLE `car_repair` MODIFY id INT NOT NULL;
 
 $$
-CREATE PROCEDURE `add_testimony_speedometer`(IN `ind` INT, IN `car` INT, IN `testimony` INT, IN `old_testimony` INT, IN `date_testimony` DATE, IN `old_date_testimony` DATE, IN `polz` INT, IN `type_operation` INT) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN
-DECLARE num_speed INT;
-DECLARE reason INT;
-DECLARE id_speed INT;
+ALTER TABLE `car_repair` DROP INDEX IF EXISTS `PRIMARY`;
 
-IF(type_operation = 1) THEN
-  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%РЕМОНТ%' LIMIT 1;
-ELSEIF(type_operation = 2) THEN
-  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND UPPER(text) LIKE '%ТЕХНИЧЕСКИЙ ОСМОТР%' LIMIT 1;
-ELSE
-  SELECT kod INTO reason FROM s2i_klass WHERE nomer=17 AND text LIKE '%ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ%' LIMIT 1;
-END IF;
+$$
+ALTER TABLE `car_repair` DROP INDEX IF EXISTS `ind_car_repair_ibd_arx`;
 
-IF (ind = 1) THEN
-  SELECT num_speedometer INTO num_speed FROM cars WHERE id=car;
-  INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
-END IF;
+$$
+ALTER TABLE `car_repair` DROP INDEX IF EXISTS `id_car`;
 
-IF(ind = 2) THEN
-  SELECT IFNULL(id, 0), IFNULL(id_speedometer, 0) INTO id_speed, num_speed FROM speedometer WHERE id_car=car AND testimony_speedometer=old_testimony AND date_speedometer = old_date_testimony LIMIT 1;
+$$
+ALTER TABLE `car_repair` DROP INDEX IF EXISTS `date_start_repair`;
 
-  IF(id_speed IS NULL) THEN
-    SELECT num_speedometer INTO num_speed FROM cars WHERE id=car LIMIT 1;
-    INSERT INTO speedometer (id_car, id_speedometer, testimony_speedometer, reason_speedometer, date_speedometer, sh_polz) VALUES (car, num_speed, testimony, reason, date_testimony, polz);
-  ELSE
-    UPDATE speedometer SET id_speedometer=num_speed, testimony_speedometer=testimony, reason_speedometer=reason, date_speedometer=date_testimony, sh_polz=polz WHERE id=id_speed;
-  END IF;
-
-END IF;
-
-CALL move_to_archive(car, 3);
-END
+$$
+ALTER TABLE `car_repair` ADD PRIMARY KEY (`id`), ADD KEY `ind_car_repair_ibd_arx` (`ibd_arx`), ADD KEY `id_car` (`id_car`), ADD KEY `date_start_repair` (`date_start_repair`);
+		
+$$
+ALTER TABLE `car_repair` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ремонта', AUTO_INCREMENT=1;

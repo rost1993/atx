@@ -1282,9 +1282,8 @@ IF(new.mileage_maintenance <> old.mileage_maintenance OR new.date_maintenance <>
   CALL add_testimony_speedometer(2, new.id_car, new.mileage_maintenance, old.mileage_maintenance, new.date_maintenance, old.date_maintenance, new.sh_polz, 3);
 END IF;
 END;";
-
-    if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров car_maintenance!'))
-      return false;
+		if(!$this->multi_query($link, $sql, 'Ошибка при создании триггеров car_maintenance!'))
+			return false;
 
 		return true;
 	}
@@ -1340,20 +1339,19 @@ END;";
 		$sql = "ALTER TABLE `car_link_document` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `certificate_registration` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `certificate_registration` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `car_fire_extinguisher` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `car_fire_extinguisher` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `car_first_aid_kid` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `car_first_aid_kid` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `car_warning_triangle` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `car_warning_triangle` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
-
-    $sql = "ALTER TABLE `osago` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `osago` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID записи', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 
 		$sql = "ALTER TABLE `car_repair` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ремонта', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
@@ -1403,11 +1401,11 @@ END;";
 		$sql = "ALTER TABLE `users` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Системный номер пользователя', AUTO_INCREMENT=1;";
 		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 
-    $sql = "ALTER TABLE `car_maintenance` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ТС', AUTO_INCREMENT=1;";
-    mysqli_query($link, $sql);
+		$sql = "ALTER TABLE `car_maintenance` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ТС', AUTO_INCREMENT=1;";
+		mysqli_query($link, $sql);
 	}
 
 	private function create_index($link) {
