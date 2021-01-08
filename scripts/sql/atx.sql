@@ -36,123 +36,6 @@ CALL move_to_archive(car, 3);
 END
 
 $$
-INSERT INTO `s2i_klass` (`nomer`, `text`, `kod`) SELECT '17', 'ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ ТРАНСПОРТНОГО СРЕДСТВА', IFNULL(MAX(kod), 0)+1 FROM `s2i_klass` WHERE nomer=17;
-
-$$
-ALTER TABLE `technical_inspection` MODIFY id INT NOT NULL;
-
-$$
-ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `PRIMARY`;
-
-$$
-ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `UNIQ_IND_TECHNICAL_SERTIFICATE`;
-
-$$
-ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `IND_TECHNICAL_SERTIFICATE`;
-
-$$
-ALTER TABLE `technical_inspection` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_IND_TECHNICAL_SERTIFICATE` (`id_car`,`date_certificate`), ADD KEY `IND_TECHNICAL_SERTIFICATE` (`ibd_arx`,`end_date_certificate`);
-
-$$
-ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;
-
-$$
-DROP TRIGGER IF EXISTS insert_table_technical_inspection;
-
-$$
-DROP TRIGGER IF EXISTS update_table_technical_inspection;
-
-$$
-CREATE TRIGGER `insert_table_technical_inspection` BEFORE INSERT ON `technical_inspection` FOR EACH ROW BEGIN
-SET new.dt_reg=now();
-SET new.dt_izm=now();
-CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_certificate, null, new.sh_polz, 2);
-END;
-
-$$
-CREATE TRIGGER `update_table_technical_inspection` BEFORE UPDATE ON `technical_inspection` FOR EACH ROW BEGIN
-SET new.dt_izm=now();
-IF(new.car_mileage <> old.car_mileage OR new.date_certificate <> old.date_certificate) THEN
-    CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_certificate, old.date_certificate, new.sh_polz, 2);
-    END IF;
-END;
-
-$$
-CREATE TABLE IF NOT EXISTS `car_maintenance` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'Уникальный ID ТС',
-  `id_car` int(11) NOT NULL DEFAULT '0' COMMENT 'ID ТС',
-  `date_maintenance` date DEFAULT NULL COMMENT 'Дата тех. обслуживания',
-  `mileage_maintenance` double(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Пробег тех. обслуживания',
-  `path_to_file` varchar(100) DEFAULT NULL COMMENT 'Путь к файлу',
-  `file_extension` varchar(50) DEFAULT NULL COMMENT 'Расширение файла',
-  `ibd_arx` int(11) NOT NULL DEFAULT '1' COMMENT 'Архив',
-  `sh_polz` int(11) NOT NULL DEFAULT '0' COMMENT 'Шифр пользователя',
-  `dt_reg` int(11) DEFAULT NULL COMMENT 'Дата ввода',
-  `dt_izm` int(11) DEFAULT NULL COMMENT 'Дата корректировки'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Техническое обслуживание ТС';
-
-$$
-DROP TRIGGER IF EXISTS ins_car_maintenance;
-
-$$
-CREATE TRIGGER `ins_car_maintenance` BEFORE INSERT ON `car_maintenance` FOR EACH ROW BEGIN
-SET new.dt_reg = NOW();
-SET new.dt_izm = NOW();
-CALL add_testimony_speedometer(1, new.id_car, new.mileage_maintenance, 0, new.date_maintenance, NULL, new.sh_polz, 3);
-END;
-
-$$
-DROP TRIGGER IF EXISTS upd_car_maintenance;
-
-$$
-CREATE TRIGGER `upd_car_maintenance` BEFORE UPDATE ON `car_maintenance` FOR EACH ROW BEGIN
-SET new.dt_izm = NOW();
-IF(new.mileage_maintenance <> old.mileage_maintenance OR new.date_maintenance <> old.date_maintenance) THEN
-CALL add_testimony_speedometer(2, new.id_car, new.mileage_maintenance, old.mileage_maintenance, new.date_maintenance, old.date_maintenance, new.sh_polz, 3);
-END IF;
-END;
-
-$$
-DROP INDEX IF EXISTS `ind_car_maintenance` ON `car_maintenance`;
-
-$$
-ALTER TABLE `car_maintenance` ADD PRIMARY KEY (`id`), ADD KEY `ind_car_maintenance` (`id_car`,`date_maintenance`,`ibd_arx`);
-
-$$
-ALTER TABLE `car_maintenance` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ТС', AUTO_INCREMENT=1;
-
-$$
-DROP TRIGGER IF EXISTS trigger_delete_cars;
-
-$$
-CREATE TRIGGER `trigger_delete_cars` BEFORE DELETE ON `cars` FOR EACH ROW BEGIN
-  DELETE FROM cars_dopog WHERE id_car = OLD.id;
-  DELETE FROM cars_old_gos_znak WHERE id_car = OLD.id;
-  DELETE FROM cars_wheels WHERE id_car = OLD.id;
-  DELETE FROM car_battery WHERE id_car = OLD.id;
-  DELETE FROM car_calibration WHERE id_car = OLD.id;
-  DELETE FROM car_dvr WHERE id_car = OLD.id;
-  DELETE FROM car_fire_extinguisher WHERE id_car = OLD.id;
-  DELETE FROM car_first_aid_kid WHERE id_car = OLD.id;
-  DELETE FROM car_for_driver WHERE car_id = OLD.id;
-  DELETE FROM car_glonass WHERE id_car = OLD.id;
-  DELETE FROM car_link_document WHERE id_car = OLD.id;
-  DELETE FROM car_tachograph WHERE id_car = OLD.id;
-  DELETE FROM car_warning_triangle WHERE id_car = OLD.id;
-  DELETE FROM certificate_registration WHERE id_car = OLD.id;
-  DELETE FROM osago WHERE id_car = OLD.id;
-  DELETE FROM pts WHERE id_car = OLD.id;
-  DELETE FROM speedometer WHERE id_car = OLD.id;
-  DELETE FROM speedometer_first_testimony WHERE id_car = OLD.id;
-  DELETE FROM technical_inspection WHERE id_car = OLD.id;
-  DELETE FROM car_maintenance WHERE id_car = OLD.id;
-  DELETE FROM files WHERE category_file = 13 AND id_object = OLD.id;
-  UPDATE dtp SET id_car = 0 WHERE id_car = OLD.id;
-  UPDATE adm_offense SET id_car = 0 WHERE id_car = OLD.id;
-  UPDATE car_repair SET id_car = 0 WHERE id_car = OLD.id;
-END;
-
-$$
 DROP PROCEDURE IF EXISTS move_to_archive;
 
 $$
@@ -299,6 +182,48 @@ END IF;
 END;
 
 $$
+INSERT INTO `s2i_klass` (`nomer`, `text`, `kod`) SELECT '17', 'ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ ТРАНСПОРТНОГО СРЕДСТВА', IFNULL(MAX(kod), 0)+1 FROM `s2i_klass` WHERE nomer=17;
+
+$$
+ALTER TABLE `technical_inspection` MODIFY id INT NOT NULL;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `PRIMARY`;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `UNIQ_IND_TECHNICAL_SERTIFICATE`;
+
+$$
+ALTER TABLE `technical_inspection` DROP INDEX IF EXISTS `IND_TECHNICAL_SERTIFICATE`;
+
+$$
+ALTER TABLE `technical_inspection` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_IND_TECHNICAL_SERTIFICATE` (`id_car`,`date_certificate`), ADD KEY `IND_TECHNICAL_SERTIFICATE` (`ibd_arx`,`end_date_certificate`);
+
+$$
+ALTER TABLE `technical_inspection` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный номер', AUTO_INCREMENT=1;
+
+$$
+DROP TRIGGER IF EXISTS insert_table_technical_inspection;
+
+$$
+DROP TRIGGER IF EXISTS update_table_technical_inspection;
+
+$$
+CREATE TRIGGER `insert_table_technical_inspection` BEFORE INSERT ON `technical_inspection` FOR EACH ROW BEGIN
+SET new.dt_reg=now();
+SET new.dt_izm=now();
+CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_certificate, null, new.sh_polz, 2);
+END;
+
+$$
+CREATE TRIGGER `update_table_technical_inspection` BEFORE UPDATE ON `technical_inspection` FOR EACH ROW BEGIN
+SET new.dt_izm=now();
+IF(new.car_mileage <> old.car_mileage OR new.date_certificate <> old.date_certificate) THEN
+    CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_certificate, old.date_certificate, new.sh_polz, 2);
+    END IF;
+END;
+
+$$
 ALTER TABLE `car_repair` MODIFY id INT NOT NULL;
 
 $$
@@ -315,6 +240,109 @@ ALTER TABLE `car_repair` DROP INDEX IF EXISTS `date_start_repair`;
 
 $$
 ALTER TABLE `car_repair` ADD PRIMARY KEY (`id`), ADD KEY `ind_car_repair_ibd_arx` (`ibd_arx`), ADD KEY `id_car` (`id_car`), ADD KEY `date_start_repair` (`date_start_repair`);
-		
+
 $$
 ALTER TABLE `car_repair` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ремонта', AUTO_INCREMENT=1;
+
+$$
+DROP TRIGGER IF EXISTS insert_table_car_repair;
+
+$$
+DROP TRIGGER IF EXISTS update_table_car_repair;
+
+$$
+CREATE TRIGGER `insert_table_car_repair` BEFORE INSERT ON `car_repair` FOR EACH ROW BEGIN
+SET new.dt_reg=now();
+SET new.dt_izm=now();
+CALL add_testimony_speedometer(1, new.id_car, new.car_mileage, 0, new.date_start_repair, null, new.sh_polz, 1);
+END;
+
+$$
+CREATE TRIGGER `update_table_car_repair` BEFORE UPDATE ON `car_repair` FOR EACH ROW BEGIN
+SET new.dt_izm=now();
+     IF(new.car_mileage <> old.car_mileage OR new.date_start_repair <> old.date_start_repair) THEN
+    	 CALL add_testimony_speedometer(2, new.id_car, new.car_mileage, old.car_mileage, new.date_start_repair, old.date_start_repair, new.sh_polz, 1);
+    END IF;
+END;
+
+$$
+CREATE TABLE IF NOT EXISTS `car_maintenance` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'Уникальный ID ТС',
+  `id_car` int(11) NOT NULL DEFAULT '0' COMMENT 'ID ТС',
+  `date_maintenance` date DEFAULT NULL COMMENT 'Дата тех. обслуживания',
+  `mileage_maintenance` double(10,2) NOT NULL DEFAULT '0.00' COMMENT 'Пробег тех. обслуживания',
+  `path_to_file` varchar(100) DEFAULT NULL COMMENT 'Путь к файлу',
+  `file_extension` varchar(50) DEFAULT NULL COMMENT 'Расширение файла',
+  `ibd_arx` int(11) NOT NULL DEFAULT '1' COMMENT 'Архив',
+  `sh_polz` int(11) NOT NULL DEFAULT '0' COMMENT 'Шифр пользователя',
+  `dt_reg` int(11) DEFAULT NULL COMMENT 'Дата ввода',
+  `dt_izm` int(11) DEFAULT NULL COMMENT 'Дата корректировки'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Техническое обслуживание ТС';
+
+$$
+DROP TRIGGER IF EXISTS ins_car_maintenance;
+
+$$
+CREATE TRIGGER `ins_car_maintenance` BEFORE INSERT ON `car_maintenance` FOR EACH ROW BEGIN
+SET new.dt_reg = NOW();
+SET new.dt_izm = NOW();
+CALL add_testimony_speedometer(1, new.id_car, new.mileage_maintenance, 0, new.date_maintenance, NULL, new.sh_polz, 3);
+END;
+
+$$
+DROP TRIGGER IF EXISTS upd_car_maintenance;
+
+$$
+CREATE TRIGGER `upd_car_maintenance` BEFORE UPDATE ON `car_maintenance` FOR EACH ROW BEGIN
+SET new.dt_izm = NOW();
+IF(new.mileage_maintenance <> old.mileage_maintenance OR new.date_maintenance <> old.date_maintenance) THEN
+CALL add_testimony_speedometer(2, new.id_car, new.mileage_maintenance, old.mileage_maintenance, new.date_maintenance, old.date_maintenance, new.sh_polz, 3);
+END IF;
+END;
+
+
+$$
+ALTER TABLE `car_maintenance` MODIFY id INT NOT NULL;
+
+$$
+ALTER TABLE `car_maintenance` DROP INDEX IF EXISTS `PRIMARY`;
+
+$$
+ALTER TABLE `car_maintenance` DROP INDEX IF EXISTS `ind_car_maintenance`;
+
+$$
+ALTER TABLE `car_maintenance` ADD PRIMARY KEY (`id`), ADD KEY `ind_car_maintenance` (`id_car`,`date_maintenance`,`ibd_arx`);
+
+$$
+ALTER TABLE `car_maintenance` MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Уникальный ID ТС', AUTO_INCREMENT=1;
+
+$$
+DROP TRIGGER IF EXISTS trigger_delete_cars;
+
+$$
+CREATE TRIGGER `trigger_delete_cars` BEFORE DELETE ON `cars` FOR EACH ROW BEGIN
+  DELETE FROM cars_dopog WHERE id_car = OLD.id;
+  DELETE FROM cars_old_gos_znak WHERE id_car = OLD.id;
+  DELETE FROM cars_wheels WHERE id_car = OLD.id;
+  DELETE FROM car_battery WHERE id_car = OLD.id;
+  DELETE FROM car_calibration WHERE id_car = OLD.id;
+  DELETE FROM car_dvr WHERE id_car = OLD.id;
+  DELETE FROM car_fire_extinguisher WHERE id_car = OLD.id;
+  DELETE FROM car_first_aid_kid WHERE id_car = OLD.id;
+  DELETE FROM car_for_driver WHERE car_id = OLD.id;
+  DELETE FROM car_glonass WHERE id_car = OLD.id;
+  DELETE FROM car_link_document WHERE id_car = OLD.id;
+  DELETE FROM car_tachograph WHERE id_car = OLD.id;
+  DELETE FROM car_warning_triangle WHERE id_car = OLD.id;
+  DELETE FROM certificate_registration WHERE id_car = OLD.id;
+  DELETE FROM osago WHERE id_car = OLD.id;
+  DELETE FROM pts WHERE id_car = OLD.id;
+  DELETE FROM speedometer WHERE id_car = OLD.id;
+  DELETE FROM speedometer_first_testimony WHERE id_car = OLD.id;
+  DELETE FROM technical_inspection WHERE id_car = OLD.id;
+  DELETE FROM car_maintenance WHERE id_car = OLD.id;
+  DELETE FROM files WHERE category_file = 13 AND id_object = OLD.id;
+  UPDATE dtp SET id_car = 0 WHERE id_car = OLD.id;
+  UPDATE adm_offense SET id_car = 0 WHERE id_car = OLD.id;
+  UPDATE car_repair SET id_car = 0 WHERE id_car = OLD.id;
+END;
