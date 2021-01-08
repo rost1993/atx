@@ -3,14 +3,16 @@
 namespace IcKomiApp\lib\Database;
 
 use IcKomiApp\lib\Database\DatabaseBasic;
+use IcKomiApp\core\Functions;
 
 class DatabaseMysql extends DatabaseBasic {
 
 	private function connect() {
-		$link = mysqli_connect($this->host, $this->login, $this->password, $this->db_name);
+
+		$link = @mysqli_connect($this->host, $this->login, $this->password, $this->db_name);
 		
 		if(!$link) {
-			$this->msgError = mysqli_connect_error($link);
+			$this->msgError = mysqli_connect_error();
 			return null;
 		}
 		

@@ -4,9 +4,14 @@ namespace IcKomiApp\models;
 
 use IcKomiApp\core\Functions;
 
-class Install {
+/*
+    Специализированный класс для создания базы данных на сервере.
+    Происзодит установка базы данных, таблиц, индексов, триггеров и процедур, которые позволяют запустить информационную систему
 
-	private $db_name = 'mysql';
+    Copyright: Rostislav Gashin (rost1993), Russia, Syktyvkar, 2021
+*/
+class Install {
+  private $db_name = 'mysql';
 	private $host = 'localhost';
 	private $login = '';
 	private $password = '';
@@ -40,7 +45,7 @@ class Install {
 		}
 
 		do {
-        	if ($result = mysqli_store_result($link))
+      if ($result = mysqli_store_result($link))
             	mysqli_free_result($result);
             if(!mysqli_more_results($link))
             	break;
@@ -1697,6 +1702,12 @@ IF(ind = 20) THEN
 	SELECT MAX(date_glonass) INTO dd FROM car_glonass WHERE id_car = id_item;
 	UPDATE car_glonass SET ibd_arx=1 WHERE id_car = id_item AND date_glonass = dd;
 	UPDATE car_glonass SET ibd_arx=2 WHERE id_car = id_item AND date_glonass  < dd AND ibd_arx=1;
+END IF;
+
+IF(ind = 21) THEN
+  SELECT MAX(date_maintenance) INTO dd FROM car_maintenance WHERE id_car = id_item;
+  UPDATE car_maintenance SET ibd_arx=1 WHERE id_car = id_item AND date_maintenance = dd;
+  UPDATE car_maintenance SET ibd_arx=2 WHERE id_car = id_item AND date_maintenance  < dd AND ibd_arx=1;
 END IF;
 
 END;";
