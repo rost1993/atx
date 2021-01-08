@@ -8,7 +8,7 @@
 	$change_oil = (empty($change_oil)) ? '' : $change_oil;
 	$price_repair = (empty($price_repair)) ? '' : $price_repair;
 
-	$change_oil = (empty($change_oil)) ? '' : $change_oil;
+	$change_oil = (empty($change_oil)) ? '0' : $change_oil;
 	$change_oil_checkbox = ($change_oil == 0) ? '' : ' checked ';
 
 	$org_repair = (empty($org_repair)) ? '' : $org_repair;
@@ -49,47 +49,47 @@
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="id_car" class="text-muted" style="font-size: 13px;"><strong>Транспортное срество</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="id_car" class="text-muted font-weight-bold fs-13">Транспортное срество</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="id_car"  data-mandatory="true" data-message-error="Заполните обязательное поле: Транспортное средство" data-datatype="number">
 									<?= $car_select; ?>
 									</select>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="car_mileage" class="text-muted" style="font-size: 13px;"><strong>Пробег</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="car_mileage" class="text-muted font-weight-bold fs-13">Пробег</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="car_mileage" data-mandatory="true" data-message-error="Заполните обязательное поле: Пробег" data-datatype="char" maxlength="150" placeholder="Пробег" value="<?= $car_mileage; ?>">
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="org_repair" class="text-muted" style="font-size: 13px;"><strong>Станция ремонта</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="org_repair" class="text-muted font-weight-bold fs-13">Станция ремонта</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<select class="custom-select custom-select-sm black-text" id="org_repair" data-mandatory="true" data-message-error="Заполните обязательное поле: Станция где произведен ремонт" data-datatype="number"><?= $org_repair_select; ?></select>
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="date_start_repair" class="text-muted" style="font-size: 13px;"><strong>Дата ремонта</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="date_start_repair" class="text-muted font-weight-bold fs-13">Дата ремонта</label>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='date_start_repair'>с</label></div>
+										<div class='input-group-prepend'><label class='input-group-text black-text' for='date_start_repair'>с</label></div>
 										<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_start_repair" data-mandatory="true" data-message-error="Заполните обязательное поле: Дата начала ремонта" data-datatype="date" maxlength="10" placeholder="Дата ремонта" value="<?= $date_start_repair; ?>">
 									</div>
 								</div>
 								<div class="col col-sm-2 mb-1">
 									<div class='input-group input-group-sm'>
-										<div class='input-group-prepend'><label class='input-group-text' for='date_end_repair'>по</label></div>
+										<div class='input-group-prepend'><label class='input-group-text black-text' for='date_end_repair'>по</label></div>
 										<input type="text" class="form-control form-control-sm black-text datepicker-here" id="date_end_repair" data-datatype="date" maxlength="10" placeholder="Дата ремонта" value="<?= $date_end_repair; ?>">
 									</div>
 								</div>
 							</div>
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="prim_repair" class="text-muted" style="font-size: 13px;"><strong>Примечание</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="prim_repair" class="text-muted font-weight-bold fs-13">Примечание</label>
 								</div>
 								<div class="col col-sm-9 mb-1">
 									<textarea type="text" class="form-control form-control-sm black-text" id="prim_repair" maxlength="4000" rows="3" data-datatype="char" placeholder="Примечание"><?= $prim_repair; ?></textarea>
@@ -97,14 +97,14 @@
 							</div>
 
 							<div class="form-row">
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="price_repair" class="text-muted" style="font-size: 13px;"><strong>Стоимость ремонта</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="price_repair" class="text-muted font-weight-bold fs-13">Стоимость ремонта</label>
 								</div>
 								<div class="col col-sm-3 mb-1">
 									<input type="text" class="form-control form-control-sm black-text" id="price_repair" data-mandatory="true" data-message-error="Заполните обязательное поле: Стоимость ремонта" data-datatype="number" placeholder="Стоимость ремонта" value="<?= $price_repair; ?>">
 								</div>
-								<div class="col col-sm-2 mb-1 text-right" style="vertical-align: center;">
-									<label for="change_oil" class="text-muted" style="font-size: 13px;"><strong>Замена масла в ДВС</strong></label>
+								<div class="col col-sm-2 mb-1 text-right">
+									<label for="change_oil" class="text-muted font-weight-bold fs-13">Замена масла в ДВС</label>
 								</div>
 								<div class="col col-sm-3 mb-1 text-left">
 									<input type='checkbox' id='change_oil' name='change_oil' <?= $change_oil_checkbox; ?> data-datatype="checkbox">
@@ -112,8 +112,8 @@
 							</div>
 						</div>
 						<div class='form-row'>
-							<div class='col-2 mb-1 text-right' style='vertical-align: center;'>
-								<label for='btnAddFileModalWindow' class='text-muted' style='font-size: 13px;'><strong>Эл. образы</strong></label>
+							<div class='col-2 mb-1 text-right'>
+								<label for='btnAddFileModalWindow' class='text-muted font-weight-bold fs-13'>Эл. образы</label>
 							</div>
 							
 							<div class='col-6 mb-1 text-left'>
